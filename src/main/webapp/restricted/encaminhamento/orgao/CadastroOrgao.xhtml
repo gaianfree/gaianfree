@@ -1,0 +1,125 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Orgãos</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+			<o:viewParam name="orgao" value="#{cadastroOrgaoBean.orgao}" />
+		</f:metadata>
+    
+    	<h2>Órgãos Externos</h2>
+    
+    	<h:form id="frmCadastro">
+    	
+	    	<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+    		<p:defaultCommand target="botaoSalvar" />    		
+	    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Salvar" id="botaoSalvar" icon="pi pi-save"
+	    				action="#{cadastroOrgaoBean.salvar}" update="frmCadastro"/>
+	    			<span class="ui-separator">
+			                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+			        </span>
+					<p:button icon="pi pi-search" value="Pesquisar" outcome="/restricted/encaminhamento/orgao/PesquisaOrgao.xhtml"/>
+				</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px"
+	    			columnClasses="rotulo, campo">
+	    		<p:outputLabel value="Código" for="codigo"/>
+	    		<p:inputText id="codigo" size="20" maxlength="20" 
+	    			value="#{cadastroOrgaoBean.orgao.codigo}" readonly="true"/>	    		
+	    	
+	    		<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome" size="60" maxlength="80" 
+	    			value="#{cadastroOrgaoBean.orgao.nome}"
+	    			required="true" 
+			    	validatorMessage="O nome é obrigatório."/>	 
+			    		
+			    	
+			   <p:outputLabel value="Código de Encaminhamento" for="codigoEncaminhamento"/>
+	    		<p:selectOneMenu id="codigoEncaminhamento" value="#{cadastroOrgaoBean.orgao.codigoEncaminhamento}"
+	    			required="true" 
+			    	validatorMessage="O códico de encaminhamento é obrigatório.">
+	    			<f:selectItem itemLabel="Selecione o código de encaminhamento" />
+	    			<f:selectItems value="#{cadastroOrgaoBean.codigos}" var="codigoEncaminhamento" 
+						itemLabel="#{codigoEncaminhamento}" itemValue="#{codigoEncaminhamento}"/>
+	    		</p:selectOneMenu>
+			    		
+			    		
+			    
+			    <p:outputLabel for="cep" value="CEP"  />
+		    	<h:panelGroup>                   	
+			    	<p:inputMask id="cep" mask="99999-999" size="9" 
+                   		value="#{cadastroOrgaoBean.orgao.endereco.cep}" 
+                   		required="true"                   		
+			    		validatorMessage="O cep é obrigatório."/>
+			    				    					    		
+		    		<p:spacer width="10px" />
+		    					    	
+	    			<p:commandButton value="Pesquisar" 
+	    				action="#{cadastroOrgaoBean.buscaEnderecoPorCEP}"
+						update="cep endereco bairro municipio uf"
+						process="@this cep"
+	    				imadiate="true"/>	    		
+		    	</h:panelGroup>	
+		    	  	
+		    	<p:outputLabel value="Endereço" for="endereco"/>
+	    		<p:inputText id="endereco" size="60" maxlength="80" 
+	    			value="#{cadastroOrgaoBean.orgao.endereco.endereco}"
+	    			required="true" 
+			    	validatorMessage="O endereço é obrigatório."/>	    		
+	    		
+	    		<p:outputLabel value="Número" for="numero"/>
+	    		<p:inputText id="numero" size="5" maxlength="8" 
+	    			value="#{cadastroOrgaoBean.orgao.endereco.numero}"
+	    			required="true" 
+			    	validatorMessage="O número é obrigatório.">			    	
+			    </p:inputText>			    			    	
+			    
+	    		<p:outputLabel value="Complemento" for="complemento"/>
+	    		<p:inputText id="complemento" size="60" maxlength="80" 
+	    			value="#{cadastroOrgaoBean.orgao.endereco.complemento}"/>	    		
+	    		
+	    		<p:outputLabel value="Bairro" for="bairro"/>
+	    		<p:inputText id="bairro" size="60" maxlength="80" 
+	    			required="true" 
+	    			value="#{cadastroOrgaoBean.orgao.endereco.bairro}"/>	   
+	    			 		
+	    		<p:outputLabel value="Município" for="municipio"/>
+	    		<p:inputText id="municipio" size="60" maxlength="80" 
+	    			value="#{cadastroOrgaoBean.orgao.endereco.municipio}"
+	    			required="true" 
+			    	validatorMessage="O município é obrigatório."/>	    		
+	    		
+	    		<p:outputLabel value="UF" for="uf"/>
+	    		<p:selectOneMenu id="uf" value="#{cadastroOrgaoBean.orgao.endereco.uf}"
+	    			required="true" 
+			    	validatorMessage="A UF é obrigatória.">
+	    			<f:selectItem itemLabel="Selecione a UF" />
+	    			<f:selectItems value="#{cadastroOrgaoBean.ufs}" var="uf" 
+						itemLabel="#{uf}" itemValue="#{uf}"/>
+	    		</p:selectOneMenu>
+	    		
+	    		<p:outputLabel value="Referência" for="referencia"/>
+	    		<h:panelGroup>
+	    			<p:inputText id="referencia" size="60" maxlength="80" 
+	    				value="#{cadastroOrgaoBean.orgao.endereco.referencia}" />	 
+	    			<p:watermark for="referencia" value="Um local próximo conhecido" />
+	    		</h:panelGroup>    		  		
+	    		
+	    	</p:panelGrid>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

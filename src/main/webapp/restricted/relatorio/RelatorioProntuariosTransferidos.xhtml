@@ -1,0 +1,163 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Histórico de Transferências</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Transferências</h2>
+    	
+    	<h:form id="frmTrans">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioProntuariosTransferidosBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioProntuariosTransferidosBean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>	    			
+	    			
+	    			<p:spacer width="10px" />
+				
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioProntuariosTransferidosBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioProntuariosTransferidosBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Histórico de Transferência" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioProntuariosTransferidosBean.consultarHistoricoTransferencia}"
+		            	update="transTable qde toolbar">		            		            	
+	            	</p:commandButton>			
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>				
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="transTable" fileName="Relatorio_Transferencia" />
+		            </p:commandButton>
+		            
+		            <p:spacer width="5px" />
+					
+				</f:facet>
+			</p:toolbar>
+	    	
+	    	<p:dataTable id="transTable" value="#{relatorioProntuariosTransferidosBean.listaTransferencias}" var="trans"
+	    		style="margin-top: 20px" emptyMessage="Nenhum prontuário transferido." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" rowsPerPageTemplate="10,15"
+	    		selectionMode="single" selection="#{relatorioProntuariosTransferidosBean.historicoTransferencia}"
+		    	rowKey="#{trans.codigo}"
+		    	rowStyleClass="#{trans.prontuario.status eq 'INATIVO' ? 'inativo' : null}"> 
+			    		
+	    		<p:ajax event="rowSelect"/>				
+				<p:ajax event="rowUnselect"/>				
+	    		
+	    		<p:column headerText="Data Transferencia" style="width: 30px; text-align: center"
+		    		sortBy="#{trans.dataTransferencia}" >		    		
+		    		<h:outputText value="#{trans.dataTransferencia}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>  		
+	    		
+	    		<p:column headerText="Unidade Destino" style="width: 40px; text-align: left">
+	    			<h:outputText value="#{trans.unidadeDestino.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Prontuário" style="width: 30px; text-align: center"
+	    			filterBy="#{trans.prontuario.codigo}" >
+	    			<h:outputText value="#{trans.prontuario.codigo}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Pessoa de Referência" style="width: 100px; text-align: left"
+	    			filterBy="#{trans.prontuario.familia.pessoaReferencia.codigo} - #{trans.prontuario.familia.pessoaReferencia.nome}" >
+	    			<h:outputText value="#{trans.prontuario.familia.pessoaReferencia.codigo} - #{trans.prontuario.familia.pessoaReferencia.nome}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Técnico" style="width: 60px; text-align: left"
+	    			filterBy="#{trans.usuario.nome}" >
+	    			<h:outputText value="#{trans.usuario.nome}" />
+	    		</p:column>
+		    		
+	    		<p:column headerText="Motivo" style="width: 20px; text-align: center">				    	
+			    	<p:commandButton 
+			    		update="frmTrans:detalheGrid" 
+	 						onclick="PF('detalheWidget').show()" 
+	 						title="Ver motivo" 
+	 						icon="pi pi-info"
+	 						process="@this">
+	 						<f:setPropertyActionListener target="#{relatorioProntuariosTransferidosBean.historicoTransferencia}" 
+							value="#{trans}" />			                
+	            	</p:commandButton>
+	            </p:column>	    	
+    		</p:dataTable> 
+    		
+    		<p:spacer width="10px" />
+    		<h4>
+    			<h:outputText id = "qde" 
+    				value="Quantidade de Transferências [#{relatorioProntuariosTransferidosBean.unidade.nome}] = #{relatorioProntuariosTransferidosBean.qdeTotal}"/>
+    		</h4>	
+	    
+		    
+		    
+		    <p:dialog id="detalheDialog" header="Mostrar Detalhes" 
+		   		widgetVar="detalheWidget" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="true"
+		   		closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:auto"
+				position="left top">
+		   		
+	            <p:panelGrid id="detalheGrid" columns="2" columnClasses="label,value">                
+	                
+	                <h:outputLabel for="trans1" value="Motivo da transferência: " style="font-weight:bold"/>
+	                <h:outputText id="trans1" value="#{relatorioProntuariosTransferidosBean.historicoTransferencia.motivo}"/>	                
+	                
+	            </p:panelGrid>
+    		</p:dialog>  
+    		
+    		<p:dialog id="transDialog" header="Transferências" widgetVar="transDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">
+				
+			</p:dialog>			
+	    		
+    	</h:form>
+    </ui:define>
+</ui:composition>

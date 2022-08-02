@@ -1,0 +1,122 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatorio de Atendimentos por Família</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatorio de Atendimentos por Família</h2>
+    	
+    	<h:form id="frmPesquisa">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>     		
+			
+   		
+	    	<p:toolbar style="margin-top: 20px">
+	    	  <f:facet name="left">	    		
+	    		
+	    		<h:panelGroup>
+	    			<p:spacer width="5px" />
+	    			<h:outputText value="Pessoa de Referência  "/> <p:spacer width="5px" />
+					<p:commandButton value="Pesquisar" icon="pi pi-search" title="Pesquisar Pessoa de Referência" 
+						actionListener="#{relatorioAtendimentoFamiliaBean.abrirDialogo}" 
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{relatorioAtendimentoFamiliaBean.selecionarPessoaReferencia}" 
+					 		update="frmPesquisa prontuario"
+					 		process="@this"/>
+					</p:commandButton>
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>	   
+		            
+		            <h:outputText id="prontuario" value="#{relatorioAtendimentoFamiliaBean.prontuario}"/> 	
+		            
+		            <span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>	
+		            
+		            <p:spacer width="5px" />	            	
+	            	<p:commandButton title="Exportar para Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+	            	    disabled="#{not relatorioAtendimentoFamiliaBean.pessoaReferenciaSelecionada}"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_atendimentos_familia" />
+		            </p:commandButton>
+		            
+		            <p:spacer width="5px" />	
+		            <p:commandButton title="Exportar para Word" value="Exportar para Word" icon="pi pi-file-o"	
+		            	disabled="#{not relatorioAtendimentoFamiliaBean.pessoaReferenciaSelecionada}"
+		            	ajax="false"
+		            	process="@this"
+		            	action="#{relatorioAtendimentoFamiliaBean.downloadFile}">
+	            	</p:commandButton>	
+		            
+				</h:panelGroup>
+				
+	    	  </f:facet>
+	    	</p:toolbar>  	
+	    	
+            
+	    	
+	    	<!--  Lista de itens de atendimento -->
+			<p:dataTable id="listaDataTable"  value="#{relatorioAtendimentoFamiliaBean.listaAtendimentos}" 
+				var="item"
+	    		style="margin-top: 20px" emptyMessage="Nenhum atendimento realizado." 
+	    		rowsPerPageTemplate="10,15,20" rows="10" 
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom">
+	    		
+		    	<p:column headerText="Data Atendimento" style="width: 60px; text-align: center"
+		    		sortBy="#{item.dataAtendimento}" >		    		
+		    		<h:outputText value="#{item.dataAtendimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+	    			</h:outputText>
+	    		</p:column>		    	
+	    		 				    		
+	    		<p:column headerText="Nome" style="width: 100px; text-align: center"
+	    			filterBy="#{item.pessoa.nome}" >	    			
+	    			<h:outputText value="#{item.pessoa.nome}" />
+	    		</p:column> 	    		
+	    		
+	    		<p:column headerText="Atendimento" style="width: 200px; text-align: center">
+	    			<p:textEditor  			    		
+		    			value="#{item.resumoAtendimento}" 			    					    			
+		    			readonly="true">
+		    			<f:facet name="toolbar" > 
+		    				<span class="ql-formats"> </span>						            
+		    			</f:facet>
+				    </p:textEditor>
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Cod.Aux.Atendimento" style="width: 80px; text-align: center">
+	    			<h:outputText value="#{item.codigoAuxiliar}"/>
+	    		</p:column>     			
+	    		
+	    		<p:column headerText="Técnico" style="width: 60px; text-align: center"
+	    			filterBy="#{item.tecnico.nome}" >
+	    			<h:outputText value="#{item.tecnico.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Agendador" style="width: 60px; text-align: center">
+	    			<h:outputText value="#{item.agendador.nome}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Técnicos adicionais" style="width: 80px; text-align: center">
+	    			<p:dataList id="nomesTecs" value="#{item.tecnicos}" var="tec" type="ordered">
+				       		#{tec.nome}
+				    </p:dataList>			
+	    		</p:column> 
+	    		
+    		
+		   	</p:dataTable>
+			
+    	</h:form>
+
+    </ui:define>
+</ui:composition>

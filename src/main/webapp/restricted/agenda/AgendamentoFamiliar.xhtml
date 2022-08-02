@@ -1,0 +1,244 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Agendamento Familiar</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Agendamento Familiar</h2>
+    	
+    	<h:form id="frmPesquisa">
+    	
+    		<p:growl id="growl" showDetail="false" closable="true">
+    			<p:autoUpdate />
+     		</p:growl>
+    		
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+				
+					<p:commandButton icon="pi pi-user-plus" title="Adicionar" value="Criar Agendamento familiar" 		            	
+		            	actionListener="#{agendamentoFamiliarBean.limpar}" 
+		            	oncomplete="PF('addDialogWidgetVar').show()"
+		            	update="addDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="addDialog" />	
+	            	</p:commandButton>	
+					
+	            	
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de itens de atendimento -->
+			<p:dataTable id="listaDataTable"  value="#{agendamentoFamiliarBean.listaAtendimentos}" var="item"
+				allowUnsorting="true" sortMode="single"
+	    		style="margin-top: 20px" emptyMessage="Nenhuma agendamento encontrado." rows="10" 
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" 
+	    		rowsPerPageTemplate="10,15,20"
+	    		selectionMode="single" selection="#{agendamentoFamiliarBean.item}" rowKey="#{item.codigo}">
+	    		
+	    		<p:ajax event="rowSelect" update="frmPesquisa:listaDataTable" />
+			
+				<p:ajax event="rowUnselect" update="frmPesquisa:listaDataTable" />
+
+		    		
+		    	<p:column headerText="Agendado" style="width: 50px; text-align: center"
+		    		sortBy="#{item.dataAgendamento}" >		    		
+		    		<h:outputText value="#{item.dataAgendamento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+	    			</h:outputText>	    		
+	    		</p:column>
+	    				   
+    			
+    			<p:column headerText="Membros da Família [Telefone]" style="width: 100px; text-align: center">
+	    			
+	    			<p:dataList id="pessoas1" value="#{item.pessoas}" var="p" type="ordered">
+				       		#{p.nome}  [ #{p.telefone} ]
+				    </p:dataList>			
+    			</p:column>
+
+	    		<p:column headerText="Técnico destinado" style="width: 80px; text-align: center"
+	    			filterBy="#{item.tecnico.nome}"
+	    			footerText="contains" filterMatchMode="contains">		
+	    			<h:outputText value="#{item.tecnico.nome}" />
+	    		</p:column> 
+	    			
+	    		<p:column headerText="Perfil destinado" style="width: 50px; text-align: center">	    			   			
+	    			<h:outputText value="#{item.role}"/>
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Agendado por" style="width: 60px; text-align: center"
+	    			filterBy="#{item.agendador.nome}"
+	    			footerText="contains" filterMatchMode="contains">	    			
+	    			<h:outputText value="#{item.agendador.nome}" />
+	    		</p:column> 	    		
+	    		
+	    		<p:column headerText="Operações" style="width: 30px; text-align: center" >		    		
+		    		
+		    		<p:commandButton icon="pi pi-pencil" title="Editar agendamento"
+		    			disabled="#{agendamentoFamiliarBean.item.codigo eq null}"
+		    			actionListener="#{agendamentoFamiliarBean.carregarTecnicos}"     			
+		    			oncomplete="PF('addDialogWidgetVar').show();"
+		    			update=":frmPesquisa:addDialog :frmPesquisa:toolbar :frmPesquisa:growl :frmPesquisa:messages" 
+		            	process="@this">
+						<f:setPropertyActionListener target="#{agendamentoFamiliarBean.item}" 
+							value="#{item}" />
+					</p:commandButton>									    		
+
+		    		<p:commandButton icon="pi pi-trash" title="Excluir agendamento"
+		    			disabled="#{agendamentoFamiliarBean.item.codigo eq null}"
+		    			oncomplete="PF('confirmacaoExclusaoWidgetVar').show()"		            	
+		            	update=":frmPesquisa:listaDataTable :frmPesquisa:toolbar :frmPesquisa:messages"
+		            	process="@this">
+						<f:setPropertyActionListener target="#{agendamentoFamiliarBean.item}" 
+							value="#{item}" />
+					</p:commandButton>	
+									
+		    	</p:column>
+    		
+		   	</p:dataTable>
+		   	
+		   	
+		   	<p:dialog id="addDialog" header="Agendamento" widgetVar="addDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true" responsive="true" 
+				style="max-height:600px;overflow:scroll"
+				showEffect="explode" hideEffect="explode"	position="center top">					
+				
+				<p:messages id="msg" showDetail="false" closable="true"></p:messages>
+      			
+				<p:defaultCommand target="salvarCommandButton" scope="addDialog" />	
+				
+							
+				<!--  Cadastro de itemAtendimento com busca de pessoa antes -->
+				<p:panelGrid columns="2" id="addPanelGrid" style="width: 100%" 
+					columnClasses="rotulo, campo">					
+					
+					<p:outputLabel value="Adicionar Familia"/>
+					<p:commandButton icon="pi pi-user-plus" title="Adicionar uma pessoa de referência" value="Adicionar" 						
+						actionListener="#{agendamentoFamiliarBean.abrirDialogo}"
+					 	process="@this">
+					 	<p:ajax event="dialogReturn" listener="#{agendamentoFamiliarBean.selecionarPessoaReferencia}"
+					 		update="listaAtend listaAtend2 growl messages"
+					 		process="@this"/>
+					</p:commandButton>
+				
+		    		<p:outputLabel value="Membros"/>
+		    		<h:panelGroup>	    		
+		    			<p:dataTable id="listaAtend" value="#{agendamentoFamiliarBean.item.pessoas}" var="i2" 
+		    				style="width: 500px; text-align: left"
+		    				emptyMessage="Nenhuma pessoa adicionada." >
+		    			
+		    				<p:column headerText="Membros" style="width: 200px; text-align: left">	
+		    					<h:outputText value="#{i2.nome}" style="width: 200px; text-align: left"/>
+		    				</p:column>
+		    			
+		    				<p:column style="width: 50px; text-align: center">	
+		    				
+			    				<p:commandButton icon="pi pi-user-minus" id="excluirCmd" 
+									actionListener="#{agendamentoFamiliarBean.excluirPessoa(i2)}"
+									update="listaAtend"
+									process="@this">
+								</p:commandButton>
+							
+								<p:commandButton id="falta" icon="pi pi-angle-down" title="Marcar Falta"
+										actionListener="#{agendamentoFamiliarBean.marcarFalta(i2)}"
+										update="listaAtend :frmPesquisa:listaAtend2"
+										process="@this">
+								</p:commandButton> 
+								
+		    				</p:column>
+		    			</p:dataTable>
+		    		
+		    			<p:dataTable id="listaAtend2" value="#{agendamentoFamiliarBean.item.pessoasFaltosas}" var="i3" 
+			    				style="width: 500px; text-align: left"
+			    				emptyMessage="Nenhuma falta registrada" >
+			    			
+			    				<p:column headerText="Faltas" style="width: 200px; text-align: left">	
+			    					<h:outputText value="#{i3.nome}" style="width: 200px; text-align: left"/>
+			       				</p:column>
+			       				
+			       				<p:column style="width: 50px; text-align: center">								
+									<p:commandButton id="revert" icon="pi pi-angle-up" title="Reverter Falta"
+										actionListener="#{agendamentoFamiliarBean.reverterFalta(i3)}"
+										update=":frmPesquisa:listaAtend listaAtend2"
+										process="@this">
+									</p:commandButton> 
+			    				</p:column>	
+			    		</p:dataTable>
+				    </h:panelGroup>
+				    
+		    		<p:outputLabel value="Agendar para" for="dataAgendamento" />
+					<p:calendar id="dataAgendamento" size="30"
+						value="#{agendamentoFamiliarBean.item.dataAgendamento}"
+						required="true"
+						showOn="button" 
+						pattern="dd/MM/yyyy HH:mm"
+						mask="99/99/9999 99:99"/> 						
+		    		
+	    			<p:outputLabel value="Perfil Profissional" for="role"/>
+	    			<p:selectOneMenu id="role" 	    				
+	    				value="#{agendamentoFamiliarBean.item.role}" 		    			
+	    				required="true" 	    				
+		    			validatorMessage="O perfil é obrigatório."  >
+		    			<f:selectItem itemLabel="Selecione o perfil" />
+		    			<f:selectItems value="#{agendamentoFamiliarBean.roles}" var="role" 
+							itemLabel="#{role}" itemValue="#{role}" />	
+							
+						<p:ajax listener="#{agendamentoFamiliarBean.carregarTecnicos}" 
+							update="tecnico" process="role"/>									
+	    			</p:selectOneMenu>	    			
+	    			
+	    			<p:outputLabel value="Técnico Responsável" for="tecnico"/>
+	    			<h:panelGroup>
+		    			<p:selectOneMenu id="tecnico" 
+			    			value="#{agendamentoFamiliarBean.item.tecnico}" >
+			    			<f:selectItem itemLabel="Selecione o técnico" />
+			    			<f:selectItems value="#{agendamentoFamiliarBean.tecnicos}" var="tecnico" 
+								itemLabel="#{tecnico.nome}" itemValue="#{tecnico}"/>
+							
+							<p:ajax listener="#{agendamentoFamiliarBean.verificaDispTecnico}" 
+								update="tecnico dataAgendamento msg" process="addDialog"/>							
+			    		</p:selectOneMenu>
+			    		<p:commandButton id="disp" value="Verificar disponibilidade"				    			
+							actionListener="#{agendamentoFamiliarBean.verificaDispTecnico}"
+							update="msg disp"
+							process="@this dataAgendamento tecnico disp">
+						</p:commandButton>		    		
+        		    </h:panelGroup>		
+				</p:panelGrid>
+				
+				<p:spacer height="10px" /> 
+
+				<p:commandButton icon="pi pi-save" id="salvarCommandButton" value="Salvar" 
+						actionListener="#{agendamentoFamiliarBean.salvarAgendamento}"
+						update="addPanelGrid listaDataTable growl messages"
+						oncomplete="if (!args.validationFailed) PF('addDialogWidgetVar').hide()" process="addDialog"/>
+				
+			</p:dialog>	
+			
+			
+			<p:confirmDialog id="confirmacaoExclusaoDialog"
+				widgetVar="confirmacaoExclusaoWidgetVar"
+				message="Apenas retira o agendamento da lista. Confirma a exclusão?"
+				header="Exclusão de agendamento" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoExclusaoWidgetVar').hide(); return false;" />
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+				    update="growl messages listaDataTable toolbar confirmacaoExclusaoDialog"
+					onclick="PF('confirmacaoExclusaoWidgetVar').hide();"
+					action="#{agendamentoFamiliarBean.excluir}" 
+					process="@this"/>
+			</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

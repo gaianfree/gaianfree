@@ -1,0 +1,560 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">		
+			
+	
+	<!--  Bloco I (de A a I) -->
+	
+	
+	<p:panel id="basic1" style="margin-bottom:20px" 
+		header="Bloco I - Serviço de Proteção e Atendimento Especializado a Famílias e Indivíduos - PAEFI">
+		
+		<p:panelGrid id="blocoA" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="A - Volume de famílias em acompanhamento pelo PAEFI" />
+		    </f:facet>
+		     
+		    <h:outputText value="A.1. Total de casos (famílias ou indivíduos) em acompanhamento pelo PAEFI" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.a1}" />
+		    
+		    <h:outputText value="A.2.  Novos casos (famílias ou indivíduos) inseridos no acompanhamento do PAEFI durante o mês de referência" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.a2}" />				    
+		</p:panelGrid>
+		
+		<p:panelGrid id="blocoB" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="B - Perfil dos novos casos inseridos no acompanhamento do PAEFI no mês de referência" />
+		    </f:facet>
+		     
+		    <h:outputText value="B.1. Famílias beneficiárias do Programa Bolsa Família" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b1}" />
+		    
+		    <h:outputText value="B.2. Famílias com membros beneficiários do BPC" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b2}" />
+		    
+		    <h:outputText value="B.3. Famílias com crianças ou adolescentes em situação de trabalho infantil" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b3}" />
+		    
+		    <h:outputText value="B.4. Famílias com crianças ou adolescentes em Serviços de Acolhimento" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b4}" />
+		    
+		    <h:outputText value="B.5. Famílias cuja situação de violência/ violação esteja associada ao uso abusivo de substâncias psicoativas" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b5}" />
+		    
+		    <h:outputText value="B.7.  Famílias com adolescente em cumprimento de Medidas Socioeducativas em meio aberto" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b7}" />
+		    
+	    	<h:outputText value="Atenção! Os itens B1 a B5 e B7 buscam identificar apenas alguns perfis de famílias. É normal que algumas famílias contadas no
+								item A2 não se enquadrem em nenhuma das condições acima, enquanto outras podem se enquadrar simultaneamente em mais de
+								uma condição. Portanto, a soma de B1 a B5 e B7 não terá, necessariamente, o mesmo valor relatado em A2." />
+		    <h:outputText value="" />
+		</p:panelGrid>
+				
+		<p:panelGrid id="blocoB2" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="Quantidade e perfil das pessoas vítimas de violência ou violações de direitos que ingressaram no
+									PAEFI, durante o mês de referência (apenas indivíduos inseridos no acompanhamento no mês de
+									referência)" />
+		    </f:facet>				    
+
+			<h:outputText value="B.6. Quantidade de pessoas vitimadas, que ingressaram no PAEFI, durante o mês de referência (apenas para os novos casos)" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6}" />   
+			
+			
+			
+			<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		                <p:column>18 a 59</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasFem.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasFem.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasFem.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasFem.idade60mais}"/></p:column>
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasMasc.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasMasc.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasMasc.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.b6vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>	
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>  
+			 
+			 
+			
+			<h:outputText value="Atenção! O total informado em B6 não é necessariamente igual a A2, uma vez que em um novo caso (família) inserido no PAEFI
+								poderá haver mais de uma pessoa vitimada." />
+			<h:outputText value=""/>
+		</p:panelGrid>
+		
+		
+		<br/>	
+		<p:panelGrid id="blocoAtencaoC" columns="1" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="Atenção! Do item 'C' ao item 'I' devem ser informadas as situações de violência ou violações de
+							direitos identificadas entre as pessoas que ingressaram no PAEFI no mês de referência (novos
+							casos). Uma mesma pessoa pode ter sido vítima de múltiplas violências/violações." />
+		    </f:facet>
+	   </p:panelGrid>
+	   <br/>
+		
+		<p:panelGrid id="blocoC" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="C. Crianças ou adolescentes em situações de violência ou violações, que ingressaram no PAEFI durante o mês de referência" />
+		    </f:facet>
+		    
+		    <h:outputText value="C.1. Crianças ou adolescentes vítimas de violência intrafamiliar (física ou psicológica)" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1}" />
+		    
+		    
+		    
+		    <h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 6</p:column>
+		                <p:column>7 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasFem.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasFem.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasFem.idade13a17}"/></p:column>				        
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasMasc.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasMasc.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c1vitimasMasc.idade13a17}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>			    
+
+			 </h:panelGroup>
+			 <h:outputText value=""/> 
+		   	
+	   		
+			
+			<h:outputText value="C.2. Crianças ou adolescentes vítimas de abuso sexual" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2}" />
+		   	
+		   	
+		   	<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 6</p:column>
+		                <p:column>7 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasFem.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasFem.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasFem.idade13a17}"/></p:column>				        
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasMasc.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasMasc.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c2vitimasMasc.idade13a17}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/> 
+
+	   		
+			
+			<h:outputText value="C.3. Crianças ou adolescentes vítimas de exploração sexual" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3}" />
+		    
+		    
+		    <h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 6</p:column>
+		                <p:column>7 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasFem.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasFem.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasFem.idade13a17}"/></p:column>				        
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasMasc.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasMasc.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c3vitimasMasc.idade13a17}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			   
+			 </h:panelGroup>
+			 <h:outputText value=""/> 
+		   	
+	   		
+			
+			<h:outputText value="C.4. Crianças ou adolescentes vítimas de negligência ou abandono" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4}" />
+		   	
+		   	
+	   		<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 6</p:column>
+		                <p:column>7 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasFem.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasFem.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasFem.idade13a17}"/></p:column>				        
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasMasc.idade0a6}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasMasc.idade7a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c4vitimasMasc.idade13a17}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>
+			 
+			 
+			
+			<h:outputText value="C.6. Não consta do manual do RMA (ATO_INFRACIONAL e OUTRA) - todas as idades" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6}" />
+		   	
+		   	<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		                <p:column>18 a 59</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasFem.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasFem.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasFem.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasFem.idade60mais}"/></p:column>
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasMasc.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasMasc.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasMasc.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c6vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>	
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>
+				   
+		</p:panelGrid>
+		
+		<p:panelGrid id="blocoCa" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="Crianças ou adolescentes em situação de Trabalho Infantil, que ingressaram no PAEFI durante o mês
+									de referência" />
+		    </f:facet>
+		    
+		    <h:outputText value="C.5. Crianças ou adolescentes em situação de trabalho infantil (até 15 anos)" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c5}" />
+		    
+		    
+		    <h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c5vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c5vitimasFem.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c5vitimasFem.idade13a17}"/></p:column>				        
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c5vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c5vitimasMasc.idade0a12}"/></p:column>
+				         <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.c5vitimasMasc.idade13a17}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>   	
+
+		</p:panelGrid>
+		
+		<p:panelGrid id="blocoD" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="D. Idosos - 60 anos ou mais - em situações de violência ou
+									violações que ingressaram no PAEFI durante o mês de referência" />
+		    </f:facet>
+		    
+		    <h:outputText value="D.1. Pessoas idosas vítimas de violência intrafamiliar (física, psicológica ou sexual) " />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d1}" />
+		    
+		    
+		    <h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d1vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d1vitimasFem.idade60mais}"/></p:column>
+				    </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d1vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d1vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/> 
+			 		   	
+			
+			<h:outputText value="D.2. Pessoas idosas vítimas de negligência ou abandono" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d2}" />
+		   	
+		   	
+		   	 <h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d2vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d2vitimasFem.idade60mais}"/></p:column>
+				    </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d2vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.d2vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			 </h:panelGroup>
+			 <h:outputText value=""/> 
+
+	   		
+		</p:panelGrid>
+		
+		<p:panelGrid id="blocoE" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="E. Pessoas com deficiência em situações de violência ou violações que
+									ingressaram no PAEFI durante o mês " />
+		    </f:facet>
+		    
+		    <h:outputText value="E.1. Pessoas com deficiência vítimas de violência intrafamiliar (física, psicológica ou sexual)" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1}" />
+		    
+		    
+		    <h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		                <p:column>18 a 59</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasFem.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasFem.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasFem.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasFem.idade60mais}"/></p:column>
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasMasc.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasMasc.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasMasc.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e1vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>	
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>  
+
+	   		
+			
+			<h:outputText value="E.2. Pessoas com deficiência vítimas de negligência ou abandono" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2}" />
+		   	
+	   		<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		                <p:column>18 a 59</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasFem.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasFem.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasFem.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasFem.idade60mais}"/></p:column>
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasMasc.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasMasc.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasMasc.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.e2vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>	
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>
+		</p:panelGrid>
+		
+		
+		<p:panelGrid id="blocoF" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="F. Mulheres adultas vítimas de violência intrafamiliar que ingressaram no PAEFI durante o mês de referência " />
+		    </f:facet>
+		    
+		    <h:outputText value="F.1. Mulheres adultas (18 a 59 anos) vítimas de violência intrafamiliar (física, psicológica ou sexual)" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.f1}" />
+	   </p:panelGrid>
+	   
+	   
+	   <p:panelGrid id="blocoG" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="G. Pessoas vítimas de tráficos de seres humanos que ingressaram no PAEFI durante o mês de referência" />
+		    </f:facet>
+		    
+		    <h:outputText value="G.1. Pessoas vítimas de tráficos de seres humanos" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1}" />
+		   	
+	   		<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		                <p:column>18 a 59</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasFem.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasFem.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasFem.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasFem.idade60mais}"/></p:column>
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasMasc.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasMasc.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasMasc.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.g1vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>	
+			    </p:panelGrid>
+			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>
+		</p:panelGrid>
+		
+		<p:panelGrid id="blocoH" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="H. Pessoas vítimas de discriminação por orientação sexual que ingressaram no PAEFI durante o mês de referência" />
+		    </f:facet>
+		    
+		    <h:outputText value="H.1. Pessoas vítimas de discriminação por orientação sexual" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.h1}" />
+	   </p:panelGrid>
+	   
+	   
+	   <p:panelGrid id="blocoI" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="I. Pessoas em situação de rua que ingressaram no PAEFI durante o mês de referência" />
+		    </f:facet>
+		    
+		    <h:outputText value="I.1. Pessoas em situação de rua" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1}" />
+		   	
+		   		<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>0 a 12</p:column>
+		                <p:column>13 a 17</p:column>
+		                <p:column>18 a 59</p:column>
+		                <p:column>60 ou mais</p:column>
+		            </p:row>			
+			        </f:facet>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasFem.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasFem.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasFem.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasFem.idade60mais}"/></p:column>
+			        </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasMasc.idade0a12}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasMasc.idade13a17}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasMasc.idade18a59}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco1.i1vitimasMasc.idade60mais}"/></p:column>
+			        </p:row>	
+			    </p:panelGrid>			    
+			 </h:panelGroup>
+			 <h:outputText value=""/>
+		</p:panelGrid>
+		
+	</p:panel>
+	
+</ui:composition>

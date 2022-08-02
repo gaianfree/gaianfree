@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+        xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+             
+	<persistence-unit name="svsaPU" transaction-type="RESOURCE_LOCAL">
+
+		<properties> 		
+		
+			<!--################ PRODUÇÃO ###################-->
+			
+			<!--  AWS  SVSA PRODUÇÃO 
+			<property name="hibernate.connection.url" value="jdbc:mysql://db-teste.cvxszcahokwn.us-east-1.rds.amazonaws.com/svsa?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
+			<property name="hibernate.connection.username" value="admin"/>
+			<property name="hibernate.connection.password" value="Murakami1Teste "/>
+			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+			-->			
+			<!--  AWS  GAIAN-FREE 
+			<property name="hibernate.connection.url" value="jdbc:mysql://database-1.csmrh3howepe.us-east-1.rds.amazonaws.com/svsafree?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
+			<property name="hibernate.connection.username" value="gaianfree"/>
+			<property name="hibernate.connection.password" value="GaianFree;.22**"/>
+			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+			-->
+			<!-- ITAPETININGA na prefeitura 
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svsa_itp?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="3M@v4PW7!cmb"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>		
+			-->
+			
+			<!-- ################ TESTE ###################-->
+			
+			<!--  AWS  SVSA PRODUÇÃO 
+			<property name="hibernate.connection.url" value="jdbc:mysql://db-teste.cvxszcahokwn.us-east-1.rds.amazonaws.com/svsa?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
+			<property name="hibernate.connection.username" value="admin"/>
+			<property name="hibernate.connection.password" value="Murakami1Teste"/>
+			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+			-->
+			
+			<!-- IFSP 
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://web-svsa.ifsp.edu.br:3306/svsa_itp?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
+			<property name="javax.persistence.jdbc.user" value="svsa_itp"/>
+			<property name="javax.persistence.jdbc.password" value="!lPV^B@J6F$OrXM"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+			-->	
+						
+			<!-- ################ DESENVOLVIMENTO  ###################-->
+							
+			<!-- SALTO 	-->
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svsa?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="ifsp"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+			
+			
+			<!--################### TODOS ###################-->	
+						
+			<!-- validate | update | create | create-drop -->			
+			
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
+			<property name="hibernate.show_sql" value="false"/>
+			<property name="hibernate.format_sql" value="true"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" /> 
+			<property name="hibernate.jdbc.time_zone" value="UTC"/>	
+			
+			<property name="hibernate.c3p0.minPoolSize" value="5" />
+			<property name="hibernate.c3p0.maxPoolSize" value="50" />
+			<property name="hibernate.c3p0.maxIdleTime" value="3600" />
+			<property name="hibernate.c3p0.max_statements" value="100" />
+			<property name="hibernate.c3p0.testConnectionOnCheckout" value="false" />
+			<property name="hibernate.c3p0.testConnectionOnCheckin" value="true" />
+			<property name="hibernate.c3p0.idleConnectionTestPeriod" value="60" />
+			
+			<!--  minPoolSize: tamanho minimo do pool -->
+			<!--  maxPoolSize: tamanho maximo do pool -->
+			<!--  maxIdleTime: tempo em segundos antes de uma conexão não usada ser retirada do pool 3600 = 1h -->
+			<!--  maxStatements: numero de instruções/transações preparadas mantidas em cache -->				
+			<!--  1.Performance:
+					testConnectionOnCheckout=false
+					testConnectionOnCheckin=true
+					idleConnectionTestPeriod=30
+					ou para menos overhead
+					testConnectionOnCheckout=false
+					testConnectionOnCheckin=false
+					idleConnectionTestPeriod=300					
+			      2.Simple, slow, and robust:
+			      	testConnectionOnCheckout=true
+			      	testConnectionOnCheckin=false
+			      	idleConnectionTestPeriod=0
+			-->			
+						
+		</properties>
+	</persistence-unit>
+</persistence>

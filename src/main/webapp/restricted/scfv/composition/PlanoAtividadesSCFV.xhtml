@@ -1,0 +1,198 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"> 
+   	
+   	<p:toolbar id="toolbarPlano" style="margin-top: 5px">
+   		<p:toolbarGroup>
+   			<p:commandButton title="Criar atividade" icon="pi pi-user-plus"
+   				disabled="#{manterSCFVPesqBean.servico eq null}"
+            	value="Nova Atividade"
+            	actionListener="#{manterSCFVPesqBean.limparAtividade}"         	
+            	oncomplete="PF('atividadeWidgetVar').show()"
+            	update="frmScfv:accordion:atividadeDialog" 
+            	process="@this">
+            	<p:resetInput target="atividadeDialog" />
+           	</p:commandButton>
+   	
+           	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+           		disabled="#{manterSCFVPesqBean.servico eq null}"
+           		value="Exportar Excel"
+            	ajax="false"
+            	imediate="true">
+            	<p:dataExporter type="xls" target="atividadesTable" fileName="Lista_atividades" />
+            </p:commandButton>			
+   		</p:toolbarGroup>	    		
+   	</p:toolbar>
+
+   	
+   	<p:dataTable id="atividadesTable" value="#{manterSCFVPesqBean.atividades}" var="atividade"
+   		style="margin-top: 5px" emptyMessage="Selecione um serviço para ver as atividades."
+   		allowUnsorting="true" sortMode="single"
+   		selectionMode="single" selection="#{manterSCFVPesqBean.atividade}" rowKey="#{atividade.codigo}">	
+   		
+  			<p:ajax event="rowSelect"
+  				process="@this diario"
+  				update="atividadesTable diario"
+  				listener="#{manterSCFVPesqBean.selecionarAtividade}"/>
+			<p:ajax event="rowUnselect"/>		    		
+    						
+		<f:facet name="header">
+            <p:outputLabel value="#{manterSCFVPesqBean.servico.nome}"/>
+        </f:facet>	
+    		
+    	<p:column headerText="Código" style="width: 10px; text-align: center"
+    		sortBy="#{atividade.codigo}" >
+			<h:outputText value="#{atividade.codigo}" />
+		</p:column>				
+		
+   		<p:column headerText="Descricao" style="width: 100px; text-align: center">
+   			<h:outputText value="#{atividade.descricao}" />
+   		</p:column>
+   		
+   		<p:column headerText="Data/Hora" style="width: 20px; text-align: center"
+   			sortBy="#{atividade.data}" >
+			<h:outputText value="#{atividade.data}">
+   				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+   			</h:outputText>
+		</p:column>
+			    		
+   		<p:column headerText="Relato" style="width: 100px; text-align: center">
+   			<h:outputText value="#{atividade.relato}" />
+   		</p:column>
+   			
+   		<p:column headerText="Operações" style="width: 20px; text-align: center">		    		
+    		<p:commandButton icon="pi pi-pencil" title="Editar" 
+    			oncomplete="PF('atividadeWidgetVar').show()"
+            	update="frmScfv:accordion:atividadeGrid" 
+            	process="@this">
+            	<f:setPropertyActionListener target="#{manterSCFVPesqBean.atividade}" 
+					value="#{atividade}" />
+			</p:commandButton>
+
+    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+    			onclick="PF('confExclusao').show();"
+				process="@this">
+				<f:setPropertyActionListener target="#{manterSCFVPesqBean.atividade}" 
+					value="#{atividade}" />
+			</p:commandButton>
+			
+			<p:commandButton id="diario" value="Diário" 
+				disabled="#{!(manterSCFVPesqBean.atividadeSelecionada eq atividade) }"
+				actionListener="#{manterSCFVPesqBean.buscarDiario}"
+    			oncomplete="PF('diarioWidgetVar').show()"
+            	update="frmScfv:accordion:diarioTable" 
+            	process="@this">
+			</p:commandButton>
+    	</p:column>     		
+    	
+   	</p:dataTable>
+   	
+   	<p:dialog id="atividadeDialog" header="Cria nova atividade" 
+		   		widgetVar="atividadeWidgetVar" 
+				modal="true" resizable="false" closeOnEscape="true" 
+				style="max-height:600px;overflow:auto" > 
+   	
+	   	<p:panelGrid id="atividadeGrid" columns="2" 
+	   		columnClasses="rotulo, campo">
+	   		
+	   		<p:outputLabel value="Código" for="codigo" rendered="false"/>
+	   		<p:inputText id="codigo" size="20" maxlength="20" 
+	   			value="#{manterSCFVPesqBean.atividade.codigo}"
+	   			readonly="true"
+	   			rendered="false"/>		    			
+	   		
+	   		<p:outputLabel value="Descrição da Atividade" for="des"/>
+	   		<p:inputText id="des" size="82" maxlength="82" 
+	   			value="#{manterSCFVPesqBean.atividade.descricao}"
+	   			required="true" 
+		    	validatorMessage="A descrição é obrigatória."/>			
+			    	
+	    	<p:outputLabel value="Data/Hora" for="data" size="30"/>			    	
+	   		<p:calendar id="data" value="#{manterSCFVPesqBean.atividade.data}" 
+	    		pattern="dd/MM/yyyy HH:mm" 	
+	    		mask="99/99/9999 99:99"		    		
+	    		required="true" 
+	    		showOn="button" 
+		    	validatorMessage="A hora é obrigatória."  />
+		    
+		    <p:outputLabel value="Relato" for="rel"/>	    		
+	  			<h:panelGroup>
+	    		<p:inputTextarea id="rel" size="1000" rows="5" cols="100" style="height: 100px; overflow:auto;"
+	    			maxlength="1000" 
+	   				value="#{manterSCFVPesqBean.atividade.relato}"
+	    			counter="display"
+					counterTemplate="{0} caracteres restantes"/>
+				<h:outputText id="display" />
+	    		<p:watermark for="rel" value="Relate a atividade." />		    		
+	   		</h:panelGroup>
+	   		
+	   		
+	   		<p:outputLabel value="" />
+	   		<h:panelGroup id="panel">
+	    		<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"		            	
+	            	actionListener="#{manterSCFVPesqBean.salvarAtividade}"            	
+	            	update="frmScfv:accordion:atividadesTable frmScfv:accordion:toolbarPlano"
+	            	oncomplete="if (!args.validationFailed) PF('atividadeWidgetVar').hide()" 
+					process="atividadeDialog">
+	           	</p:commandButton>	           	
+          	</h:panelGroup>
+	   			
+	   	</p:panelGrid>
+   	</p:dialog>
+   	
+   	<p:dialog id="diarioDialog" header="Diário / Frequências" 
+   		widgetVar="diarioWidgetVar" 
+		modal="true" resizable="false" closeOnEscape="true" 
+		style="max-height:600px;overflow:auto" > 
+		
+		<p:dataTable id="diarioTable"
+			value="#{manterSCFVPesqBean.frequencias}" var="frequencia"
+			emptyMessage="Selecione uma atividade para ver as presenças."  					
+			rowStyleClass="#{frequencia.pessoa.familia.prontuario.status eq 'INATIVO' 
+	  		              or frequencia.pessoa.status eq 'INATIVO' ? 'inativo' : null}">
+	           
+	        <f:facet name="header">
+	            <p:outputLabel value="Atividade: #{manterSCFVPesqBean.atividade.descricao} / #{manterSCFVPesqBean.servico.nome}"/>
+	        </f:facet>	     
+			
+			<p:column headerText="Codigo" style="width: 100px; text-align: center">
+				<h:outputText value="#{frequencia.pessoa.codigo}" />
+			</p:column>
+			
+			<p:column headerText="Nome Pessoa" style="width: 100px; text-align: center"
+				sortBy="#{frequencia.pessoa.nome}" >
+				<h:outputText value="#{frequencia.pessoa.nome}" />
+			</p:column>
+			
+			<p:column headerText="Telefone Pessoa" style="width: 20px; text-align: center">
+				<h:outputText value="#{frequencia.pessoa.telefone}" />
+			</p:column>
+			
+			<p:column headerText="Presença" style="width: 10px; text-align: center">
+				<p:selectBooleanCheckbox 
+					value="#{frequencia.presente}">
+					<p:ajax update="frmScfv:growl" 
+						listener="#{manterSCFVPesqBean.salvarFrequencia(frequencia)}" />
+				</p:selectBooleanCheckbox>
+			</p:column>
+	    </p:dataTable>
+				
+	</p:dialog>
+   	
+   	<p:confirmDialog id="confExclusaoDialog" 
+   		widgetVar="confExclusao"
+       	message="A atividade só pode ser excluída se não houver frequências registradas. Continuar?"  
+           header="Exclusão de atividade" severity="alert">
+       	<p:button icon="pi pi-thumbs-down" value="Não" 
+       		onclick="PF('confExclusao').hide(); return false;" />
+       	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+       		process="@this"
+       		update="frmScfv:accordion:atividadesTable"
+       		onclick="PF('confExclusao').hide();"
+       		action="#{manterSCFVPesqBean.excluirAtividade}" /> 
+   	</p:confirmDialog>
+
+</ui:composition>

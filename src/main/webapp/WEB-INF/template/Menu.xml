@@ -1,0 +1,231 @@
+<!DOCTYPE xml>
+<menu>
+	<submenu label="Painel"  icon="pi pi-chart-line">
+		<grupo value="ADMINISTRATIVOS"></grupo>
+		<menuitem value="Avisos" outcome="/restricted/home/SvsaHome.xhtml"></menuitem>
+		<menuitem value="Indicadores" outcome="/restricted/home/DashBoard.xhtml"></menuitem>
+	</submenu>	
+	
+	<submenu label="Agendamento" icon="pi pi-clock">
+		<grupo value="ADMINISTRATIVOS"></grupo>
+		<menuitem value="Individualizado" outcome="/restricted/agenda/AgendamentoIndividual.xhtml"></menuitem>
+		<menuitem value="Familiar" outcome="/restricted/agenda/AgendamentoFamiliar.xhtml"></menuitem>
+		<menuitem value="Coletivo" outcome="/restricted/agenda/AgendamentoColetivo.xhtml"></menuitem>
+		<menuitem value="Ver Agenda" outcome="/restricted/agenda/AgendaSchedule.xhtml"></menuitem>
+		<menuitem value="Ver Calendario" outcome="/restricted/agenda/CalendarSchedule.xhtml"></menuitem>		
+	</submenu>	
+	
+	<submenu label="Atendimento" icon="pi pi-check-circle">
+		<!-- Permissão -->
+		<grupo value="ADMINISTRATIVOS"></grupo>
+		<menuitem value="Indiv. Com Agendamento" outcome="/restricted/atendimento/RealizarAtendimento.xhtml"></menuitem>
+		<menuitem value="Indiv. Sem Agendamento" outcome="/restricted/atendimento/RealizarAtendimentoSAg.xhtml"></menuitem>
+		<menuitem value="Familiar" outcome="/restricted/atendimento/RealizarAtendimentoFamiliar.xhtml">
+			<grupo value="ADMINISTRATIVOS"></grupo>  
+		</menuitem>
+		<menuitem value="Coletivo" outcome="/restricted/atendimento/RealizarAtendimentoColetivo.xhtml">
+			<grupo value="ADMINISTRATIVOS"></grupo>  
+		</menuitem>		
+		<menuitem value="Recepção" outcome="/restricted/agenda/PesquisaAtendimentoRecepcao.xhtml"></menuitem>		
+		<menuitem value="Ações" outcome="/restricted/atendimento/RegistrarAcao.xhtml">
+			<grupo value="ADMINISTRATIVOS"></grupo> 
+		</menuitem>
+		<menuitem value="Abordagem Social" outcome="/restricted/abordagem/RegistrarAbordagem.xhtml">
+			<grupo value="ADMINISTRATIVOS"></grupo> 
+		</menuitem>	
+		<submenu2 label="Relatórios">			
+			<menuitem2 value="Individualizado" outcome="/restricted/relatorio/RelatorioAtendimentos.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>			
+			<menuitem2 value="Familiar" outcome="/restricted/relatorio/RelatorioAtendimentoFamiliar.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>
+			<menuitem2 value="Coletivo" outcome="/restricted/relatorio/RelatorioAtendimentoColetivo.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>				
+			<menuitem2 value="Da Família" outcome="/restricted/relatorio/RelatorioAtendimentoFamilia.xhtml">				
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>
+			<menuitem2 value="CadÚnico(*)" outcome="/restricted/relatorio/RelatorioAtendCadUnico.xhtml"></menuitem2>
+			<menuitem2 value="Ações" outcome="/restricted/relatorio/RelatorioAcoes.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>
+			</menuitem2> 
+			<menuitem2 value="Abordagem Social" outcome="/restricted/abordagem/RelatorioAbordagens.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>			
+		</submenu2>		
+	</submenu>		
+	
+	<submenu label="Encaminhamento" icon="pi pi-arrow-circle-right">
+		<!-- Permissão -->
+		<grupo value="ADMINISTRATIVOS"></grupo> 
+		<grupo value="TECNICOS"></grupo>		
+		<menuitem value="Para CREAS" outcome="/restricted/encaminhamento/EncaminharProntuario.xhtml">
+			<!-- Restrição -->
+			<grupo value="ADMINISTRATIVOS"></grupo> 
+			<grupo value="TECNICOS"></grupo>  
+		</menuitem>		
+		<menuitem value="Para CRAS" outcome="/restricted/encaminhamento/EncaminharProntuarioCRAS.xhtml">
+			<!-- Restrição -->
+			<grupo value="ADMINISTRATIVOS"></grupo> 
+			<grupo value="TECNICOS"></grupo>  
+		</menuitem>
+		<menuitem value="Externo" outcome="/restricted/encaminhamento/EncaminhamentoExterno.xhtml">
+			<grupo value="ADMINISTRATIVOS"></grupo> 
+		</menuitem>
+		<menuitem value="Cadastrar Órgão Externo" outcome="/restricted/encaminhamento/orgao/PesquisaOrgao.xhtml"></menuitem>			
+		<submenu2 label="Gestão de Ofícios">						
+			<menuitem2 value="Receber Ofício" outcome="/restricted/encaminhamento/ReceberOficio.xhtml">
+				<!-- Restrição -->
+				<grupo value="ADMINISTRATIVOS"></grupo> 
+			</menuitem2>			
+			<menuitem2 value="Emitir Ofício" outcome="/restricted/encaminhamento/EmitirOficio.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo> 
+			</menuitem2>		
+		</submenu2>			
+		
+		<submenu2 label="Relatórios">			 			
+			<menuitem2 value="Encam. Interno(*)" outcome="/restricted/encaminhamento/RelatorioEncaminhamento.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>
+			</menuitem2>
+			<menuitem2 value="Encam. Externo(*)" outcome="/restricted/encaminhamento/RelatorioEncExterno.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>
+			</menuitem2>
+			<menuitem2 value="Ofícios Recebidos" outcome="/restricted/encaminhamento/RelatorioOficio.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>
+			</menuitem2>
+			<menuitem2 value="Ofícios Emitidos" outcome="/restricted/encaminhamento/RelatorioOficioEmitido.xhtml">
+				<grupo value="ADMINISTRATIVOS"></grupo>
+			</menuitem2>		
+		</submenu2>		
+	</submenu>		
+	
+	<submenu label="Prontuário" icon="pi pi-book">
+		<!-- Permissão -->
+		<grupo value="ADMINISTRATIVOS"></grupo>
+	    <menuitem value="Capa Prontuário" outcome="/restricted/agenda/PesquisaCapaProntuario.xhtml"></menuitem>
+	    <menuitem value="Pesquisar Pessoa(*)" outcome="/restricted/agenda/PesquisaPessoa.xhtml"></menuitem>
+	    <menuitem value="Consultar Prontuario(*)" outcome="/restricted/prontuario/ConsultarProntuario.xhtml">
+			<!-- Restrição -->
+			<grupo value="ADMINISTRATIVOS"></grupo>  
+		</menuitem>		
+		<menuitem value="Transferir Prontuário" outcome="/restricted/agenda/TransferirProntuario.xhtml"></menuitem>		
+		<submenu2 label="Manter Prontuário">
+		    <menuitem2 value="Composição Familiar" outcome="/restricted/agenda/ManterProntuario.xhtml">
+				<!-- Restrição -->
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>
+			<menuitem2 value="Condição Familiar" outcome="/restricted/prontuario/CondicaoFamiliar.xhtml">
+				<!-- Restrição -->
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>
+			<menuitem2 value="Condição Individual" outcome="/restricted/prontuario/CondicaoIndividual.xhtml">
+				<!-- Restrição -->
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>			
+		</submenu2>			  
+	    <submenu2 label="Relatórios">
+		    <menuitem2 value="Pront. Novos" outcome="/restricted/relatorio/RelatorioProntuariosNovos.xhtml"></menuitem2>
+		    <menuitem2 value="Pront. Atualizados(*)" outcome="/restricted/relatorio/RelatorioProntuariosAtualizados.xhtml"></menuitem2>
+		    <menuitem2 value="Pront. Trimestre(*)" outcome="/restricted/relatorio/RelatorioProntuariosTrim.xhtml"></menuitem2>
+		    <menuitem2 value="Pront. Transferidos(*)" outcome="/restricted/relatorio/RelatorioProntuariosTransferidos.xhtml"></menuitem2>
+			<menuitem2 value="Prontuários(*)" outcome="/restricted/gestao/RelatorioProntuariosG.xhtml">
+				<!-- Restrição -->
+				<grupo value="ADMINISTRATIVOS"></grupo>  
+			</menuitem2>
+		</submenu2>			
+	</submenu>	
+	
+	<submenu label="Serviço" icon="pi pi-users">
+		<!-- Permissão -->
+		<grupo value="ADMINISTRATIVOS"></grupo>
+		<menuitem value="SCFV/Não Continuado" outcome="/restricted/scfv/ManterSCFVPesquisa.xhtml"></menuitem>
+		<menuitem value="Acomp. Familiar" outcome="/restricted/paif/ManterAcompPAIF.xhtml">
+			<!-- Restrição -->
+			<grupo value="ADMINISTRATIVOS"></grupo>  
+		</menuitem>
+		<menuitem value="Acomp. Individual" outcome="/restricted/mse/ManterAcompMSE.xhtml">
+			<!-- Restrição -->
+			<grupo value="ADMINISTRATIVOS"></grupo>  
+		</menuitem>
+		<submenu2 label="Relatórios">
+			<menuitem2 value="SCFV/SISC(*)" outcome="/restricted/scfv/RelatorioSISC.xhtml"></menuitem2>
+			<menuitem2 value="Acomp. Familiar(*)" outcome="/restricted/paif/RelatorioAcompPAIF.xhtml"></menuitem2>
+			<menuitem2 value="Acomp. Individual(*)" outcome="/restricted/mse/RelatorioAcompMSE.xhtml"></menuitem2>
+		</submenu2>	
+	</submenu>	
+	
+	<submenu label="Coordenação" icon="pi pi-th-large">
+		<grupo value="COORDENADORES"></grupo>
+		<menuitem value="Alterar Unidade" outcome="/restricted/unidade/AlterarUnidade.xhtml"></menuitem>
+		<menuitem value="Cadastro Usuario" outcome="/restricted/usuario/PesquisaUsuario.xhtml"></menuitem>
+		<submenu2 label="Indicadores">
+			<menuitem2 value="Proteção/Desproteção(*)" outcome="/restricted/gestao/RelIndicadorProtecao.xhtml"></menuitem2>
+			<menuitem2 value="Tipos de Atendimento(*)" outcome="/restricted/gestao/RelatoriosMenu.xhtml"></menuitem2>
+			<menuitem2 value="Prod.Atendimentos" outcome="/restricted/gestao/RelatorioTecnicoProd.xhtml"></menuitem2>
+			<menuitem2 value="Prod.Ações" outcome="/restricted/gestao/RelatorioTecnicoProdAcoes.xhtml"></menuitem2>
+			<menuitem2 value="Prod.CadÚnico(*)" outcome="/restricted/gestao/RelatorioCadUnicoProd.xhtml"></menuitem2>
+		</submenu2>
+		<submenu2 label="Relatórios">
+			<menuitem2 value="Atendimentos(*)" outcome="/restricted/gestao/RelatoriosMenu.xhtml"></menuitem2>
+			<menuitem2 value="Pessoas Programa Social" outcome="/restricted/relatorio/RelatorioProgSocial.xhtml"></menuitem2>
+			<menuitem2 value="Pessoas País Origem" outcome="/restricted/relatorio/RelatorioPessoasPais.xhtml"></menuitem2>			
+			<menuitem2 value="RMA P.Básica(*)" outcome="/restricted/gestao/RelatorioRMA.xhtml"></menuitem2>
+			<menuitem2 value="RMA P.Especializada(*)" outcome="/restricted/gestao/RelatorioRMACreas.xhtml"></menuitem2>
+			<menuitem2 value="RMA POP(*)" outcome="/restricted/gestao/RelatorioRMAPop.xhtml"></menuitem2>				
+		</submenu2>				
+	</submenu>	
+	
+	<submenu label="Vigilância" icon="pi pi-eye">
+		<grupo value="GESTORES"></grupo>
+		<submenu2 label="Cadastros">
+			<menuitem2 value="Cadastrar Unidade(*)" outcome="/restricted/unidade/PesquisaUnidade.xhtml"></menuitem2>
+			<menuitem2 value="Cadastrar Usuario(*)" outcome="/restricted/usuario/PesquisaUsuario.xhtml"></menuitem2>	
+		</submenu2>
+		<submenu2 label="Pessoas">
+			<menuitem2 value="Pesquisar Pessoa(*)" outcome="/restricted/agenda/PesquisaPessoa.xhtml"></menuitem2>
+			<menuitem2 value="Pessoas País Origem(*)" outcome="/restricted/relatorio/RelatorioPessoasPais.xhtml"></menuitem2>
+			<menuitem2 value="Pessoas Programa Social(*)" outcome="/restricted/relatorio/RelatorioProgSocial.xhtml"></menuitem2>
+		</submenu2>	
+		<submenu2 label="Prontuários">	
+			<menuitem2 value="Consultar Prontuario(*)" outcome="/restricted/prontuario/ConsultarProntuario.xhtml"></menuitem2>
+			<menuitem2 value="Transferir Prontuário(*)" outcome="/restricted/agenda/TransferirProntuario.xhtml"></menuitem2>
+			<menuitem2 value="Rel. Prontuários(*)" outcome="/restricted/gestao/RelatorioProntuariosG.xhtml"></menuitem2>
+			<menuitem2 value="Pront. Trimestre(*)" outcome="/restricted/relatorio/RelatorioProntuariosTrim.xhtml"></menuitem2>
+			<menuitem2 value="Pront. Atualizados(*)" outcome="/restricted/relatorio/RelatorioProntuariosAtualizados.xhtml"></menuitem2>
+			<menuitem2 value="Pront. Transferidos(*)" outcome="/restricted/relatorio/RelatorioProntuariosTransferidos.xhtml"></menuitem2>
+		</submenu2>
+		<submenu2 label="Acompanhamentos">			
+			<menuitem2 value="Atendimentos CadÚnico(*)" outcome="/restricted/relatorio/RelatorioAtendCadUnico.xhtml"></menuitem2>		
+			<menuitem2 value="Acomp. Familiar(*)" outcome="/restricted/paif/RelatorioAcompPAIF.xhtml"></menuitem2>
+			<menuitem2 value="Acomp. Individual(*)" outcome="/restricted/mse/RelatorioAcompMSE.xhtml"></menuitem2>				
+		</submenu2>
+		<submenu2 label="Encaminhamentos">		
+			<menuitem2 value="Encaminhamentos(*)" outcome="/restricted/encaminhamento/RelatorioEncaminhamento.xhtml"></menuitem2>
+			<menuitem2 value="Encam. Externos(*)" outcome="/restricted/encaminhamento/RelatorioEncExterno.xhtml"></menuitem2>
+			<menuitem2 value="Ofícios Recebidos(*)" outcome="/restricted/encaminhamento/RelatorioOficio.xhtml"></menuitem2>
+		</submenu2>
+		<submenu2 label="RMA/SISC">			
+			<menuitem2 value="RMA P.Básica(*)" outcome="/restricted/gestao/RelatorioRMA.xhtml"></menuitem2>
+			<menuitem2 value="RMA P.Especializada(*)" outcome="/restricted/gestao/RelatorioRMACreas.xhtml"></menuitem2>
+			<menuitem2 value="SCFV/SISC(*)" outcome="/restricted/scfv/RelatorioSISC.xhtml"></menuitem2>		
+		</submenu2>
+		<submenu2 label="Indicadores">
+			<menuitem2 value="Proteção/Desproteção(*)" outcome="/restricted/gestao/RelIndicadorProtecao.xhtml"></menuitem2>
+			<menuitem2 value="Tipos de Atendimento(*)" outcome="/restricted/gestao/RelatoriosMenu.xhtml"></menuitem2>
+			<menuitem2 value="Prod.Atendimentos(*)" outcome="/restricted/gestao/RelatorioTecnicoProd.xhtml"></menuitem2>
+			<menuitem2 value="Prod.Ações(*)" outcome="/restricted/gestao/RelatorioTecnicoProdAcoes.xhtml"></menuitem2>
+			<menuitem2 value="Prod.CadÚnico(*)" outcome="/restricted/gestao/RelatorioCadUnicoProd.xhtml"></menuitem2>
+		</submenu2>
+	</submenu>
+	
+	<submenu label="Gestão" icon="pi pi-percentage">
+		<grupo value="GESTORES"></grupo>
+		<menuitem value="Proteção/Desproteção(*)" outcome="/restricted/gestao/RelIndicadorProtecao.xhtml"></menuitem>
+		<menuitem value="Tipos de Atendimento(*)" outcome="/restricted/gestao/RelatoriosMenu.xhtml"></menuitem>
+		<menuitem value="Prod.Atendimentos(*)" outcome="/restricted/gestao/RelatorioTecnicoProd.xhtml"></menuitem>
+		<menuitem value="Prod.Ações(*)" outcome="/restricted/gestao/RelatorioTecnicoProdAcoes.xhtml"></menuitem>
+		<menuitem value="Prod.CadÚnico(*)" outcome="/restricted/gestao/RelatorioCadUnicoProd.xhtml"></menuitem>
+	</submenu>
+	
+</menu>

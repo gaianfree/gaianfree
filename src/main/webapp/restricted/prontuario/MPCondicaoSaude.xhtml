@@ -1,0 +1,208 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+
+		    <!-- Panel Condições de Saúde  --> 
+    		
+    		
+		   <p:dataTable id="membrosSaude"  value="#{manterProntuarioBean.mpSaudeBean.membros}" 
+	    		var="pessoa" emptyMessage="Nenhum membro encontrado."
+	    		paginator="true" rows="7" paginatorPosition="bottom" paginatorAlwaysVisible="true"
+	    		rowStyleClass="#{pessoa.status eq 'INATIVO' ? 'inativo' : null}"> 
+
+	    		
+	    		<f:facet name="header">
+			            Membros da Família (Condições de Saúde)
+			    </f:facet>
+	    													    			    				    		
+	    		<p:column headerText="Código" style="width: 10px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column style="width: 3px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.mse}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome" style="width: 100px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome Social" style="width: 80px; text-align: center">
+	    			<h:outputText value="#{pessoa.nomeSocial}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Parentesco" style="width: 40px; text-align: center">
+	    			<h:outputText value="#{pessoa.parentescoPessoaReferencia}" />
+	    		</p:column>  
+	    		
+	    		<p:column headerText="Idade" style="width: 10px; text-align: center">
+	    			<h:outputText value="#{pessoa.idade}" />
+	    		</p:column>	    		
+	    		
+    			<p:column headerText="Ver Condição" style="width: 20px; text-align: center">				    	
+			    	<p:commandButton 
+			    		update="frmProntuario:tab1:tabViewIndividual:saudeGrid"   						
+  						title="Ver Condição Saúde" 
+  						icon="pi pi-info"
+  						process="@this">
+  						<f:setPropertyActionListener target="#{manterProntuarioBean.mpSaudeBean.pessoa}"
+							value="#{pessoa}" />			                  						
+	            	</p:commandButton>
+	            </p:column>
+	 	    		
+		   	</p:dataTable>
+		   	
+		   	
+		   	<p:dialog id="saudeDialog"
+		   		widgetVar="saudeWidget"				
+				header="Condição de Saúde"
+				showEffect="fade" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="false">
+				
+				<p:panelGrid id="saudeGrid" columns="4" columnClasses="label,value"
+					rendered="#{manterProntuarioBean.mpSaudeBean.condicaoSaude ne null}">
+	               
+	               <p:outputLabel value="Código:" for="codigo2" style="font-weight:bold" />
+					<h:outputText id="codigo2"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.codigo}" />
+						
+					<p:outputLabel value="" for="nada" />
+					<h:outputText id="nada" value="" />
+
+
+					<p:outputLabel value="Necessita de cuidados constantes de outra pessoa para realizar atividades básicas?" 
+						for="pessoaNecessitada"
+						style="font-weight:bold" />
+					<h:selectOneRadio id="pessoaNecessitada"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.pessoaNecessitada}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+					
+					<p:outputLabel value="Se sim, quem é a pessoa?" 
+						for="responsavelPeloCuidado" 
+						style="font-weight:bold" />
+					<h:outputText id="responsavelPeloCuidado"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.responsavelPeloCuidado}" />
+						
+				
+					<p:outputLabel value="Está em situação de insegurança alimentar devido a insuficiência de alimentos?"
+						for="insuficienciaAlimentar"
+						style="font-weight:bold" />
+					<h:selectOneRadio id="insuficienciaAlimentar"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.insuficienciaAlimentar}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+					
+					<p:outputLabel value="" /><p:outputLabel value="" />
+					
+					<p:outputLabel value="É portador de alguma deficiência ou doença grave?"
+						for="portadorDoencaGrave"
+						style="font-weight:bold" />
+					<h:selectOneRadio id="portadorDoencaGrave"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.portadorDoencaGrave}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+					
+					<p:outputLabel value="Se sim, qual o tipo de doença ou deficiência?" 
+						for="tipoDeficiencia"
+						style="font-weight:bold" />
+					<h:outputText id="tipoDeficiencia"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.tipoDeficiencia}" />
+										
+					<p:outputLabel value="Faz uso de remédios controlados (tarja preta)?"
+						for="usoRemedioControlado"
+						style="font-weight:bold" />
+					<h:selectOneRadio id="usoRemedioControlado"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.usoRemedioControlado}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+					
+					<p:outputLabel value="" /><p:outputLabel value="" />
+					
+					<p:outputLabel value="Faz uso abusivo de alcool?" 
+						for="usoAbusivoAlcool"
+						style="font-weight:bold" />
+					<h:selectOneRadio id="usoAbusivoAlcool"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.usoAbusivoAlcool}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+					
+					<p:outputLabel value="" /><p:outputLabel value="" />
+					
+					<p:outputLabel value="Faz uso abusivo de crak ou outras drogras?" 
+						for="usoAbusivoDroga"
+						style="font-weight:bold" />
+					<h:selectOneRadio id="usoAbusivoDroga"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.usoAbusivoDroga}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+					
+					<p:outputLabel value="" /><p:outputLabel value="" />
+
+					<p:outputLabel value="Está referenciada na Saúde?" 
+						for="referenciaSaude" 
+						style="font-weight:bold"/>
+					<h:selectOneRadio id="referenciaSaude"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.referenciaSaude}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>					
+					
+					<p:outputLabel value="Se sim, em que local?" 
+						for="local" 
+						style="font-weight:bold"/>
+					<h:outputText id="local"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.local}" />
+					
+					<p:outputLabel value="Qual a qde de meses de gestação?" 
+						for="qtdMesesGestacao" style="font-weight:bold" 
+						rendered="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.pessoa.sexo == 'FEMININO'}"/>
+					<h:outputText id="qtdMesesGestacao"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.qtdMesesGestacao}" 
+						rendered="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.pessoa.sexo == 'FEMININO'}"/>
+						
+					<p:outputLabel value="Já iniciou o Pré-Natal?" 
+						for="iniciouPreNatal"
+						style="font-weight:bold" 
+						rendered="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.pessoa.sexo == 'FEMININO'}"/>
+					<h:selectOneRadio id="iniciouPreNatal"
+						value="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.iniciouPreNatal}"
+						rendered="#{manterProntuarioBean.mpSaudeBean.condicaoSaude.pessoa.sexo == 'FEMININO'}"
+						disabled="true">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>		                
+	                
+	            </p:panelGrid>		
+				
+			</p:dialog>
+			
+			<p:confirmDialog id="saudeDialog2"
+				widgetVar="saudeWidget2"
+				message="Essa pessoa não possui condição de saúde cadastrada."
+				header="Condição de Saúde" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Ok"
+					onclick="PF('saudeWidget2').hide(); return false;" />				
+			</p:confirmDialog>
+		   	
+		   	  
+</ui:composition>

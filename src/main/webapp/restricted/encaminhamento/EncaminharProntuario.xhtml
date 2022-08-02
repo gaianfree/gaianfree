@@ -1,0 +1,158 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Encaminhar Família</ui:define>
+    
+    <ui:define name="corpo">    
+    	
+    	<h2>Encaminhar para o CREAS</h2>
+    	<h:outputText value="Funcionalidade disponível apenas para CRAS." 
+    		rendered="#{encaminharProntuarioBean.creas}" />      	
+    	  	
+    	<h:form id="frmEncaminhamento"> 		    	
+    	    		
+    		<p:growl id="growl" showDetail="true"> 
+    			<p:autoUpdate />
+    		</p:growl>       		    			
+					
+			<p:toolbar id="toolbar" >
+				<f:facet name="left">					
+				
+					<p:commandButton value="Pesquisar Pessoa de Referência" icon="pi pi-search" title="Pesquisar Pessoa de Referência" 
+						actionListener="#{encaminharProntuarioBean.abrirDialogo}"
+						disabled="#{encaminharProntuarioBean.creas}" 
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{encaminharProntuarioBean.selecionarPessoaReferencia}" 
+					 		update="frmEncaminhamento growl"
+					 		process="@this"/>
+					</p:commandButton>
+										
+					<p:spacer height="10px"/>
+					
+					<p:commandButton title="Encaminhar para o CREAS" value="Encaminhar para o CREAS" icon="pi pi-angle-double-right"	            		
+		            	rendered="#{encaminharProntuarioBean.pessoaReferenciaSelecionada}"
+		            	disabled="#{encaminharProntuarioBean.creas}" 
+		            	actionListener="#{encaminharProntuarioBean.limpar}"
+		            	oncomplete="PF('incluiDialogWidgetVar').show()"
+		            	update="incluiDialog growl toolbar historicoTable" 
+		            	process="@this">
+		            	<p:resetInput target="incluiDialog" />	
+	            	</p:commandButton>	
+				</f:facet>
+			</p:toolbar>			
+			
+			
+			
+			<!--  Reuso de componente  -->
+			
+			<ui:include src="/compositions/PessoaReferenciaUI.xhtml">
+                <ui:param name="pessoaReferencia" value="#{encaminharProntuarioBean.pessoaReferencia}" />
+                <ui:param name="pessoaReferenciaSelecionada" value="#{encaminharProntuarioBean.pessoaReferenciaSelecionada}" />
+            </ui:include>
+			
+		   
+    		
+			<p:dataTable id="historicoTable" value="#{encaminharProntuarioBean.historicosEncaminhamento}"
+				var="historico" style="margin-top: 20px"
+				emptyMessage="Nenhum encaminhamento encontrado." rows="10" 
+				rowsPerPageTemplate="10,15,20" paginator="true"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom">
+				
+				<p:column headerText="Data do Encaminhamento" style="width: 30px; text-align: left">
+					<h:outputText value="#{historico.dataEncaminhamento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				</h:outputText>	 
+				</p:column>
+				<p:column headerText="Data do Recebimento" style="width: 30px; text-align: left">
+					<h:outputText value="#{historico.dataRecebimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				</h:outputText>	 
+				</p:column>				
+				<p:column headerText="Objetivo/Motivo do Encaminhamento" style="width: 100px; text-align: left">
+					<h:outputText value="#{historico.motivo}" />
+				</p:column>
+				<p:column headerText="Despacho CREAS" style="width: 100px; text-align: left">
+					<h:outputText value="#{historico.despacho}" />
+				</p:column>
+				<p:column headerText="Unidade que Encaminhou" style="width: 50px; text-align: center">
+					<h:outputText value="#{historico.unidadeEncaminhou.nome}" />
+				</p:column>
+				<p:column headerText="Responsável pelo Encaminhamento" style="width: 50px; text-align: center">
+					<h:outputText value="#{historico.usuarioEncaminhou.nome}" />
+				</p:column>	
+				
+			</p:dataTable>
+		   
+			<p:dialog id="incluiDialog" header="Encaminhamento de Prontuário" widgetVar="incluiDialogWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true">
+				
+				<p:panelGrid columns="2" id="panelGrid" style="width: 100%" 
+					columnClasses="rotulo, campo"
+					rendered="#{encaminharProntuarioBean.historicoEncaminhamento ne null}">
+					
+					<p:outputLabel value="Unidade Destino" for="unidade"/>  		
+		    		<p:selectOneMenu id="unidade" 
+		    			value="#{encaminharProntuarioBean.historicoEncaminhamento.unidadeDestino}"
+		    			required="true" 
+				    	validatorMessage="A unidade destino é obrigatória.">
+		    			<f:selectItem itemLabel="Selecione a unidade" />
+		    			<f:selectItems value="#{encaminharProntuarioBean.todosCREAS}" var="cre" 
+							itemLabel="#{cre.nome}" itemValue="#{cre}"/>
+		    		</p:selectOneMenu>	 
+	    			
+	    			<p:outputLabel value="Data Encaminhamento" for="dataEncaminhamento" />
+					<p:calendar id="dataEncaminhamento" size="30"
+						value="#{encaminharProntuarioBean.historicoEncaminhamento.dataEncaminhamento}"
+						pattern="dd/MM/yyyy" 
+						required="true"	
+						showOn="button" 					
+						mask="99/99/9999"/>
+	    		
+		    		<p:outputLabel value="Motivo" for="motivo"/>		    		
+			
+					<h:panelGroup>
+			    		<p:inputTextarea id="motivo" size="3000" rows="8" cols="100" style="height: 100px; overflow:auto;"
+			    			required="true" 
+				    		validatorMessage="O motivo é obrigatório."
+			    			maxlength="3000" 
+		    				value="#{encaminharProntuarioBean.historicoEncaminhamento.motivo}"
+			    			counter="display"
+							counterTemplate="{0} caracteres restantes"/>
+						<h:outputText id="display" />
+			    		<p:watermark for="motivo" value="Registre os principais motivos para o encaminhamento." />		    		
+		    		</h:panelGroup>	
+			
+			
+					<h:outputLabel />					
+					<p:commandButton icon="pi pi-save" id="salvarButton" value="Salvar" 
+						onclick="PF('confirmacao').show();"						
+						oncomplete="if (!args.validationFailed) PF('incluiDialogWidgetVar').hide()" 
+						process="incluiDialog"
+						update="historicoTable"/>
+					
+				</p:panelGrid>
+			</p:dialog>
+			
+			
+			<p:confirmDialog id="confirmacaoDialog"
+				widgetVar="confirmacao"
+				message="Tem certeza que deseja encaminhar este prontuário para o CREAS?"
+				header="Encaminhamento de prontuário" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacao').hide(); return false;" />
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 				    
+					onclick="PF('confirmacao').hide();"
+					update="panelGrid historicoTable pessoaReferenciaGrid growl"
+					action="#{encaminharProntuarioBean.salvar}" />
+			</p:confirmDialog>
+			
+    	</h:form>				    
+		 
+			
+    </ui:define>
+</ui:composition>

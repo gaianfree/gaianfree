@@ -1,0 +1,172 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório SISC</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Serviços SCFV (SISC)</h2>
+     	
+    	<h:form id="frmPesquisa"> 
+    	
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioSISCBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioSISCBean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>	
+	    			
+	    			<p:spacer width="5px" />
+				
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioSISCBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioSISCBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Serviços" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioSISCBean.consultarServicos}"
+		            	update="servicosDataTable qdeServicos qdePessoas toolbar">		            		            	
+	            	</p:commandButton>			
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>			
+					
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Obter planilha do Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="servicosDataTable" fileName="Relatorio_Servicos_SCFV" />
+		            </p:commandButton>	
+					
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de itens de atendimento -->
+			<p:dataTable id="servicosDataTable" value="#{relatorioSISCBean.listaServicos}" var="servico"
+		    		style="margin-top: 20px" emptyMessage="Nenhum servico encontrado." rows="10"
+		    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+		    		rowsPerPageTemplate="10,15"
+		    		rowStyleClass="#{servico.status eq 'INATIVO' ? 'inativo' : null}">
+		    		
+		    		
+		    	<f:facet name="header">
+		            Lista de Serviços
+		        </f:facet>	
+		    	
+		    	<p:column headerText="Código" style="width: 8px; text-align: center">
+					<h:outputText value="#{servico.codigo}" />
+				</p:column>
+	    			    		
+	    		<p:column headerText="Descrição Serviço" style="width: 100px; text-align: center"
+	    			filterBy="#{servico.nome}"
+	    			footerText="contains" filterMatchMode="contains">
+	    			<h:outputText value="#{servico.nome}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Endereço" style="width: 80px; text-align: center">
+	    			<h:outputText value="#{servico.unidade.endereco.endereco}, #{servico.unidade.endereco.numero} - #{servico.unidade.endereco.bairro}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Status" style="width: 20px; text-align: center"
+	    			filterBy="#{servico.status}"
+	    			footerText="contains" filterMatchMode="contains">
+	    		     <h:outputText value="#{servico.status}"/>    	
+                </p:column>	
+                
+	    		<p:column headerText="Tipo de Serviço" style="width: 100px; text-align: center"
+	    			filterBy="#{servico.tipoServico}"
+	    			footerText="contains" filterMatchMode="contains">
+	    			<h:outputText value="#{servico.tipoServico}" />
+	    		</p:column> 	    		
+	    		
+	    		<p:column headerText="Total Usuários" style="width: 20px; text-align: center">
+	    			<h:outputText value="#{servico.totalInscritos}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Unidade Executora" style="width: 40px; text-align: center">
+					<h:outputText value="#{servico.unidadeExecutora.nome}" />
+				</p:column>		
+	    		    		
+	    		
+	    		<p:column headerText="Operações" style="width: 20px; text-align: center">				    	
+			    	
+			    	<p:commandButton 
+			    		update=":frmPesquisa:servicoPanel :frmPesquisa:servicoGrid" 
+  						onclick="PF('servicoWidgetDialog').show()" 
+  						title="Ver detalhes do Serviço" 
+  						icon="pi pi-info"
+  						process="@this"> 
+  						<f:setPropertyActionListener target="#{relatorioSISCBean.servico}"
+							value="#{servico}" />						                
+	            	</p:commandButton>	            	
+	            				    	
+			    	<p:commandButton 
+			    		update=":frmPesquisa:usuariosPanel :frmPesquisa:usuariosTable" 
+  						onclick="PF('usuariosWidgetDialog').show()" 
+  						title="Ver Grupo de Usuários" 
+  						icon="pi pi-search"
+  						process="@this"> 
+  						<f:setPropertyActionListener target="#{usuariosSCFVUIBean.servico}"
+							value="#{servico}" /> 								                
+	            	</p:commandButton>	            	
+	            </p:column>			
+	        
+		   	</p:dataTable>
+		   	
+		   	
+		   	<p:spacer width="10px" />	
+    		<h:outputText value="Quantidade Total de Serviços ATIVOS: "/> 	
+		    <h:outputText id="qdeServicos" value="#{relatorioSISCBean.qdeServicos}"/> <br />
+		    <p:spacer width="10px" />	
+    		<h:outputText value="Quantidade Total de Pessoas Inscritas: "/> 	
+		    <h:outputText id="qdePessoas" value="#{relatorioSISCBean.qdePessoas}"/> <br />		   
+		   	
+		   	<!--  Reuso de componente  -->
+			
+			<ui:include src="/compositions/ServicoSCFVUI.xhtml">
+                <ui:param name="servico" value="#{relatorioSISCBean.servico}" />                
+            </ui:include>
+            
+            <ui:include src="/compositions/UsuariosSCFVUI.xhtml">
+                <ui:param name="servico" value="#{usuariosSCFVUIBean.servico}" />                
+            </ui:include>
+            
+    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

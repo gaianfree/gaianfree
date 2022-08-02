@@ -1,0 +1,103 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+
+		    <!-- Panel Condições de Trabalho  --> 
+    		
+    		
+		   <p:dataTable id="membrosTrabalho"  value="#{manterProntuarioBean.mpTrabalhoBean.membros}" 
+	    		var="pessoa" emptyMessage="Nenhum membro encontrado."
+	    		paginator="true" rows="7" paginatorPosition="bottom" paginatorAlwaysVisible="true"
+	    		rowStyleClass="#{pessoa.status eq 'INATIVO' ? 'inativo' : null}">
+	    		
+	    		<f:facet name="header">
+			            Membros da Família (Condições de Trabalho)
+			    </f:facet>
+	    													    			    				    		
+	    		<p:column headerText="Código" style="width: 10px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column style="width: 3px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.mse}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome" style="width: 100px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome Social" style="width: 80px; text-align: center">
+	    			<h:outputText value="#{pessoa.nomeSocial}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Parentesco" style="width: 40px; text-align: center">
+	    			<h:outputText value="#{pessoa.parentescoPessoaReferencia}" />
+	    		</p:column>  
+	    		
+	    		<p:column headerText="Idade" style="width: 10px; text-align: center">
+	    			<h:outputText value="#{pessoa.idade}" />
+	    		</p:column>	    		
+	    		
+	    		<p:column headerText="Ver Condição" style="width: 20px; text-align: center">				    	
+			    	<p:commandButton 
+			    		update="frmProntuario:tab1:tabViewIndividual:trabalhoGrid" 
+  						title="Ver Condição Trabalho" 
+  						icon="pi pi-info"
+  						process="@this">
+  						<f:setPropertyActionListener target="#{manterProntuarioBean.mpTrabalhoBean.pessoa}" 
+							value="#{pessoa}" />			                
+	            	</p:commandButton>
+	            </p:column>
+	 	    		
+		   	</p:dataTable>
+		   	
+		   	  <p:dialog id="trabalhoDialog" 
+		   	  	widgetVar="trabWidget" 
+		   	  	header="Condição de Trabalho"
+		   	  	showEffect="fade" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="false">
+		   		
+	            <p:panelGrid id="trabalhoGrid" columns="2" columnClasses="label,value">
+	               
+	              	    <p:outputLabel value="Código:" for="codigoCt" style="font-weight:bold" />
+						<h:outputText id="codigoCt"
+							value="#{manterProntuarioBean.mpTrabalhoBean.condicaoTrabalho.codigo}" />
+
+						<p:outputLabel value="Possui Carteira de Trabalho" for="possuiCarteiraTrabalho"
+							style="font-weight:bold" />
+						<h:selectOneRadio id="possuiCarteiraTrabalho"
+							value="#{manterProntuarioBean.mpTrabalhoBean.condicaoTrabalho.possuiCarteiraTrabalho}"
+							disabled="true">
+							<f:selectItem itemValue="true" itemLabel="SIM" />
+							<f:selectItem itemValue="false" itemLabel="NÃO" />
+						</h:selectOneRadio>
+					
+						<p:outputLabel value="Profissão" for="profissao" />
+						<h:outputText id="profissao" size="25"
+							value="#{manterProntuarioBean.mpTrabalhoBean.condicaoTrabalho.profissao}" />
+						
+						<p:outputLabel value="Renda Mensal da Pessoa" for="rendaMensal" />
+						<h:outputText id="rendaMensal" size="10" maxlenght="2"
+							value="#{manterProntuarioBean.mpTrabalhoBean.condicaoTrabalho.rendaMensal}">
+							<f:convertNumber minFractionDigits="2"/>
+						</h:outputText>
+							
+						<p:outputLabel value="Relato" for="relato" />
+						<h:outputText id="relato" size="25"
+							value="#{manterProntuarioBean.mpTrabalhoBean.condicaoTrabalho.relato}" />
+	                
+	            </p:panelGrid>
+    		</p:dialog>  
+    		
+    		<p:confirmDialog id="trabalhoDialog2" widgetVar="trabalhoWidget2" 
+    			message="Essa pessoa não possui condição de trabalho cadastrada." 
+    			header="Condição de Trabalho" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Ok" onclick="PF('trabalhoWidget2').hide(); return false;"/>
+			</p:confirmDialog>
+</ui:composition>

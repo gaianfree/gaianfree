@@ -1,0 +1,83 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Condição Familiar</ui:define>
+    
+    <ui:define name="corpo"> 
+       
+    	<h1>Condição Familiar</h1>
+    	    	
+    	<h:form id="frmFamiliar"> 		    	
+    	    		
+    		<p:growl id="growl" showDetail="true"> 
+    			<p:autoUpdate />
+    		</p:growl>
+		
+			<p:toolbar id="toolbarManter" style="margin-top: 10px">
+				<f:facet name="left">	
+					<p:commandButton value="Pesquisar Pessoa de Referência" icon="pi pi-search" 
+						title="Pesquisar Pessoa de Referência"
+						rendered ="#{not cfBean.pessoaReferenciaSelecionada}"
+						actionListener="#{cfBean.abrirDialogo}"
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{cfBean.selecionarPessoaReferencia}" 
+					 		update="frmFamiliar frmHabitacional frmBeneficio frmConvivencia toolbarManter growl"
+					 		process="@this"/>
+					</p:commandButton>
+					
+		            					
+					<p:button icon="pi pi-refresh" value="Nova Pessoa de Referência" 
+						rendered ="#{cfBean.pessoaReferenciaSelecionada}"
+						title="Pesquisar Pessoa de Referência"
+						update="toolbarManter"
+						outcome="/restricted/prontuario/CondicaoFamiliar.xhtml" />
+						
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+		            
+		            <p:commandButton icon="pi pi-arrow-circle-left"  
+		            	value="Voltar para Atendimento" 
+		            	onclick="window.history.back();"/>
+						
+				</f:facet>
+			</p:toolbar>	
+			
+					
+			
+			<!--  Reuso de componente PessoaReferenciaUI -->
+			
+			<ui:include src="/compositions/PessoaReferenciaUI.xhtml">
+                <ui:param name="pessoaReferencia" value="#{cfBean.pessoaReferencia}" />
+                <ui:param name="pessoaReferenciaSelecionada" value="#{cfBean.pessoaReferenciaSelecionada}" />
+            </ui:include>
+		</h:form> 
+		    
+    
+		 
+		    
+		    	<!-- ***********
+		    	     Reuso - Familia 
+		    	     *********** -->
+		
+		   	<h:form id="frmHabitacional">     
+		        <ui:include src="/restricted/prontuario/familiar/CondicaoHabitacional.xhtml" />
+         	</h:form>         	
+		       
+		   	<h:form id="frmConvivencia">	   		
+		        <ui:include src="/restricted/prontuario/familiar/ConvivenciaFamiliar.xhtml"/>
+			</h:form>
+		    
+			<h:form id="frmBeneficio">
+		        <ui:include src="/restricted/prontuario/familiar/BeneficioEventual.xhtml"/>
+		    </h:form>
+    					    
+		 
+			
+    </ui:define>
+</ui:composition>

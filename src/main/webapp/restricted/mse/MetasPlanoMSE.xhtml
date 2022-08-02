@@ -1,0 +1,199 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"> 
+    
+    		
+		<!-- Panel Metas Plano MSE  -->
+		
+		    	
+				
+		    <p:outputPanel id="metasPanel" rendered="#{manterAcompMSEBean.pessoaSelecionada}">		    	
+	    		
+	    		<p:toolbar id="toolbar2" style="margin-top: 5px">
+	    			<f:facet name="left">				
+						<p:commandButton title="Nova Meta" icon="pi pi-user-plus"
+							rendered="#{manterAcompMSEBean.plano.codigo ne null}"
+							disabled="#{manterAcompMSEBean.plano.dataDesligamento ne null}"
+			            	value="Nova Meta" 
+			            	actionListener="#{manterAcompMSEBean.metaBean.limpar}" 
+			            	oncomplete="PF('metaDialogWidgetVar').show()"
+			            	update=":frmMse:metaDialog" 
+			            	process="@this">
+			            	<p:resetInput target=":frmMse:metaDialog" />	
+		            	</p:commandButton>
+					</f:facet>
+				</p:toolbar>
+				
+		    	<p:dataTable id="metasTable"
+		    		value="#{manterAcompMSEBean.metaBean.metas}" var="meta"
+		    		style="margin-top: 5px" emptyMessage="Não há metas definidas."
+		    		selectionMode="single" selection="#{manterAcompMSEBean.metaBean.meta}" 
+		    		rowKey="#{meta.codigo}"> 
+			    		
+		    		<p:ajax event="rowSelect" update="frmMse:metasTable frmMse:toolbar2"/>				
+					<p:ajax event="rowUnselect" update="frmMse:metasTable frmMse:toolbar2"/>				
+							
+					<f:facet name="header">
+			            Lista de Metas
+			        </f:facet>	
+			    		
+			    	<p:column headerText="Código" style="width: 10px; text-align: center">
+						<h:outputText value="#{meta.codigo}" />
+					</p:column>	
+		    		
+		    		<p:column headerText="Data meta" style="width: 25px; text-align: center"
+		    			sortBy="#{meta.data}" >
+						<h:outputText value="#{meta.data}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>					
+						    		
+		    		<p:column headerText="Descrição" style="width: 150px; text-align: center">
+		    			<h:outputText value="#{meta.descricao}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Meta" style="width: 70px; text-align: center">
+		    			<h:outputText value="#{meta.medidaMse}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Resultado" style="width: 30px; text-align: center">	
+			    		<h:outputText value="#{meta.avaliacao}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Data Avaliação" style="width: 50px; text-align: center"
+		    			sortBy="#{meta.dataModificacao}" >
+						<h:outputText value="#{meta.dataModificacao}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>	
+		    		
+		    		<p:column headerText="Técnico" style="width: 80px; text-align: center">	
+			    		<h:outputText value="#{meta.tecnico.nome}" />
+		    		</p:column>   		
+		    		
+		    			
+		    		<p:column headerText="Operações" style="width: 70px; text-align: center">	
+		    			    		
+			    		<p:commandButton icon="pi pi-pencil" title="Editar" 
+			    			disabled="#{manterAcompMSEBean.metaBean.plano.dataDesligamento ne null}"
+			    			oncomplete="PF('metaDialogWidgetVar').show();"
+			            	update="frmMse:metasTable :frmMse:metaGrid" 
+			            	process="@this">
+			            	<f:setPropertyActionListener target="#{manterAcompMSEBean.metaBean.meta}" 
+								value="#{meta}" />
+						</p:commandButton>
+								    		
+			    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+			    			disabled="#{manterAcompMSEBean.metaBean.plano.dataDesligamento ne null}"
+			    			onclick="PF('confirmacaoExclusaoMeta').show();"
+		    				update="frmMse:metasTable"
+							process="@this">
+							<f:setPropertyActionListener target="#{manterAcompMSEBean.metaBean.meta}" 
+								value="#{meta}" />
+						</p:commandButton>	
+			    	</p:column>	
+			   	</p:dataTable>
+    	
+			</p:outputPanel>
+			
+			
+		<!--  Dialogs Metas -->
+    		    	
+    	<p:dialog id="metaDialog" header="Meta" 
+    		widgetVar="metaDialogWidgetVar" 
+	   		modal="true" resizable="true" closeOnEscape="true" fitViewport="true" responsive="true"
+			showEffect="explode" hideEffect="explode" 
+			style="max-height:600px;overflow:scroll"
+			position="center top">
+	   		
+	        <p:panelGrid id="metaGrid" columns="2">
+	    		
+	    		<p:outputLabel value="Código" for="cod" rendered="false"/>
+	    		<p:inputText id="cod" size="20" maxlength="20" 
+	    			value="#{manterAcompMSEBean.metaBean.meta.codigo}"
+	    			readonly="true"
+	    			rendered="false"/>	
+	    			
+	    		<p:outputLabel value="Data da meta" for="data" size="20"/>			    	
+	    		<p:calendar id="data" value="#{manterAcompMSEBean.metaBean.meta.data}"
+	    			showOn="button"
+		    		pattern="dd/MM/yyyy" 	
+		    		mask="99/99/9999"		    		
+		    		required="true" 
+			    	validatorMessage="A data da meta é obrigatória."  />
+			    
+			    <p:outputLabel value="Meta" for="ra"/>
+	    		<p:selectOneMenu id="ra" 
+	    			required="true" 
+			    	validatorMessage="A meta é obrigatória."
+	    			value="#{manterAcompMSEBean.metaBean.meta.medidaMse}">
+	    			<f:selectItem itemLabel="Selecione a meta." />
+	    			<f:selectItems value="#{manterAcompMSEBean.metaBean.medidas}" var="medida" 
+						itemLabel="#{medida}" itemValue="#{medida}"/>
+	    		</p:selectOneMenu>
+	    		
+	    		
+		    
+			    <p:outputLabel value="Descrição da meta" for="meta"/>
+    			<h:panelGroup>
+		    		<p:inputTextarea id="meta" size="1000" rows="4" cols="80"  style="height: 100px; overflow:auto;"
+		    			required="true" 
+			    		validatorMessage="A descrição da meta é obrigatória."
+		    			maxlength="1000" 
+	    				value="#{manterAcompMSEBean.metaBean.meta.descricao}"
+		    			counter="dis"
+						counterTemplate="{0} caracteres restantes"/>
+					<h:outputText id="dis" />
+		    		<p:watermark for="meta" value="Decreva a meta a ser alcançada." />		    		
+	    		</h:panelGroup>
+	    		
+	    		
+	    		<p:outputLabel value="Resultado" for="res"/>
+	    		<p:selectOneMenu id="res"
+	    			value="#{manterAcompMSEBean.metaBean.meta.avaliacao}">
+	    			<f:selectItem itemLabel="Não Avaliado." />
+	    			<f:selectItems value="#{manterAcompMSEBean.metaBean.resultados}" var="avaliacao"
+						itemLabel="#{avaliacao}" itemValue="#{avaliacao}"/>
+	    		</p:selectOneMenu>			    		
+			   
+	    		
+	    		<p:outputLabel></p:outputLabel>
+	    		<h:panelGroup>			    		
+					<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"		            	
+		            	actionListener="#{manterAcompMSEBean.metaBean.salvar}"            	
+		            	update="frmMse:metasTable frmMse:growl" 
+		            	oncomplete="if (!args.validationFailed) PF('metaDialogWidgetVar').hide()" 
+		            	process="metaDialog">
+           			</p:commandButton>
+						
+					<p:spacer width="10px" />
+						
+					<p:button icon="pi pi-arrow-left" value="Cancelar" 
+	        			onclick="PF('metaDialogWidgetVar').hide(); return false;" />
+        		</h:panelGroup>
+	    		
+	    	</p:panelGrid>
+    	
+    	</p:dialog>
+    	
+    	
+	   	<p:confirmDialog id="confirmacaoExclusaoDialogMeta" 
+	   		widgetVar="confirmacaoExclusaoMeta"
+        	message="Confirma a exclusão da meta?"  
+            header="Exclusão de meta" severity="alert">
+        	<p:button icon="pi pi-thumbs-down" value="Não" 
+        		onclick="PF('confirmacaoExclusaoMeta').hide(); return false;" />
+        		
+        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+        		process="@this"
+        		update="metasTable"
+        		onclick="PF('confirmacaoExclusaoMeta').hide();"
+        		action="#{manterAcompMSEBean.metaBean.excluir}" />
+    	</p:confirmDialog> 	
+	    	
+	    	
+
+</ui:composition>

@@ -1,0 +1,271 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Capa Prontuário</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Capa Prontuário</h2>
+    	
+    	<h:form id="frmPesquisa" enctype="multipart/form-data">
+    	
+    		
+    		
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:toolbar id="toolbar" style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton icon="pi pi-plus" value="Novo" id="botaoNovo"
+						action="/restricted/rede/CadastroCapaProntRede.xhtml" />  			
+	    		</p:toolbarGroup>    			
+	    	</p:toolbar>       	
+	    	
+	    	<p:dataTable id="prontuariosTable" var="prontuario" value="#{pesquisaProntRedeBean.lazyProntuarios}" 
+		    		style="margin-top: 20px" emptyMessage="Nenhum prontuário encontrado." paginator="true" rows="10"
+		    		paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+	    			currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+	    			rowsPerPageTemplate="10,15,20" lazy="true"
+		    		rowStyleClass="#{prontuario.status eq 'INATIVO' ? 'inativo' : null}">	    		
+	    						
+				<p:column headerText="Última Atualização" style="width: 10px; text-align: center">
+	    			<h:outputText value="#{prontuario.dataModificacao}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column> 
+				
+	    		<p:column headerText="Pront. Código" style="width: 9px; text-align: center"
+	    			filterBy="#{prontuario.codigo}">
+	    			<h:outputText value="#{prontuario.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Unidade" style="width: 50px; text-align: center">
+	    			<h:outputText value="#{prontuario.unidade.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Pront. Vinculado" style="width: 20px; text-align: center">
+	    			<h:outputText value="#{prontuario.prontuarioVinculado.codigo}#{prontuario.prontuarioVinculado.programa} #{prontuario.prontuarioVinculado.unidade.nome}" />
+	    		</p:column>	
+	    		
+	    		<p:column  headerText="Pessoa Código" style="width: 10px; text-align: center">
+					<h:outputText value="#{prontuario.familia.pessoaReferencia.codigo}" />
+				</p:column>
+				
+	    		<p:column headerText="Pessoa de Referencia" style="width: 80px; text-align: left"
+	    			filterBy="#{prontuario.familia.pessoaReferencia.nome}">
+	    			<h:outputText value="#{prontuario.familia.pessoaReferencia.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Data de Nasc." style="width: 18px; text-align: center">
+	    			<h:outputText value="#{prontuario.familia.pessoaReferencia.dataNascimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Operações" style="width: 80px; text-align: left">
+	    			<p:commandButton icon="pi pi-clock" title="Último Atendimento"						
+						onclick="PF('itemDialog').show()"
+						update=":frmPesquisa:detAtendimento"
+		        		process="@this">		        		
+		        		<f:setPropertyActionListener target="#{pesquisaProntRedeBean.prontuarioSelecionado}" 
+							value="#{prontuario}" />
+					</p:commandButton>	
+	    		
+	    			<p:commandButton title="Histórico de Transferências" icon="pi pi-angle-double-right"	
+	    				actionListener="#{pesquisaProntRedeBean.consultaTransferencias(prontuario)}"	            	
+		            	oncomplete="PF('transfDialogWidgetVar').show()"
+		            	update="frmPesquisa:transfDialog" 
+		            	process="@this">
+		            	<p:resetInput target="frmPesquisa:transfDialog" />			            	
+	            	</p:commandButton>
+	    			    			
+					<p:commandButton title="Upload pdf CadÚnico" icon="pi pi-upload"            		
+		            	onclick="PF('pdfDialogWidgetVar').show()"
+		            	process="@this">
+		            	<f:setPropertyActionListener target="#{pesquisaProntRedeBean.prontuarioSelecionado}" 
+							value="#{prontuario}"/>	
+	            	</p:commandButton>
+	            	<p:commandButton title="Download pdf CadÚnico" icon="pi pi-download"  
+			        	rendered="#{prontuario.s3Key != null}"	
+		            	ajax="false"
+		            	process="@this"
+		            	immediate="true"
+		            	action="#{pesquisaProntRedeBean.redirectPdf(prontuario)}">            	
+	            	</p:commandButton>	       
+				
+					<p:button outcome="CadastroCapaProntRede" icon="pi pi-pencil" title="Editar Prontuário">
+		    			<f:param name="prontuario" value="#{prontuario.codigo}"/>
+		    		</p:button>
+
+		    		<p:commandButton icon="pi pi-trash" title="Excluir Prontuário"
+		    			rendered="#{pesquisaProntRedeBean.coordenador}"
+		    			onclick="PF('confirmacaoExclusao').show();"
+						process="@this">
+						<f:setPropertyActionListener target="#{pesquisaProntRedeBean.prontuarioSelecionado}" 
+							value="#{prontuario}" />
+					</p:commandButton>					
+		    	    							
+					<p:commandButton icon="pi pi-thumbs-up" title="Ativar Prontuário"						
+						onclick="PF('confirmacaoAtivacao').show();"
+		        		process="@this">		        		
+		        		<f:setPropertyActionListener target="#{pesquisaProntRedeBean.prontuarioSelecionado}" 
+							value="#{prontuario}" />
+					</p:commandButton>
+					
+					<p:commandButton icon="pi pi-thumbs-down" title="Inativar Prontuário"						
+						onclick="PF('confirmacaoInativacao').show();"
+		        		process="@this">		        		
+		        		<f:setPropertyActionListener target="#{pesquisaProntRedeBean.prontuarioSelecionado}" 
+							value="#{prontuario}" />
+					</p:commandButton>
+					
+					<p:commandButton 
+						update="frmPesquisa:infoGrid" 		    		
+  						onclick="PF('infoDialog').show()" 
+  						title="Quem criou prontuario" 
+  						icon="pi pi-user"
+  						process="@this"> 
+  						<f:setPropertyActionListener target="#{pesquisaProntRedeBean.prontuarioSelecionado}" 
+							value="#{prontuario}" />
+	            	</p:commandButton>		
+		    	</p:column>
+		    	
+		   	</p:dataTable>
+		   	
+		   	<p:dialog header="Último Atendimento" widgetVar="itemDialog" modal="true" showEffect="fade" hideEffect="fade" 
+		   		resizable="false" closeOnEscape="true" position="center top">
+	        	<p:outputPanel id="detAtendimento" style="text-align:lefty;">
+		            <p:panelGrid  columns="2" 
+		            	columnClasses="label,value">
+		            	<p:outputLabel value="Pessoa: "/>
+		   				<h:outputText value="#{pesquisaProntRedeBean.ultimoAtendimento.pessoa.nome}" style="font-weight:bold"/>
+		   				<p:outputLabel value="Data: "/>
+		                <h:outputText value="#{pesquisaProntRedeBean.ultimoAtendimento.dataAtendimento}" style="font-weight:bold">
+	    					<f:convertDateTime pattern="dd/MM/yyyy" />
+	    				</h:outputText>		                
+		            </p:panelGrid>
+	       		</p:outputPanel>
+	    	</p:dialog>
+		   	
+		   	<p:confirmDialog id="confirmacaoExclusaoDialog" 
+		   		widgetVar="confirmacaoExclusao"
+	        	message="O PRONTUÁRIO e todos os seus MEMBROS serão excluídos. Tem certeza que deseja continuar?"  
+	            header="Exclusão de prontuário" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		process="@this"
+	        		update=":frmPesquisa:prontuariosTable"
+	        		onclick="PF('confirmacaoExclusao').hide();"
+	        		action="#{pesquisaProntRedeBean.excluir}" />
+	    	</p:confirmDialog>
+	    	
+	    	<p:confirmDialog id="confirmacaoAtivacaoDialog" 
+		   		widgetVar="confirmacaoAtivacao"
+	        	message="O PRONTUÁRIO e todos os seus MEMBROS serão reativados. Tem certeza que deseja continuar?"  
+	            header="Ativação de prontuário" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoAtivacao').hide(); return false;" />
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		process="@this"
+	        		update=":frmPesquisa:prontuariosTable"
+	        		onclick="PF('confirmacaoAtivacao').hide();"
+	        		action="#{pesquisaProntRedeBean.ativar}" />
+	    	</p:confirmDialog> 
+	    	
+	    	<p:confirmDialog id="confirmacaoInativacaoDialog" 
+		   		widgetVar="confirmacaoInativacao"
+	        	message="O PRONTUÁRIO e todos os seus MEMBROS serão inativados. Tem certeza que deseja continuar?"  
+	            header="Inativação de prontuário" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoInativacao').hide(); return false;" />
+	        	<p:commandButton icon="pi pi-thumbs-down" value="Sim" 
+	        		process="@this"
+	        		update=":frmPesquisa:prontuariosTable"
+	        		onclick="PF('confirmacaoInativacao').hide();"
+	        		action="#{pesquisaProntRedeBean.inativar}"/>
+	    	</p:confirmDialog>  
+	    	
+	    	<p:dialog id="pdfDialog" header="Upload pdf CadÚnico" 
+	    		widgetVar="pdfDialogWidgetVar" 
+				modal="true" resizable="false" closeOnEscape="true">
+    			
+				<p:defaultCommand target="salvarPdf" scope="pdfDialog" />		
+				
+				<p:panelGrid columns="1" columnClasses="rotulo, campo">
+				
+					<h:outputText value="Se já existir o arquivo ele será substituído." />
+					<p:outputLabel value="Upload pdf CadÚnico" for="file" icon="pi pi-upload"/>					
+					<h:inputFile id="file" value="#{pesquisaProntRedeBean.file}">
+			            	<f:validator validatorId="fileUploadValidator"/>
+			        </h:inputFile>			        
+		        	
+			        <h:commandButton id="salvarPdf" value="Salvar"
+			        	action="#{pesquisaProntRedeBean.gravarPdf}"
+			        	update="messages"
+			        	process="@this file"
+						onclick="if (!args.validationFailed) PF('pdfDialogWidgetVar').hide()" />
+		
+				</p:panelGrid>
+				
+			</p:dialog> 
+			
+			<p:dialog id="transfDialog" header="Transferências" widgetVar="transfDialogWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll"
+				position="center top">	
+				
+				
+				<p:dataTable id="listaTransferencias"  value="#{pesquisaProntRedeBean.listaTransferencias}" 
+					var="historico"
+					allowUnsorting="true" sortMode="single"
+		    		style="margin-top: 20px" emptyMessage="Nenhuma transferência realizada.">
+		    		
+		    		<f:facet name="header">
+			            Histórico de Transferências
+			        </f:facet>
+		    					    		
+			    	<p:column headerText="Data da Transferência" sortBy="#{historico.nome}" style="width: 30px; text-align: left">
+					<h:outputText value="#{historico.dataTransferencia}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				</h:outputText>	 
+					</p:column>				
+					<p:column headerText="Motivo da Transferência" style="width: 100px; text-align: left">
+						<h:outputText value="#{historico.motivo}" />
+					</p:column>
+					<p:column headerText="Unidade Anterior" style="width: 50px; text-align: center">
+						<h:outputText value="#{historico.unidade.nome}" />
+					</p:column>
+					<p:column headerText="Responsável pela Transferência" style="width: 50px; text-align: center">
+						<h:outputText value="#{historico.usuario.nome}" />
+					</p:column>	
+		    		
+			   	</p:dataTable>
+		   	
+			</p:dialog>	
+			
+			<p:dialog header="Criado por" widgetVar="infoDialog" modal="true" showEffect="fade" hideEffect="fade" 
+		   		resizable="false" closeOnEscape="true" position="center top">
+	        	<p:outputPanel id="criador" style="text-align:left;">
+		            <p:panelGrid id="infoGrid" columns="2" 
+		            	columnClasses="label,value">
+		            	<p:outputLabel value="Técnico: "/>
+		   				<h:outputText value="#{pesquisaProntRedeBean.prontuarioSelecionado.criador}" style="font-weight:bold"/>
+		   				
+		   				<p:outputLabel value="Data Criação: "/>
+		   				<h:outputText value="#{pesquisaProntRedeBean.prontuarioSelecionado.dataCriacao}" style="font-weight:bold">
+		   					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+		   				</h:outputText>
+		            </p:panelGrid>
+	       		</p:outputPanel>
+	    	</p:dialog>	 
+			
+    	</h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,457 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Receber Ofício</ui:define>
+    
+    <ui:define name="corpo">
+    
+    	<h2>Gestão de Ofícios Recebidos</h2>
+    	
+    	
+    	
+    	<!--  RECEBIMENTO DE OFÍCIOS  -->
+    	
+    	
+    	
+    	<h:form id="frmReceberOficio"	enctype="multipart/form-data" target="_blank">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>		
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">				
+					<p:commandButton icon="pi pi-user-plus" title="Receber ofício" value="Receber" 		            	
+		            	actionListener="#{receberOficioBean.limpar}" 
+		            	oncomplete="PF('receberDialogWidgetVar').show()"
+		            	update="receberDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="receberDialog" />	
+	            	</p:commandButton>	
+	            	
+	            	<p:spacer width="15px" />
+	            	
+	            	<p:selectBooleanCheckbox value="#{receberOficioBean.todos}" 
+	    				itemLabel="Mostrar Todos">
+	    				<p:ajax listener="#{receberOficioBean.carregarOficios}" 
+					 		update="oficiosDataTable"
+					 		process="@this"/>
+	    			</p:selectBooleanCheckbox>
+
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de oficios recebidos -->
+			<p:dataTable id="oficiosDataTable"  value="#{receberOficioBean.listaOficios}" var="oficio"
+	    		style="margin-top: 20px" emptyMessage="Nenhum ofício recebido." rows="10" 
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" 
+	    		rowsPerPageTemplate="10,15,20"	    		
+	    		rowStyleClass="#{oficio.sasc eq true and oficio.dataResposta eq null ? 'inativo' : null}"
+	    		selectionMode="single" selection="#{receberOficioBean.oficio}" rowKey="#{oficio.codigo}">
+	    		
+	    		<p:ajax event="rowSelect" update=":frmReceberOficio:toolbar" />
+			
+				<p:ajax event="rowUnselect" update=":frmReceberOficio:toolbar" />>
+	    		
+		    		
+		    	<p:column headerText="Receb." style="width: 18px; text-align: center"
+		    		sortBy="#{oficio.dataRecebimento}" >		    		
+		    		<h:outputText value="#{oficio.dataRecebimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>	    		
+	    		</p:column>
+	    		
+	    		<p:column headerText="Resp." style="width: 18px; text-align: center"
+		    		sortBy="#{oficio.dataResposta}" 
+		    		rendered="#{receberOficioBean.sascSelecionado}">		    		
+		    		<h:outputText value="#{oficio.dataResposta}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>	    		
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nr.Ofício" style="width: 20px; text-align: center"
+	    			filterBy="#{oficio.nrOficio}"
+	    			footerText="contains" filterMatchMode="contains">
+	    			<h:outputText value="#{oficio.nrOficio}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nr.Processo" style="width: 20px; text-align: center"
+	    			filterBy="#{oficio.nrProcesso}"
+	    			footerText="contains" filterMatchMode="contains">
+	    			<h:outputText value="#{oficio.nrProcesso}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Cod. Encaminhamento" style="width: 70px; text-align: center">
+	    			<h:outputText value="#{oficio.codigoEncaminhamento}" />
+	    		</p:column>	
+	    		 				    		
+	    		<p:column headerText="Pessoa" style="width: 80px; text-align: center"
+	    			filterBy="#{oficio.pessoa.nome}"
+	    			footerText="contains" filterMatchMode="contains">
+	    			<h:outputText value="#{oficio.pessoa.codigo} - #{oficio.pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Orgão" style="width: 40px; text-align: center">	    			
+	    			<h:outputText value="#{oficio.nomeOrgao}" />
+	    		</p:column>
+	    		
+				<p:column headerText="Técnico responsável" style="width: 60px; text-align: center"
+					filterBy="#{oficio.tecnico.nome}" >	    			
+	    			<h:outputText value="#{oficio.tecnico.nome}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Operações" style="width: 40px; text-align: center">	    		   	
+			    	<p:commandButton
+			    		update="frmReceberOficio:detalheGrid :frmReceberOficio:oficiosDataTable" 
+  						onclick="PF('detalheWidget').show()" 
+  						title="Ver detalhe" 
+  						icon="pi pi-info"
+  						process="@this">
+  						<f:setPropertyActionListener target="#{receberOficioBean.oficio}" 
+							value="#{oficio}" />		                
+	            	</p:commandButton>
+	           		
+		    		<p:commandButton icon="pi pi-pencil" title="Editar"	    			
+		    			oncomplete="PF('receberDialogWidgetVar').show();"
+		    			update=":frmReceberOficio:oficiosDataTable :frmReceberOficio:receberDialog :frmReceberOficio:toolbar :frmReceberOficio:messages" 
+		            	process="@this">
+						<f:setPropertyActionListener target="#{receberOficioBean.oficio}" 
+							value="#{oficio}" />
+					</p:commandButton>						    		
+
+		    		<p:commandButton icon="pi pi-trash" title="Excluir"
+		    			oncomplete="PF('confirmacaoExclusao').show()"		            	
+		            	update=":frmReceberOficio:oficiosDataTable :frmReceberOficio:toolbar :frmReceberOficio:messages"
+		            	process="@this">
+						<f:setPropertyActionListener target="#{receberOficioBean.oficio}" 
+							value="#{oficio}" />
+					</p:commandButton>
+					
+			        <p:commandButton title="Ver ofício anexado" icon="pi pi-paperclip"
+			        	disabled="#{oficio.s3Key eq null}"
+		            	ajax="false"
+		            	process="@this"
+		            	immediate="true"
+		            	action="#{receberOficioBean.redirectPdf(oficio)}">
+	            	</p:commandButton>
+	            	
+	            	<p:commandButton title="Responder ofício" value="Responder"	
+	            		disabled="#{oficio.dataResposta ne null}"		            	
+		            	oncomplete="PF('respDialogWidgetVar').show()"
+		            	update="frmReceberOficio:respPanelGrid" 
+		            	process="@this">
+		            	<f:setPropertyActionListener target="#{receberOficioBean.oficio}" 
+							value="#{oficio}" />
+	            	</p:commandButton>	          
+				
+		    	</p:column>
+    		
+		   	</p:dataTable>
+		   	
+		   	
+		   	<p:dialog id="detalheDialog" header="Mostrar Detalhes" 
+		   		widgetVar="detalheWidget" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="true"
+		   		closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:auto"
+				position="left top">
+		   		
+	            <p:panelGrid id="detalheGrid" columns="2" columnClasses="label,value">
+	            
+	            	<h:outputLabel value="Nr. Prontuario: " style="font-weight:bold"/>	
+	    			<h:outputText value="#{receberOficioBean.oficio.pessoa.familia.prontuario.codigo}" />
+	    			
+	    			<h:outputLabel value="Unidade: " style="font-weight:bold"/>	
+	    			<h:outputText value="#{receberOficioBean.oficio.unidade.nome}" />
+	                
+	                <h:outputLabel value="Nr. Ofício de Resposta: " style="font-weight:bold"/>	
+	    			<h:outputText value="#{receberOficioBean.oficio.nrOficioResp}" />	    			
+	    			
+	    			<h:outputLabel value="Data da Resposta: " style="font-weight:bold"/>	
+	    			<h:outputText value="#{receberOficioBean.oficio.dataResposta}" />
+	    			
+	                <h:outputLabel value="Orgão: " style="font-weight:bold"/>	
+	    			<h:outputText value="#{receberOficioBean.oficio.nomeOrgao}" />
+	                
+	                <h:outputLabel value="Endereço do Orgão: " style="font-weight:bold"/>
+	                <h:outputText value="#{receberOficioBean.oficio.endereco}" />
+	                
+	                <h:outputLabel value="Assunto: " style="font-weight:bold"/>
+	                <h:outputText value="#{receberOficioBean.oficio.assunto}" />
+	                
+	                <h:outputLabel value="Recebido pela Secretaria? " style="font-weight:bold"/>
+	                <h:outputText value="#{receberOficioBean.oficio.sasc}" />	           
+	                
+	           	 </p:panelGrid>
+    		</p:dialog>
+		   	
+		   	
+		   	
+		   	<p:dialog id="receberDialog" header="Recebimento" widgetVar="receberDialogWidgetVar"
+		   		modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				width="100%" position="center top" maximizable="true"
+				height="70%" fitViewport="true" responsive="true">	
+
+				       
+    			<p:growl id="addGrowl" showDetail="true" />     				
+							
+				<!--  Cadastro de oficioAtendimento com busca de pessoa antes -->
+				<p:panelGrid columns="2" id="addPanelGrid" style="width: 100%" 	columnClasses="rotulo, campo" >					
+					
+					<p:outputLabel value="Pesquisar Pessoa"/>
+					<p:commandButton icon="pi pi-plus" title="Adicionar uma pessoa" value="Pesquisar" 
+						disabled="#{receberOficioBean.oficioSelecionado}"
+						actionListener="#{receberOficioBean.abrirDialogo}"
+					 	process="@this">
+					 	<p:ajax event="dialogReturn" listener="#{receberOficioBean.selecionarPessoa}" 
+					 		update="addGrowl nomePessoa unidadeSelecionada"
+					 		process="@this"/>
+					</p:commandButton>
+										
+		    		<p:outputLabel value="Pessoa" for="nomePessoa"/>
+		    		<p:inputText id="nomePessoa" size="60" maxlength="80"
+		    			readonly="true"
+		    			value="#{receberOficioBean.oficio.pessoa.nome}"/>	
+		    		
+		    		<p:outputLabel value="Unidade encaminhada" for="unidadeSelecionada" 
+		    			rendered="#{receberOficioBean.sascSelecionado}" />
+	    			<p:selectOneMenu id="unidadeSelecionada" 
+	    				rendered="#{receberOficioBean.sascSelecionado}"
+	    				disabled="#{receberOficioBean.oficio.getPessoa() != null}"
+	    				value="#{receberOficioBean.oficio.unidade}" 
+	    				required="true"
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{receberOficioBean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>	
+	    					    
+				    
+		    		<p:outputLabel value="Data Recebimento" for="dataRecebimento" />
+					<p:calendar id="dataRecebimento" size="30"
+						value="#{receberOficioBean.oficio.dataRecebimento}"
+						required="true"
+						showOn="button" 
+						pattern="dd/MM/yyyy"
+						mask="99/99/9999"/>						
+					
+					<p:outputLabel value="Nr. Ofício (NNNN/AAAA)" for="nro"/>		    			
+	    			<p:inputText id="nro" 
+	    				required="true"	    				
+		    			value="#{receberOficioBean.oficio.nrOficio}"
+		    			size="12"
+						maxlength="12"/>
+						
+					<p:outputLabel value="Nr. Processo" for="nrpro"/>		    			
+	    			<p:inputText id="nrpro" 	    								
+		    			value="#{receberOficioBean.oficio.nrProcesso}"/>
+		    			
+		    		<p:outputLabel value="Cod. Encaminhamento" for="codigoEncaminhamento"/>
+	    			<p:selectOneMenu id="codigoEncaminhamento" 	    				
+	    				value="#{receberOficioBean.oficio.codigoEncaminhamento}" 		    			
+	    				required="true" 	    				
+		    			validatorMessage="O código de encaminhamentor é obrigatório."  >
+		    			<f:selectItem itemLabel="Selecione o codigo de encaminhamento" />
+		    			<f:selectItems value="#{receberOficioBean.codigoEncaminhamento}" var="codenc"
+							itemLabel="#{codenc}" itemValue="#{codenc}" />
+								
+						<p:ajax listener="#{receberOficioBean.carregarOrgaos}"
+							update="orgaos" process="codigoEncaminhamento" />			
+	    			</p:selectOneMenu>
+
+					<p:outputLabel value="Orgão Externo" for="orgaos" />
+					<p:selectOneMenu id="orgaos"
+						disabled="#{receberOficioBean.orgaos eq null}"
+						value="#{receberOficioBean.orgao}">
+						<f:selectItem itemLabel="Selecione o orgão" />
+						<f:selectItems value="#{receberOficioBean.orgaos}"
+							var="orgaos" itemLabel="#{orgaos.nome}" itemValue="#{orgaos}" />
+
+						<p:ajax listener="#{receberOficioBean.selecionarOrgao}"
+							update="nomeOrgao endereco"
+							process="orgaos" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Nome do Orgão" for="nomeOrgao" />
+					<h:panelGroup>
+
+						<p:inputTextarea id="nomeOrgao" size="250" rows="2"
+							cols="70" style="height: 100px; overflow:auto;" maxlength="250"
+							value="#{receberOficioBean.oficio.nomeOrgao}"
+							required="false"
+							counter="displayNomeOrgao"
+							counterTemplate="{0} caracteres restantes" 
+							autoResize="false"/>
+						<h:outputText id="displayNomeOrgao" />
+						<p:watermark for="nomeOrgao"
+							value="Nome do Orgao." />
+					</h:panelGroup>
+
+					<p:outputLabel value="Endereco do Orgao Emissor"
+						for="endereco" />
+					<h:panelGroup>
+						<p:inputTextarea id="endereco" size="250" rows="2"
+							cols="70" style="height: 100px; overflow:auto;" maxlength="250"
+							value="#{receberOficioBean.oficio.endereco}"
+							required="false"
+							counter="displayEndereco"
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="displayEndereco" />
+						<p:watermark for="endereco"
+							value="Endereco do Orgao Emissor." />
+					</h:panelGroup>	
+					  									
+					<p:outputLabel value="Assunto" for="assunto"/>
+		    		<h:panelGroup>
+			    		<p:inputTextarea id="assunto" size="10000" rows="10" cols="600"  style="width: 100%; overflow:auto;"
+			    			maxlength="10000" 
+			    			value="#{receberOficioBean.oficio.assunto}"
+			    			counter="display"
+							counterTemplate="{0} caracteres restantes" 
+			    			required="true"
+			    			placeholder="Até 10000 caracteres."
+					    	validatorMessage="O assunto é obrigatório."/>
+		    			<h:outputText id="display" />
+				    	<p:watermark for="assunto" value="Descreva o assunto" />	
+			    	</h:panelGroup>
+			    	
+			    				    		
+	    			<p:outputLabel value="Técnico Responsável" for="tecnico"
+	    				rendered="#{!receberOficioBean.sascSelecionado}"/>
+	    			<p:selectOneMenu id="tecnico"
+		    			value="#{receberOficioBean.oficio.tecnico}" 
+		    			rendered="#{!receberOficioBean.sascSelecionado}">
+		    			<f:selectItem itemLabel="Selecione o técnico" />
+		    			<f:selectItems value="#{receberOficioBean.tecnicos}" var="tec" 
+							itemLabel="#{tec.nome}" itemValue="#{tec}"/>
+		    		</p:selectOneMenu>
+		    		
+		    		<p:outputLabel value="Exige Ofício de Resposta?" for="resposta"/>    		
+					<h:selectOneRadio id="resposta"
+						value="#{receberOficioBean.oficio.resposta}">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />						
+					</h:selectOneRadio>
+		    		
+		    				    			
+		    		<p:outputLabel value="Upload pdf" for="file" icon="pi pi-upload"
+						rendered="#{receberOficioBean.sascSelecionado}"/>							
+					<h:inputFile id="file"
+						rendered="#{receberOficioBean.sascSelecionado}" 
+						value="#{receberOficioBean.file}">
+			            	<f:validator validatorId="fileUploadValidator"/>
+			        </h:inputFile>			
+					
+					<p:commandButton icon="pi pi-save" id="salvarCommandButton" value="Salvar" 
+							actionListener="#{receberOficioBean.salvar}"
+							rendered="#{!receberOficioBean.sascSelecionado}"
+							oncomplete="if (!args.validationFailed) PF('receberDialogWidgetVar').hide()" 
+							update="addPanelGrid oficiosDataTable addGrowl messages"							
+							process="@this receberDialog"/>
+							
+					<p:commandButton icon="pi pi-save" id="encCommandButton" value="Encaminhar" 
+							actionListener="#{receberOficioBean.salvar}"
+							rendered="#{receberOficioBean.sascSelecionado}"
+							oncomplete="if (!args.validationFailed) PF('receberDialogWidgetVar').hide()" 
+							update="addPanelGrid oficiosDataTable addGrowl messages"							
+							process="@this receberDialog"/>
+				</p:panelGrid>
+			</p:dialog>	
+			
+			
+			
+			<p:confirmDialog id="confirmacaoExclusaoDialog"
+				widgetVar="confirmacaoExclusao"
+				message="Confirma exclusão do recebimento?"
+				header="Exclusão de recebimento" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoExclusao').hide(); return false;" />
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+				    update="messages oficiosDataTable toolbar confirmacaoExclusaoDialog"
+					action="#{receberOficioBean.excluir}" 
+					process="@this"/>	
+			</p:confirmDialog>
+	    	
+    	
+    	
+    	
+    	<!--  RESPOSTA DE OFÍCIOS RECEBIDOS -->
+    	
+      	
+    				   	
+		   	<p:dialog id="respDialog" header="Responder Oficio" widgetVar="respDialogWidgetVar"	   	
+	   			modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				width="100%" position="center top" maximizable="true"
+				height="70%" fitViewport="true" responsive="true">	
+	
+				    
+	   			<p:growl id="respGrowl" showDetail="true" />     				
+							
+				<p:panelGrid id="respPanelGrid" columns="2" style="width: 100%" 				
+					columnClasses="rotulo, campo" >					
+					
+					<p:outputLabel value="Prontuário" for="prontResp"/>
+	    			<h:outputText id="prontResp" value="#{receberOficioBean.oficio.pessoa.familia.prontuario}" />	
+	    					    			
+	    			<p:outputLabel value="Pessoa" for="nomePessoaResp"/>
+		    		<h:outputText id="nomePessoaResp" value="#{receberOficioBean.oficio.pessoa.nome}"/>
+		    		
+		    		<p:outputLabel value="Nr. Ofício Externo Recebido" for="nrofResp"/>		    			
+	    			<h:outputText id="nrofResp" value="#{receberOficioBean.oficio.nrOficio}"/>
+	    			
+	    			<p:outputLabel value="Nr. do Processo" for="nrpro2"/>		    			
+	    			<h:outputText id="nrpro2" value="#{receberOficioBean.oficio.nrProcesso}"/>
+		    			
+		    		<p:outputLabel value="Data Recebimento" for="dataRecebimentoResp"/>
+		    		<h:outputText id="dataRecebimentoResp" value="#{receberOficioBean.oficio.dataRecebimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>    					
+		    		
+		    		<p:outputLabel value="Assunto" for="assuntoResp"/>
+		    		<h:outputText id="assuntoResp" value="#{receberOficioBean.oficio.assunto}"/> 		    					    
+					    
+		    		<p:outputLabel value="Data Emissão" for="dataEmissaoResp" />
+					<p:calendar id="dataEmissaoResp" size="30"
+						value="#{receberOficioBean.oficioEmitido.dataEmissao}"
+						required="true"
+						showOn="button" 
+						pattern="dd/MM/yyyy"
+						mask="99/99/9999"/>			
+					
+	    			<p:outputLabel value="Resposta ao ofício recebido" for="respResp"/>
+		    		<h:panelGroup>
+			    		<p:inputTextarea id="respResp" size="10000" rows="10" cols="600"  style="width: 100%; overflow:auto;"
+			    			maxlength="10000"  
+			    			value="#{receberOficioBean.oficioEmitido.assunto}"
+			    			counter="displayResp"
+							counterTemplate="{0} caracteres restantes" 
+			    			required="true"
+			    			placeholder="Até 10000 caracteres."
+					    	validatorMessage="O assunto é obrigatório."/>
+		    			<h:outputText id="displayResp" />
+				    	<p:watermark for="respResp" value="Descreva o assunto" />	
+			    	</h:panelGroup>
+		    		
+					<p:spacer height="10px" />
+	
+					<p:commandButton icon="pi pi-save" id="salvarButton" value="Salvar Resposta"
+							actionListener="#{receberOficioBean.salvarResposta}"
+							update="oficiosDataTable messages"
+							oncomplete="if (!args.validationFailed) PF('respDialogWidgetVar').hide()"
+							process="respPanelGrid"/>
+				</p:panelGrid>
+			</p:dialog>	
+    	</h:form>
+    </ui:define>
+</ui:composition>

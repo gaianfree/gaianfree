@@ -1,0 +1,176 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+ 		
+		<p:toolbar id="toolbarInscr" style="margin-top: 5px">
+   		<p:toolbarGroup>
+   			<p:commandButton icon="pi pi-plus" title="Adicionar Pessoa" value="Adicionar Pessoa" 						
+				actionListener="#{manterSCFVPesqBean.abrirDialogo}"
+				disabled="#{manterSCFVPesqBean.servico eq null}"
+			 	process="@this"
+			 	update= "@none">
+			 	<p:ajax event="dialogReturn" listener="#{manterSCFVPesqBean.adicionarPessoa}"
+			 		update="frmScfv:accordion:inscricoesTable frmScfv:accordion:toolbarInscr frmScfv:growl"
+			 		process="@this"/>
+			</p:commandButton>
+			
+			<p:commandButton title="Gerar Lista de Presença"
+   				disabled="#{manterSCFVPesqBean.servico eq null }"
+            	value="Gerar Lista de Presença"         	
+            	oncomplete="PF('listaWidgetVar').show()"
+            	update="frmScfv:accordion:listaDialog" 
+            	process="@this">
+            	<p:resetInput target="listaDialog" />
+            	
+            	<p:ajax update="frmScfv:accordion:listaTable" 
+		            listener="#{manterSCFVPesqBean.buscarInscricoesAtivas}" 
+		           	process="@this"/>
+		           	
+           	</p:commandButton>
+			
+   		</p:toolbarGroup>
+		</p:toolbar>		
+
+  	
+ 		<p:dataTable id="inscricoesTable" value="#{manterSCFVPesqBean.inscricoes}" var="inscricao"
+	   		style="margin-top: 5px" emptyMessage="Selecione um serviço para ver as pessoas inscritas." 
+	   		rowStyleClass="#{inscricao.pessoa.familia.prontuario.status eq 'INATIVO' 
+	  				or inscricao.desistente eq true
+				or inscricao.pessoa.status eq 'INATIVO' ? 'inativo' : null}">
+	  		 	   		
+	    	<f:facet name="header">
+            	<p:outputLabel value="#{manterSCFVPesqBean.servico.nome}"/>
+        	</f:facet>		        
+	    				
+			<p:column headerText="Código Pessoa" style="width: 8px; text-align: center">
+				<h:outputText value="#{inscricao.pessoa.codigo}" />
+			</p:column>
+			
+			<p:column headerText="Nome Pessoa" style="width: 80px; text-align: center"
+				sortBy="#{inscricao.pessoa.nome}" >
+				<h:outputText value="#{inscricao.pessoa.nome}" />
+			</p:column>
+			
+			<p:column headerText="Idade" style="width: 6px; text-align: center">
+				<h:outputText value="#{inscricao.pessoa.idade}" />
+			</p:column>
+			
+			<p:column headerText="Tel" style="width: 20px; text-align: center">
+				<h:outputText value="#{inscricao.pessoa.telefone}" />
+			</p:column>	
+			
+			<p:column headerText="Data Inscrição" style="width: 10px; text-align: center">
+				<h:outputText value="#{inscricao.data}">
+	   				<f:convertDateTime pattern="dd/MM/yyyy" />
+	   			</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Prioridade" style="width: 70px; text-align: center">			
+	    		<p:selectOneMenu id="prioridade" autoWidth="false"
+	    			value="#{inscricao.prioridade}">
+	    			<f:selectItem itemLabel="Selecione a prioridade" />
+	    			<f:selectItems value="#{manterSCFVPesqBean.prioridades}" var="prioridade"
+						itemLabel="#{prioridade}" itemValue="#{prioridade}"/>
+					<p:ajax update="frmScfv:growl frmScfv:accordion:inscricoesTable" 
+		            	listener="#{manterSCFVPesqBean.alterarPrioridade(inscricao)}"
+		            	process="@this"/>
+	    		</p:selectOneMenu>    		
+	   		</p:column>  		
+	   		    		
+	   		
+	   		<p:column headerText="Inscrição cancelada" style="width: 11px; text-align: center">		    		
+	    		<p:selectBooleanCheckbox value="#{inscricao.desistente}">
+		            <p:ajax update="frmScfv:growl frmScfv:accordion:inscricoesTable" 
+		            	listener="#{manterSCFVPesqBean.cancelarInscricao(inscricao)}" 
+		            	process="@this"/>
+		            	
+		        </p:selectBooleanCheckbox>
+	    	</p:column>
+	
+	    	<p:column headerText="Operações" style="width: 20px; text-align: center">		    		
+	    		<p:commandButton 
+		    		update="frmScfv:accordion:detalhePanel frmScfv:accordion:detalheGrid" 
+							onclick="PF('detalheWidgetDialog').show()" 
+							title="Ver detalhe" 
+							icon="pi pi-info"
+							process="@this">
+							<f:setPropertyActionListener target="#{manterSCFVPesqBean.pessoa}"
+						value="#{inscricao.pessoa}" />			                
+	           	</p:commandButton>
+	
+	    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+	    			onclick="PF('confirmacaoEx').show();"
+					process="@this">
+					<f:setPropertyActionListener target="#{manterSCFVPesqBean.inscricao}" 
+						value="#{inscricao}" />
+				</p:commandButton>
+    		</p:column>		
+   		
+   	</p:dataTable>	   	
+   		
+   	<p:confirmDialog id="confirmacaoExDialog" 
+   		widgetVar="confirmacaoEx"
+       	message="A inscricao só pode ser excluída se não houver frequências registradas. Continuar?"  
+           header="Exclusão de inscricao" severity="alert"
+           showEffect="explode" hideEffect="explode">
+       	<p:button icon="pi pi-thumbs-down" value="Não" 
+       		onclick="PF('confirmacaoEx').hide(); return false;" />
+       	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+       		process="@this"
+       		update="frmScfv:accordion:inscricoesTable frmScfv:accordion:toolbarInscr frmScfv:growl"
+       		onclick="PF('confirmacaoEx').hide();"
+       		action="#{manterSCFVPesqBean.excluirInscricao}" /> 
+   	</p:confirmDialog> 
+   	
+   	<!--  Reuso de componente  -->			
+	<ui:include src="/compositions/DetalharPessoaUI.xhtml">
+        <ui:param name="pessoa" value="#{manterSCFVPesqBean.pessoa}" />                
+    </ui:include>  	
+
+		<p:dialog id="listaDialog" header="Gerar Lista de presença" 
+		   		widgetVar="listaWidgetVar" 
+				modal="true" resizable="false" closeOnEscape="true" 
+				style="max-height:600px;overflow:auto" > 
+				
+   			<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+           		disabled="#{(manterSCFVPesqBean.atividadeSelecionada eq null)}"
+           		value="Exportar Excel"
+            	ajax="false"
+            	process="@this"
+            	immediate ="true">
+            	<p:dataExporter type="xls" target="listaTable" fileName="Lista_presença" />
+            </p:commandButton>
+   		
+   		<p:dataTable id="listaTable" value="#{manterSCFVPesqBean.inscricoesAtivas}" var="inscricao"
+	   		style="margin-top: 5px" emptyMessage="Selecione um serviço para ver as pessoas inscritas." 
+	   		rowStyleClass="#{inscricao.pessoa.familia.prontuario.status eq 'INATIVO' 
+	  				or inscricao.desistente eq true
+				or inscricao.pessoa.status eq 'INATIVO' ? 'inativo' : null}">
+
+	  		 	   		
+	    	<f:facet name="header">
+            	<p:outputLabel value="#{manterSCFVPesqBean.servico.nome}"/>
+        	</f:facet>		        
+			
+			<p:column headerText="Nome Pessoa" style="width: 80px; text-align: center"
+				sortBy="#{inscricao.pessoa.nome}" >
+				<h:outputText value="#{inscricao.pessoa.nome}" />
+			</p:column>
+			
+			<p:column headerText="Tel" style="width: 20px; text-align: center">
+				<h:outputText value="#{inscricao.pessoa.telefone}" />
+			</p:column>	
+	
+    		<p:column headerText="Assinatura" style="width: 70px; text-align: center">
+				
+			</p:column>		
+   		
+   	</p:dataTable>
+	   	
+				
+    	</p:dialog>
+
+</ui:composition>

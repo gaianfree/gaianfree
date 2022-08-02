@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+	
+    
+    <h:body>
+    	<p:spacer height="5px" />  
+	
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar2">
+				<f:facet name="left">
+				
+					<p:spacer height="5px" /> 
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioAtendimentosUnidadesBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioAtendimentosUnidadesBean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>	
+	    			
+	    			<p:spacer width="5px" />				
+			
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioAtendimentosUnidadesBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioAtendimentosUnidadesBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy"
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />	
+						
+					<p:commandButton title="Consultar"						
+						value="Consultar"
+		            	actionListener="#{relatorioAtendimentosUnidadesBean.consultarAtendimentos}"		            	
+		            	update="toolbar2 listaDataTable" 
+		            	process="@form">            	
+	            	</p:commandButton>
+						
+					<p:spacer width="5px" />
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>	
+		            <p:spacer width="5px" />
+					
+					<p:commandButton title="Obter o Gráfico de Atendimentos" value="Gráfico de Pizza" icon="pi pi-chart-bar"
+						disabled="#{not relatorioAtendimentosUnidadesBean.unidadeSelecionada}"
+		            	actionListener="#{relatorioAtendimentosUnidadesBean.initGraficoAtendimentos}"
+		            	oncomplete="PF('atendDialogWidgetVar').show()"
+		            	update="atendDialog toolbar2 listaDataTable" 
+		            	process="@form">
+		            	<p:resetInput target="atendDialog" />		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Obter o Gráfico de Atendimentos" value="Gráfico de Barras" icon="pi pi-chart-bar"
+	            		disabled="#{not relatorioAtendimentosUnidadesBean.unidadeSelecionada}"            		
+		            	actionListener="#{relatorioAtendimentosUnidadesBean.initGraficoBarras}"
+		            	oncomplete="PF('atendDialogWidgetVar2').show()"
+		            	update="atendDialog2 toolbar2 listaDataTable" 
+		            	process="@form">
+		            	<p:resetInput target="atendDialog2" />		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+	            		disabled="#{not relatorioAtendimentosUnidadesBean.unidadeSelecionada}" 
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_atendimentos_unidades" />
+		            </p:commandButton>	
+					
+				</f:facet>
+			</p:toolbar>			    
+	    
+	    	
+	    
+		    <!--  Lista de itens de atendimento -->
+			<p:dataTable id="listaDataTable"  value="#{relatorioAtendimentosUnidadesBean.listaAtendimentos}" 
+				var="to"
+	    		style="margin-top: 20px" emptyMessage="Nenhum atendimento encontrado.">
+	    		
+	    		
+	    		<p:column headerText="Codigo Auxiliar" style="width: 100px; text-align: center">
+	    			<h:outputText value="#{to.nome}" />
+	    		</p:column>    		
+		    	<p:column headerText="Qde de Atendimentos" style="width: 60px; text-align: center" 
+					sortBy="#{to.qdeAtendimentos}">
+	    			<h:outputText value="#{to.qdeAtendimentos}" />
+	    		</p:column> 
+	    		
+	    		<f:facet name="footer">
+					<h:outputText value="Total de Atendimentos: #{relatorioAtendimentosUnidadesBean.qdeAtendimentos}" />
+		        </f:facet>	
+    		
+		   	</p:dataTable>
+
+		   	
+		   	<p:dialog id="atendDialog" header="Atendimentos Realizados" widgetVar="atendDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="pie" model="#{relatorioAtendimentosUnidadesBean.graficoAtendimentos}" 
+				style="width:600px;height:400px" />	
+			
+				<p:outputLabel value="Quantidade de Atendimentos =  " for="qde"/>
+				<h:outputText id="qde" value="#{relatorioAtendimentosUnidadesBean.qdeAtendimentos}"/>			
+			</p:dialog>	
+			
+			
+			<p:dialog id="atendDialog2" header="Atendimentos" widgetVar="atendDialogWidgetVar2"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="bar" model="#{relatorioAtendimentosUnidadesBean.barModel}"
+				style="width:600px;height:400px" />				
+				
+			</p:dialog>	
+		   	
+    	
+
+    	
+	</h:body>
+</html>

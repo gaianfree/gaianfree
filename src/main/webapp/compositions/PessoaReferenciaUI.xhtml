@@ -1,0 +1,98 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">		
+			
+	<p:spacer height="1px" />	
+	<p:panelGrid id="pessoaReferenciaGrid" columns="6" layout="grid"
+		rendered="#{pessoaReferenciaSelecionada}">
+
+			
+		<h:outputText style="font-weight: bold;" value="Pessoa de Referência: " />
+		<h:outputText value="#{pessoaReferencia.codigo} - #{pessoaReferencia.nome}"/>		
+		<h:outputText style="font-weight: bold;" value="Serviço: " />
+        <h:outputText value="#{pessoaReferencia.familia.prontuario.programa}"/>        
+        <h:outputText style="font-weight: bold;" value="Ver detalhe: " />
+        <p:commandButton update="prontuarioPanel"
+						onclick="PF('prontuarioDialog').show()" 
+						title="Ver detalhe" 
+						icon="pi pi-info"
+						process="@this">			                
+        </p:commandButton>	      		     
+
+	    
+	    <h:outputText style="font-weight: bold;" value="Código Prontuário: " />
+	    <h:outputText value="#{pessoaReferencia.familia.prontuario.codigo}    #{pessoaReferencia.familia.prontuario.status}" />			     
+	    <h:outputText style="font-weight: bold;" value="Prontuário Físico: "/>
+	    <h:outputText value="#{pessoaReferencia.familia.prontuario.prontuario}"/>
+	    <h:outputText style="font-weight: bold;" value="Código Prontuário Vinculado: "/>
+	    <h:outputText value="#{pessoaReferencia.familia.prontuario.prontuarioVinculado.codigo} "/>
+	    
+	    
+	</p:panelGrid>			
+	<p:spacer height="1px" />
+		    
+   	<p:dialog id="dialog" header="Detalhe do Prontuário" 
+   		showEffect="fade" 
+   		widgetVar="prontuarioDialog" 
+   		modal="true" 
+   		resizable="false">
+        <p:outputPanel id="prontuarioPanel">
+            <p:panelGrid  columns="2" columnClasses="label,value">
+            
+            <p:outputLabel value="Código Pessoa Referência: " for="cod2" />
+               	<h:outputText id="cod2" value="#{pessoaReferencia.codigo}" style="font-weight:bold"/>
+                
+                <h:outputLabel value="Nome Pessoa de Referência: " for="name2" />
+                <h:outputText id="name2" value="#{pessoaReferencia.nome}" style="font-weight:bold" />
+                
+                <h:outputLabel value="Nome Social: " for="soc2" />
+                <h:outputText id="soc2" value="#{pessoaReferencia.nomeSocial}" style="font-weight:bold" />
+ 		 		
+ 		 		<h:outputLabel value="Nis: " for="nis2" />
+                <h:outputText id="nis2" value="#{pessoaReferencia.nis}" style="font-weight:bold" />
+                
+                <p:outputLabel value="Idade: " for="idade2"/>
+                <h:outputText id="idade2" value="#{pessoaReferencia.idade}" style="font-weight:bold" />
+ 
+ 				<p:outputLabel value="Nome da Mãe: " for="mae2"/>
+                <h:outputText id="mae2" value="#{pessoaReferencia.nomeMae}" style="font-weight:bold" />
+                
+                <p:outputLabel value="País de Origem: " for="pais2"/>
+                <h:outputText id="pais2" value="#{pessoaReferencia.paisOrigem.pais}" style="font-weight:bold" />
+                
+                <p:outputLabel value="Telefone " for="te2"/>
+	            <h:outputText id="te2" value="#{pessoaReferencia.telefone}" style="font-weight:bold" />
+	            
+	            <p:outputLabel value="E-Mail " for="email2"/>
+	            <h:outputText id="email2" value="#{pessoaReferencia.email}" style="font-weight:bold" />
+                		                
+                <p:outputLabel value="Endereço: " for="end2"/>
+                <h:outputText id="end2" value="#{pessoaReferencia.familia.endereco.endereco}, #{pessoaReferencia.familia.endereco.numero}" style="font-weight:bold" />
+                		                   
+                <p:outputLabel value="Bairro: " for="b2"/>
+                <h:outputText id="b2" value="#{pessoaReferencia.familia.endereco.bairro}" style="font-weight:bold" />
+                
+                <p:outputLabel value="Município: " for="cid2"/>
+                <h:outputText id="cid2" value="#{pessoaReferencia.familia.endereco.municipio}-#{pessoaReferencia.familia.endereco.uf}" style="font-weight:bold" />
+                
+                <p:outputLabel value="Cep: " for="cep2"/>
+                <h:outputText id="cep2" value="#{pessoaReferencia.familia.endereco.cep}" style="font-weight:bold" />
+                
+                
+	            
+                <p:outputLabel value="Data de Entrada: " for="dat2"/>  
+  					<h:outputText id="dat2" value="#{pessoaReferencia.familia.prontuario.dataEntrada}" style="font-weight:bold" >
+    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    			</h:outputText>	 
+    			
+    			<p:outputLabel value="Unidade: " for="unid2"/>  
+	    		<h:outputText id="unid2" value="#{pessoaReferencia.familia.prontuario.unidade.nome}" style="font-weight:bold" />	 
+
+            </p:panelGrid>
+        </p:outputPanel>
+	</p:dialog>
+
+</ui:composition>

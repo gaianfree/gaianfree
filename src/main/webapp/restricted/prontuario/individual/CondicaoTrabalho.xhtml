@@ -1,0 +1,82 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+		
+	<p:outputPanel id="condicaoTrabalhoPanel" rendered="#{ciBean.pessoaSelecionada}">
+
+		<h2> Condição Trabalho </h2> 
+
+		<p:toolbar id="toolbartr">
+			<f:facet name="left">
+				<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"
+					actionListener="#{ciBean.trabalhoBean.salvar}"
+					update="condicaoTrabalhoPanel toolbartr"
+					process="@this condicaoTrabalhoGrid">
+				</p:commandButton>
+				
+				<p:spacer width="20px" />
+				
+				<p:outputLabel value="Data da última atualização: "/>
+				<h:outputText value="#{ciBean.trabalhoBean.condicaoTrabalho.dataModificacao}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</f:facet>
+		</p:toolbar>
+
+		<p:panelGrid id="condicaoTrabalhoGrid" columns="2" style="margin-top: 10px">
+			<f:facet name="header">
+	            Condições de Trabalho
+	        </f:facet>
+
+			<p:outputLabel value="Código" for="codigotr" rendered="false" />
+			<p:inputText id="codigotr" size="20" maxlength="20"
+				value="#{ciBean.trabalhoBean.condicaoTrabalho.codigo}"
+				readonly="true" rendered="false" />
+
+			<p:outputLabel value="Possui Carteira de Trabalho" for="possuiCarteiraTrabalho" />
+			<h:selectOneRadio id="possuiCarteiraTrabalho"
+				value="#{ciBean.trabalhoBean.condicaoTrabalho.possuiCarteiraTrabalho}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="Profissão" for="profissao" />
+			<p:inputText id="profissao" size="25"
+				value="#{ciBean.trabalhoBean.condicaoTrabalho.profissao}"/>
+				
+			<p:outputLabel value="Renda Mensal da Pessoa" for="rendaMensal" />					
+			<p:inputNumber id="rendaMensal" 
+					value="#{ciBean.trabalhoBean.condicaoTrabalho.rendaMensal}" 
+					symbol="R$ " symbolPosition="p">                    	
+            </p:inputNumber>            	
+              	          	
+
+			
+			<p:outputLabel value="Condição de Ocupação" for="condicaoOcupacao" />
+			<p:selectOneMenu id="condicaoOcupacao"
+				value="#{ciBean.trabalhoBean.condicaoTrabalho.condicaoOcupacao}">
+				<f:selectItem itemLabel="" />
+				<f:selectItems value="#{ciBean.trabalhoBean.condicoesOcupacao}"
+					var="condicaoOcupacao" itemLabel="#{condicaoOcupacao}"
+					itemValue="#{condicaoOcupacao}"/>
+			</p:selectOneMenu>
+			
+			<p:outputLabel value="Relato" for="relatotr" />
+			<h:panelGroup>
+				<p:inputTextarea id="relatotr" size="1000" rows="5" cols="100"
+					style="height: 100px; overflow:auto;" maxlength="100"
+					value="#{ciBean.trabalhoBean.condicaoTrabalho.relato}"
+					counter="displaytr" counterTemplate="{0} caracteres restantes" />
+				<h:outputText id="displaytr" />
+				<p:watermark for="relatotr" value="Descreva a condição atual de trabalho da pessoa." />
+			</h:panelGroup>
+			
+			
+		</p:panelGrid>
+		
+	</p:outputPanel>
+
+</ui:composition>

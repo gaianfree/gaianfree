@@ -1,0 +1,71 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    		
+		    <!-- Panel Benefícios Eventuais -->
+
+
+	<p:outputPanel id="benPanel" rendered="#{manterProntuarioBean.mpBeneficioBean.pessoaReferenciaSelecionada}" >
+
+		<p:dataTable id="beneficiosTable"
+			value="#{manterProntuarioBean.mpBeneficioBean.beneficiosEventuais}"
+			var="beneficioEventual" style="margin-top: 20px"
+			emptyMessage="Nenhum beneficio encontrado." rows="10"
+			paginator="true" paginatorAlwaysVisible="true"
+			paginatorPosition="bottom" >
+
+			<f:facet name="header">
+			            Lista de Benefícios
+			        </f:facet>
+
+			<p:column headerText="Código" style="width: 10px; text-align: center">
+				<h:outputText value="#{beneficioEventual.codigo}" />
+			</p:column>
+			
+			<p:column headerText="Benefício"
+					style="width: 80px; text-align: center">
+					<h:outputText value="#{beneficioEventual.beneficio}" />
+				</p:column>
+
+			<p:column headerText="CPF Falecido"
+				style="width: 40px; text-align: center">
+				<h:outputText value="#{beneficioEventual.cpfFalecido}" />
+			</p:column>
+
+			<p:column headerText="Registro Nascimento"
+				style="width: 40px; text-align: center">
+				<h:outputText value="#{beneficioEventual.registroNascimento}" />
+			</p:column>
+			
+				<p:column headerText="Data" style="width: 25px; text-align: center"
+				sortBy="#{beneficioEventual.data}">
+				<h:outputText value="#{beneficioEventual.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Relato"
+				style="width: 200px; text-align: center">
+				<p:textEditor  			    			
+	    			value="#{beneficioEventual.relato}" 			    					    			
+	    			readonly="true">
+	    			<f:facet name="toolbar"> 
+	    				<span class="ql-formats"> </span>						            
+	    			</f:facet>
+			    </p:textEditor>
+			</p:column>
+
+			<p:column headerText="Técnico"
+				style="width: 80px; text-align: center">
+				<h:outputText value="#{beneficioEventual.tecnico.nome}" />
+			</p:column>
+
+		</p:dataTable>
+
+	</p:outputPanel>
+
+</ui:composition>

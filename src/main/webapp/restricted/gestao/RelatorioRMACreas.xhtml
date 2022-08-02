@@ -1,0 +1,164 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Registro Mensal de Atendimentos CREAS</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>RMA CREAS</h2>
+     	
+    	<h:form id="frmPesquisa"> 
+    	
+    		<p:growl id="growl" showDetail="true"> 
+    			<p:autoUpdate />
+    		</p:growl>
+			
+			<p:toolbar id="toolbar" rendered="#{!relatorioRMACreasBean.gestor}">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					<p:outputLabel value="Mês : " for="mesesFechar"/>	 
+					
+					<p:spacer width="10px" />
+					
+					<p:selectOneMenu id="mesesFechar"
+		    			value="#{relatorioRMACreasBean.mes}">
+		    			<f:selectItems value="#{relatorioRMACreasBean.mesesFechar}" var="mes" 
+							itemLabel="#{mes}" itemValue="#{mes}"/>
+		    		</p:selectOneMenu>  			
+		    		
+					<p:spacer width="10px" />
+						
+					<p:commandButton title="RMA" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioRMACreasBean.gerarRMA}"
+		            	process="@this mesesFechar"
+		            	update="frmPesquisa toolbar">		            		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="20px" />
+	            	
+	            	<p:commandButton title="Fechar RMA" value="Fechar RMA" icon="pi pi-search"            	
+		            	oncomplete="PF('fecharWidgetDialog').show()"
+		            	disabled="#{!relatorioRMACreasBean.coordenador}"
+		            	update="fecharDialog toolbarGestor"
+		            	process="@this">
+		            	<p:resetInput target="fecharDialog" />
+	            	</p:commandButton>	            	
+	            	           	
+				</f:facet>
+			</p:toolbar>	
+			
+			<p:spacer height="5px" />			
+			
+			<p:toolbar id="toolbarGestor">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="RMA Fechado: "/>
+					<p:spacer width="10px" />	 
+					<p:outputLabel value="Unidade: " for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioRMACreasBean.unidade}">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioRMACreasBean.unidades}" var="unid"
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+							
+						<p:ajax listener="#{relatorioRMACreasBean.buscarRmasFechados}" 
+							update="mesAnoRef2 growl" process="unidade"/>
+	    			</p:selectOneMenu>	
+		    		
+					<p:spacer width="10px" />
+				
+					<p:outputLabel value="Mês/Ano" for="mesAnoRef2"/>	 
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="mesAnoRef2" value="#{relatorioRMACreasBean.mesAnoRef}">
+		    			<f:selectItem itemLabel="Selecione o mês/ano de referência" />
+		    			<f:selectItems value="#{relatorioRMACreasBean.rmasFechados}" var="ref"
+							itemLabel="#{ref}" itemValue="#{ref}"/>
+		    		</p:selectOneMenu>
+		    		
+					<p:spacer width="10px" />
+						
+					<p:commandButton title="Consultar RMA fechado" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioRMACreasBean.buscarRmaFechado}"
+		            	process="@this mesAnoRef2 unidade"
+		            	update="frmPesquisa toolbarGestor">		            		            	
+	            	</p:commandButton>
+	            	
+				</f:facet>
+			</p:toolbar>
+			
+			<p:spacer height="15px" />
+			
+			<!--  Cabecalho RMA -->	
+			
+			<!--  Cabecalho RMA-->			
+			<p:panel id="basic" style="margin-bottom:20px" 
+				header="#{relatorioRMACreasBean.rma.unidade.nome}   ---->  #{relatorioRMACreasBean.rma.mesAnoReferencia}">
+			</p:panel>				
+			
+			<!--  Bloco I (de A a I) -->			
+			
+			<ui:include src="/restricted/gestao/rma/Bloco1.xhtml"/>			
+			
+			<!--  Bloco II (M) -->			
+			
+			<ui:include src="/restricted/gestao/rma/Bloco2.xhtml"/>
+			
+			<!--  Bloco III (J) -->
+			
+			<ui:include src="/restricted/gestao/rma/Bloco3.xhtml"/>			
+			
+			<!--  Bloco IV (K e L) -->
+			
+			<ui:include src="/restricted/gestao/rma/Bloco4.xhtml"/>	
+			
+			
+			
+			<p:dialog id="fecharDialog" header="Fechamento de RMA" widgetVar="fecharWidgetDialog"
+				modal="true" resizable="true" closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				position="center top">	
+				
+				<div class="card">
+	    			<h2>Atenção!</h2>
+									
+					
+					<p:panelGrid id="panelGrid" columns="1" style="width: 100%" 
+						columnClasses="rotulo, campo">
+						
+						<f:facet name="header">
+				        	<h:outputText value="O RMA uma vez fechado não pode ser mais alterado!" />
+				    	</f:facet>
+						
+		    			<p:selectOneMenu id="mesfechar" required="true" 
+			    			value="#{relatorioRMACreasBean.mesFechar}"
+			    			validatorMessage="O mês é obrigatório para o fechamento.">
+			    			<f:selectItem itemLabel="Selecione o mês a ser fechado" />
+			    			<f:selectItems value="#{relatorioRMACreasBean.mesesFechar}" var="mes" 
+								itemLabel="#{mes}" itemValue="#{mes}"/>
+			    		</p:selectOneMenu>    		
+				
+				
+						<p:commandButton icon="pi pi-save" id="botaoFechar" value="Fechar RMA"  
+							title="Fechar o RMA do mês"
+							actionListener="#{relatorioRMACreasBean.fecharRma}"
+							oncomplete="if (!args.validationFailed) PF('fecharWidgetDialog').hide()"
+							update="toolbarGestor toolbar"
+							process="fecharDialog">
+						</p:commandButton>	
+						
+					</p:panelGrid>
+				</div>   	
+			</p:dialog>				
+	    
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,54 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Consultar Prontuário</ui:define>
+    
+    <ui:define name="corpo">    
+    	
+    	<h2>Consultar Prontuário</h2>    	
+    	  	
+    	<h:form id="frmProntuario"> 
+    	
+    		<p:growl id="growl" showDetail="true"> 
+    			<p:autoUpdate />
+    		</p:growl>       		    			
+			
+				
+			<p:toolbar id="toolbar" >
+				<f:facet name="left">	
+					<p:commandButton value="Pesquisar Pessoa de Referência" icon="pi pi-search" 
+						title="Pesquisar Pessoa de Referência" 						
+						actionListener="#{manterProntuarioBean.abrirDialogoGeral}"
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{manterProntuarioBean.selecionarPessoaReferencia}" 
+					 		update="frmProntuario toolbar growl"
+					 		process="@this"/>
+					</p:commandButton>
+								
+				</f:facet>
+			</p:toolbar>
+			
+			
+			<!--  Reuso de componente  -->
+			
+			<ui:include src="/compositions/PessoaReferenciaUI.xhtml">
+                <ui:param name="pessoaReferencia" value="#{manterProntuarioBean.pessoaReferencia}" />
+                <ui:param name="pessoaReferenciaSelecionada" value="#{manterProntuarioBean.pessoaReferenciaSelecionada}" />
+            </ui:include>
+			
+		  
+		   <!--  Reuso de componente TabMenuProntuarioUI  -->
+			
+			<ui:include src="/compositions/TabMenuProntuarioUI.xhtml"/>
+		    
+		  
+    	</h:form>				    
+		 
+			
+    </ui:define>
+</ui:composition>

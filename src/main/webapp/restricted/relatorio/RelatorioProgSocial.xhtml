@@ -1,0 +1,98 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório Programa Social</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Pessoas por Programa Social</h2>
+    	
+    	<h:form id="frmPesquisa">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:toolbar id="toolbar" style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:spacer width="5px" />
+					
+					<p:outputLabel value="Programa Social" for="programa"/><p:spacer width="5px" />
+	    			<p:selectOneMenu id="programa" 	    				
+	    				value="#{relatorioProgSocialBean.programa}" 		    			
+	    				required="true" 	    				
+		    			validatorMessage="O programa social é obrigatório."  >
+		    			<f:selectItem itemLabel="Selecione o programa social" />
+		    			<f:selectItems value="#{relatorioProgSocialBean.programas}" var="prog" 
+							itemLabel="#{prog}" itemValue="#{prog}" />	
+	    			</p:selectOneMenu>
+	    			
+	    			<p:spacer width="5px" />
+						
+					<p:commandButton title="Consultar Pessoas" value="Consultar" icon="pi pi-search"
+		            	actionListener="#{relatorioProgSocialBean.consultarPessoas}"
+		            	update="pessoasTable qde toolbar">		            		            	
+	            	</p:commandButton>			
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>			
+					
+	            	
+	            	<p:spacer width="5px" />
+		            
+		                        	
+	            	<p:commandButton title="Exportar para Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="pessoasTable" fileName="Relatorio_pessoas_programa_social" />
+		            </p:commandButton>
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:dataTable id="pessoasTable" value="#{relatorioProgSocialBean.pessoas}" var="pessoa"
+	    		style="margin-top: 20px" emptyMessage="Nenhuma Pessoa encontrada." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+	    		rowsPerPageTemplate="5,10,15">
+		    		
+		    		
+	    		<p:column headerText="Código Prontuário" style="width: 30px; text-align: center">
+					<h:outputText value="#{pessoa.familia.prontuario.codigo}" />
+				</p:column>
+				
+				<p:column style="width: 10px; text-align: center">
+					<h:outputText value="#{pessoa.familia.prontuario.programa}" />
+				</p:column>
+				
+		    	<p:column headerText="Prontuário Físico" style="width: 30px; text-align: center">
+					<h:outputText value="#{pessoa.familia.prontuario.prontuario}" />
+				</p:column>
+				
+				<p:column headerText="Codigo" style="width: 20px; text-align: center">
+					<h:outputText value="#{pessoa.codigo}" />
+				</p:column>
+				
+    			<p:column headerText="Nome" style="width: 120px; text-align: center">
+					<h:outputText value="#{pessoa.nome}" />
+				</p:column>
+				
+				<p:column headerText="Nome da Mãe" style="width: 100px; text-align: center">
+					<h:outputText value="#{pessoa.nomeMae}"/>
+				</p:column>	
+				
+				<p:column headerText="Unidade" style="width: 100px; text-align: center">
+					<h:outputText value="#{pessoa.familia.prontuario.unidade.nome}"/>
+				</p:column>				
+	    		
+    		</p:dataTable> 
+    		
+    		<p:spacer width="10px" />	
+    		<h:outputText value="Quantidade Total de Pessoas no Programa: "/> 	
+		    <h:outputText id="qde" value="#{relatorioProgSocialBean.qdeTotal}"/> 	  		
+	    		
+    	</h:form>
+    </ui:define>
+</ui:composition>

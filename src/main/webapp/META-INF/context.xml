@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<Context>
+
+	<!-- Configuração para uso do CDI -->
+	<Manager pathname="" />
+	
+	<Resource 
+		auth="Container"
+		name="BeanManager" 
+		type="javax.enterprise.inject.spi.BeanManager" 
+		factory="org.jboss.weld.resources.ManagerObjectFactory" />
+
+	<!-- 
+	<Realm className="org.apache.catalina.realm.JAASRealm" 
+	    appName="SVSA_Realm"
+	    configFile="jaas.config"
+	    userClassNames="com.softarum.svsa.util.jaas.SVSAPrincipal"
+	    roleClassNames="com.softarum.svsa.util.jaas.SVSAPrincipal" 
+	    useContextClassLoader="true"/>
+    -->
+</Context>

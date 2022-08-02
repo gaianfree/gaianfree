@@ -1,0 +1,166 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Acompanhamento PAIF/PAEFI</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Famílias em Acompanhamento PAIF/PAEFI</h2>
+    	
+    	<h:form id="frmPesquisa">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:toolbar id="toolbar" style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioAcompPAIFBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioAcompPAIFBean.unidades}" var="unid"
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>	            	
+	            	
+	    			<p:spacer width="5px" />
+					
+					<p:outputLabel value="Ano" for="anoRef"/>
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="anoRef" value="#{relatorioAcompPAIFBean.ano}">
+		    			<f:selectItems value="#{relatorioAcompPAIFBean.anos}" var="ano"
+							itemLabel="#{ano}" itemValue="#{ano}"/>
+		    		</p:selectOneMenu>
+		    		
+					<p:spacer width="5px" />
+				
+					<p:outputLabel value="Mês" for="mesRef"/>	 
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="mesRef" value="#{relatorioAcompPAIFBean.mes}">
+		    			<f:selectItem itemLabel="Selecione o mês" />
+		    			<f:selectItems value="#{relatorioAcompPAIFBean.meses}" var="mes" 
+							itemLabel="#{mes}" itemValue="#{mes}"/>
+		    		</p:selectOneMenu>
+					
+					<p:spacer width="5px" />
+	            	<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+		            <p:spacer width="5px" />    			
+						
+					<p:commandButton title="Novos casos que entraram em acompanhamento" value="Consultar" icon="pi pi-search"
+		            	actionListener="#{relatorioAcompPAIFBean.consultarNovosCasos}" 
+		            	process="@this unidade mesRef anoRef"
+		            	update="acompTable qde toolbar">		            		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="10px" />	
+						
+					<p:commandButton title="Total em Acompanhamento" value="Consultar Todos" icon="pi pi-search"
+		            	actionListener="#{relatorioAcompPAIFBean.consultarFamilias}"
+		            	update="acompTable qde toolbar">		            		            	
+	            	</p:commandButton>		
+					
+					<p:spacer width="5px" />
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>            	
+	            	<p:spacer width="5px" />
+		            
+		                        	
+	            	<p:commandButton title="Obter planilha do Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="acompTable" fileName="Relatorio_familias_em_acompanhamento" />
+		            </p:commandButton>
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:dataTable id="acompTable" value="#{relatorioAcompPAIFBean.listaDTO}" var="plano"
+	    		style="margin-top: 20px" emptyMessage="Nenhuma Família em Acompanhamento." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+	    		rowsPerPageTemplate="5,10,15">
+		    		
+		    		
+	    		<p:column headerText="Código Plano" style="width: 30px; text-align: center">
+	    			<h:outputText value="#{plano.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Data Ingresso" style="width: 50px; text-align: center"
+		    		sortBy="#{plano.dataIngresso}" >		    		
+		    		<h:outputText value="#{plano.dataIngresso}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Prazo em meses" style="width: 30px; text-align: center">
+	    			<h:outputText value="#{plano.prazoMeses}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Técnico que criou o plano" style="width: 100px; text-align: left"
+	    			filterBy="#{plano.tecnicoResponsavel}" >
+	    			<h:outputText value="#{plano.tecnicoResponsavel}" />
+	    		</p:column>	    		
+	    		
+	    		<p:column headerText="Código Prontuário" style="width: 30px; text-align: left"
+	    			filterBy="#{plano.codigoProntuario}" >
+	    			<h:outputText value="#{plano.codigoProntuario}" />
+	    		</p:column>	    		
+	    		
+	    		<p:column headerText="Pessoa Referência" sortBy="#{plano.pessoaReferencia}" style="width: 100px; text-align: left"
+	    			filterBy="#{plano.pessoaReferencia}" >
+	    			<h:outputText value="#{plano.codigoPessoa}-#{plano.pessoaReferencia}" />
+	    		</p:column>	
+	    		<p:column headerText="Bairro" style="width: 60px; text-align: left">
+	    			<h:outputText value="#{plano.bairro}" />
+	    		</p:column>	
+
+				<!-- -->
+	    		<p:column headerText="Operações" style="width: 30px; text-align: center">
+	    			<p:commandButton icon="pi pi-clock" title="Último Atendimento"						
+						onclick="PF('itemDialog').show()"
+						update=":frmPesquisa:detAtendimento"
+		        		process="@this">		        		
+		        		<f:setPropertyActionListener target="#{relatorioAcompPAIFBean.codigoPessoa}" 
+							value="#{plano.codigoPessoa}" />
+					</p:commandButton>
+		    	</p:column>
+ 				
+    		</p:dataTable> 
+    		
+    		<p:dialog header="Último Atendimento" widgetVar="itemDialog" 
+    			modal="true" resizable="false" closeOnEscape="true" responsive="true" 
+				showEffect="explode" hideEffect="explode"	position="center top">	
+	        	<p:outputPanel id="detAtendimento" style="text-align:center;">
+		            <p:panelGrid  columns="1" 
+		            	columnClasses="label,value">
+		   				<h:outputText value="#{relatorioAcompPAIFBean.ultimoAtendimento.pessoa.nome}" />
+		                <h:outputText value="#{relatorioAcompPAIFBean.ultimoAtendimento.dataAtendimento}" >
+			                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			            </h:outputText>
+			            <p:textEditor  			    		
+			    			value="#{relatorioAcompPAIFBean.ultimoAtendimento.resumoAtendimento}" 			    					    			
+			    			readonly="true">
+			    			<f:facet name="toolbar" > 
+			    				<span class="ql-formats"> </span>						            
+			    			</f:facet>
+				    	</p:textEditor>
+		            </p:panelGrid>
+	       		</p:outputPanel>
+	    	</p:dialog>
+    		
+    		<p:spacer width="10px" />	
+    		<h:outputText value="Quantidade Total de Famílias em Acompanhamento: "/> 	
+		    <h:outputText id="qde" value="#{relatorioAcompPAIFBean.qdeTotal}"/> 	  		
+	    		
+    	</h:form>
+    </ui:define>
+</ui:composition>

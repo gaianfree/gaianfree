@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">	
+	
+	<body>
+		<ui:composition>
+		<form>
+			<!--  Tratamento de Erros de sistema -->
+			<p:panel>
+				<p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+		                                update="exceptionDialog"
+		                                onexception="PF('exceptionDialog').show();" />
+		
+		        <p:ajaxExceptionHandler type="java.lang.Throwable"
+		                                update="exceptionDialog"
+		                                onexception="PF('exceptionDialog').show();"/>
+		                                
+                <p:ajaxExceptionHandler type="javax.faces.FacesException"
+		                                update="exceptionDialog"
+		                                onexception="PF('exceptionDialog').show();" />
+
+
+				<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occured!" 
+					modal="true" resizable="true" closeOnEscape="true"
+					widgetVar="exceptionDialog" height="200px">
+					
+				    Message: #{pfExceptionHandler.message} <br/><br/>				    
+				    
+				</p:dialog>		
+
+			</p:panel>
+	
+			<footer>				
+				
+				<div align="center" style="float: center">
+					<h:graphicImage library="imagens" name="prefeitura_salto.png"/>					
+					<p:spacer width="20px" />
+					<h:graphicImage library="imagens" name="ifsp2.png"/>					
+					<p:spacer width="10px" />	
+					<h:graphicImage library="imagens" name="logo_gaian.png"/>				
+				</div>				
+				
+			</footer>			
+		</form>	
+		</ui:composition>		
+	</body>
+
+</html>

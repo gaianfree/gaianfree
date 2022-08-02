@@ -1,0 +1,32 @@
+<!DOCTYPE xml>
+<menu>	
+	<submenu label="Prontuário" icon="pi pi-book">
+	    <menuitem value="Pesquisar Pessoa(*)" outcome="/restricted/agenda/PesquisaPessoa.xhtml"></menuitem>
+	    <menuitem value="Consultar Prontuario(*)" outcome="/restricted/prontuario/ConsultarProntuario.xhtml">
+			<!-- Restrição -->
+			<grupo value="ADMINISTRATIVOS"></grupo>  
+		</menuitem>
+		<menuitem value="Capa Prontuário" outcome="/restricted/rede/PesquisaCapaProntRede.xhtml">
+			<!-- Restrição -->
+			<grupo value="ADMINISTRATIVOS"></grupo>
+		</menuitem>
+		<submenu2 label="Relatórios">			
+			<menuitem2 value="Prontuários" outcome="/restricted/rede/RelatorioProntuariosRede.xhtml"></menuitem2>
+			<menuitem2 value="Pessoas" outcome="/restricted/rede/RelatorioPessoasRede.xhtml"></menuitem2>	
+		</submenu2>	
+		
+	</submenu>	
+	
+	<submenu label="Serviço" icon="pi pi-users">
+		<!-- Permissão -->
+		<grupo value="ADMINISTRATIVOS"></grupo>
+		<menuitem value="SCFV/Não Continuado" outcome="/restricted/scfv/ManterSCFVPesquisa.xhtml"></menuitem>
+		<menuitem value="SCFV/SISC(*)" outcome="/restricted/scfv/RelatorioSISC.xhtml"></menuitem>
+	</submenu>	
+	
+	<submenu label="Coordenação" icon="pi pi-th-large">
+		<grupo value="COORDENADORES"></grupo>
+		<menuitem value="Alterar Unidade" outcome="/restricted/unidade/AlterarUnidade.xhtml"></menuitem>
+		<menuitem value="Cadastro Usuario" outcome="/restricted/usuario/PesquisaUsuario.xhtml"></menuitem>
+	</submenu>	
+</menu>

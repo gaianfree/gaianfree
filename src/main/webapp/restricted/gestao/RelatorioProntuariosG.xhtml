@@ -1,0 +1,117 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Prontuários</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Prontuários</h2>
+     	
+    	<h:form id="frmPesquisa"> 
+    	
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+				
+			
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+					
+					<p:commandButton title="Gráfico de Prontuários" value="Gráfico de Pizza" icon="pi pi-chart-bar"	            		
+		            	actionListener="#{relatorioProntuariosGBean.initGraficoProntuarios}"
+		            	oncomplete="PF('atendDialogWidgetVar').show()"
+		            	update="atendDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="atendDialog" />		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Obter Gráfico de Barra" value="Gráfico de Barras"  icon="pi pi-chart-bar"	            		
+		            	actionListener="#{relatorioProntuariosGBean.initGraficoBarras}"
+		            	oncomplete="PF('atendDialogWidgetVar2').show()"
+		            	update="atendDialog2 toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="atendDialog2" />		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_prontuarios" />
+		            </p:commandButton>	
+					
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de itens de atendimento -->
+			<p:dataTable id="listaDataTable"  value="#{relatorioProntuariosGBean.listaProntuarios}" 
+				var="prontuarioTO"
+	    		style="margin-top: 20px" emptyMessage="Nenhum prontuário encontrado.">
+	    		
+	    		
+	    		<p:column headerText="Nome da Unidade" style="width: 100px; text-align: center">
+	    			<h:outputText value="#{prontuarioTO.nomeUnidade}" />
+	    		</p:column>    		
+  		
+		    	<p:column headerText="Prontuários ATIVOS" style="width: 60px; text-align: center" 
+		    		orderBy="#{prontuarioTO.qdeProntuariosAtivos}">
+	    			<h:outputText value="#{prontuarioTO.qdeProntuariosAtivos}" />
+	    		</p:column> 
+	    		<p:column headerText="Famílias PAIF/PAEFI (Prontuários ATIVOS)" style="width: 60px; text-align: center" 
+		    		orderBy="#{prontuarioTO.qdeProntuariosPAIF}">
+	    			<h:outputText value="#{prontuarioTO.qdeProntuariosPAIF}" />
+	    		</p:column> 
+	    		<p:column headerText="Prontuários INATIVOS" style="width: 60px; text-align: center" 
+		    		orderBy="#{prontuarioTO.qdeProntuariosInativos}">
+	    			<h:outputText value="#{prontuarioTO.qdeProntuariosInativos}" />
+	    		</p:column>
+	    		<p:column headerText="Prontuários EXCLUÍDOS" style="width: 60px; text-align: center" 
+		    		orderBy="#{prontuarioTO.qdeProntuariosExcluidos}">
+	    			<h:outputText value="#{prontuarioTO.qdeProntuariosExcluidos}" />
+	    		</p:column>	    		
+	    		<p:column headerText="Total" style="width: 60px; text-align: center" 
+		    		orderBy="#{prontuarioTO.qdeProntuarios}">
+	    			<h:outputText value="#{prontuarioTO.qdeProntuarios}" />
+	    		</p:column> 	    		
+    		
+		   	</p:dataTable>
+		   	
+		   	<p:spacer width="10px" />			
+					
+			<h3><h:outputText value="Total de Prontuários:  #{relatorioProntuariosGBean.qde}" /></h3>
+			<h3><h:outputText value="Total de Prontuários ATIVOS:  #{relatorioProntuariosGBean.qdeAtivos}"/></h3>
+			<h3><h:outputText value="Total de Prontuários INATIVOS:  #{relatorioProntuariosGBean.qdeInativos}"/></h3>
+		   	
+		   	<p:dialog id="atendDialog" header="Prontuarios" widgetVar="atendDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="pie" model="#{relatorioProntuariosGBean.graficoProntuarios}" 
+				style="width:600px;height:400px" />	
+			
+				<p:outputLabel value="Quantidade de Prontuários =  " for="qde"/>
+				<h:outputText id="qde" value="#{relatorioProntuariosGBean.qdeProntuarios}"/>			
+			</p:dialog>	
+			
+			<p:dialog id="atendDialog2" header="Prontuarios" widgetVar="atendDialogWidgetVar2"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="bar" model="#{relatorioProntuariosGBean.barModel}"
+				style="width:600px;height:400px" />				
+				
+			</p:dialog>	
+		   	
+    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

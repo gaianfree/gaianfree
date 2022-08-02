@@ -1,0 +1,97 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+
+    		
+		    <!-- Panel Situacoes de Violencia  --> 
+    		
+    		
+		   <p:dataTable id="membrosTable"  value="#{manterProntuarioBean.mpViolenciaBean.membros}" 
+	    		var="pessoa" emptyMessage="Nenhum membro encontrado."
+	    		paginator="true" rows="7" paginatorPosition="bottom" paginatorAlwaysVisible="true"
+	    		rowStyleClass="#{pessoa.status eq 'INATIVO' ? 'inativo' : null}"
+	    		selectionMode="single" selection="#{manterProntuarioBean.mpViolenciaBean.pessoa}" rowKey="#{pessoa.codigo}"> 
+			    		
+	    		<p:ajax event="rowSelect" update="frmProntuario:tab1:tabViewIndividual:situacoesViolenciaTable"/>
+				<p:ajax event="rowUnselect"/>
+	    		
+	    		<f:facet name="header">
+			            Membros da Família (Situações de Violência)
+			    </f:facet>
+	    													    			    				    		
+	    		<p:column headerText="Código" style="width: 10px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column style="width: 3px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.mse}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome" style="width: 100px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome Social" style="width: 80px; text-align: center">
+	    			<h:outputText value="#{pessoa.nomeSocial}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Parentesco" style="width: 40px; text-align: center">
+	    			<h:outputText value="#{pessoa.parentescoPessoaReferencia}" />
+	    		</p:column>  
+	    		
+	    		<p:column headerText="Idade" style="width: 10px; text-align: center">
+	    			<h:outputText value="#{pessoa.idade}" />
+	    		</p:column>	    		
+	 	    		
+		   	</p:dataTable>
+		    	
+		    <p:spacer height="5px" />
+	    		
+	    	<p:dataTable id="situacoesViolenciaTable" 
+	    		value="#{manterProntuarioBean.mpViolenciaBean.situacoesViolencia}" 
+	    		var="situacaoViolencia"
+	    		style="margin-top: 5px" 
+	    		emptyMessage="Nenhuma situação de violência encontrada para esse membro." rows="5"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom">
+		    		
+		    		
+		    	<f:facet name="header">
+		            Situações de Violência ou Violações de Direitos
+		        </f:facet>	
+		    	
+		    	<p:column headerText="Código" style="width: 8px; text-align: center">
+					<h:outputText value="#{situacaoViolencia.codigo}" />
+				</p:column>
+				
+				<p:column headerText="Pessoa"
+				style="width: 100px; text-align: center">
+				<h:outputText value="#{situacaoViolencia.pessoa.nome}" />
+				</p:column>
+				
+				<p:column headerText="Situação"
+				style="width: 80px; text-align: center">
+				<h:outputText value="#{situacaoViolencia.situacao}" />
+				</p:column>
+				
+	    		<p:column headerText="Data"
+				style="width: 30px; text-align: center" sortBy="#{situacaoViolencia.data}">
+				<h:outputText value="#{situacaoViolencia.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				</p:column>
+	    			    		
+	    		<p:column headerText="Descrição"
+				style="width: 120px; text-align: center">
+				<h:outputText value="#{situacaoViolencia.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Técnico" style="width: 60px; text-align: center">
+	    			<h:outputText value="#{situacaoViolencia.tecnico.nome}" />
+	    		</p:column>	
+		   	</p:dataTable>
+
+</ui:composition>

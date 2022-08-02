@@ -1,0 +1,199 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Abordagem Social</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Abordagem Social</h2> 
+     	
+    	<h:form id="frmAbordagem"> 
+    	
+    		<p:growl id="growl" showDetail="false">
+    			<p:autoUpdate />
+    		</p:growl>  
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+				
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						disabled="#{!relatorioAbordagensBean.creas}"
+						value="#{relatorioAbordagensBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						disabled="#{!relatorioAbordagensBean.creas}"
+						value="#{relatorioAbordagensBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Abordagens" value="Consultar" icon="pi pi-search"
+						disabled="#{!relatorioAbordagensBean.creas}"           		
+		            	actionListener="#{relatorioAbordagensBean.consultarPeriodo}"
+		            	update="listaDataTable toolbar"
+		            	process="@this datai dataf">		            		            	
+	            	</p:commandButton>			
+					
+
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+	            		disabled="#{!relatorioAbordagensBean.creas}"
+		            	ajax="false" process="listaDataTable">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_abordagens" />
+		            </p:commandButton>	
+					
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de abordagens -->
+			<p:dataTable id="listaDataTable"  value="#{relatorioAbordagensBean.abordagens}" var="abordagem"
+	    		style="margin-top: 20px" emptyMessage="Nenhuma abordagem encontrada." 
+	    		rowsPerPageTemplate="10,15,20" rows="10"  
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" >
+
+		    	<p:column headerText="Data" style="width: 20px; text-align: center"
+		    		sortBy="#{abordagem.data}">		    		
+		    		<h:outputText value="#{abordagem.data}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>	    		
+	    		</p:column>	    				    		
+
+    			<p:column headerText="Nome" style="width: 80px; text-align: center">	    			
+	    			<h:outputText value="#{abordagem.pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Situação" style="width: 80px; text-align: center">	    			
+	    			<h:outputText value="#{abordagem.situacao}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Descrição" style="width: 100px; text-align: center">	    			
+	    			<h:outputText value="#{abordagem.descricao}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Técnico" style="width: 80px; text-align: center">		
+	    			<h:outputText value="#{abordagem.tecnico.nome}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Operações" style="width: 25px; text-align: center" >		    		
+		    		
+		    		<p:commandButton icon="pi pi-pencil" title="Editar abordagem"
+		    			oncomplete="PF('aborDialogWidgetVar').show();"
+		    			update="frmAbordagem:addGrid" 
+		            	process="@this">
+						<f:setPropertyActionListener target="#{relatorioAbordagensBean.abordagem}" 
+							value="#{abordagem}" />
+					</p:commandButton>									    		
+
+		    		<p:commandButton icon="pi pi-trash" title="Excluir abordagem"
+		    			rendered="#{relatorioAbordagensBean.coordenador}"
+		    			oncomplete="PF('confirmacaoExclusaoWidgetVar').show()"		            	
+		            	process="@this">
+						<f:setPropertyActionListener target="#{relatorioAbordagensBean.abordagem}" 
+							value="#{abordagem}" />
+					</p:commandButton>					
+		    	</p:column>
+    		
+		   	</p:dataTable>
+   	
+			<p:dialog id="aborDialog" header="Abordagem" widgetVar="aborDialogWidgetVar"				
+	   			modal="true" resizable="true" closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll" position="center top">
+				
+		    	<p:panelGrid id="addGrid" columns="2" 
+		    		columnClasses="rotulo, campo">				    	
+			    
+	    			<p:outputLabel value="Data " for="data" size="30"/>
+		    		<p:calendar id="data" 
+		    			readonly="#{!relatorioAbordagensBean.coordenador}"
+		    			value="#{relatorioAbordagensBean.abordagem.data}" 
+			    		required="true"
+			    		showOn="button" 
+				    	validatorMessage="A data é obrigatória."
+				    	pattern="dd/MM/yyyy"
+						mask="99/99/9999"/>
+  
+	    			<p:outputLabel value="Situação" for="aux" />
+		    		<p:selectOneMenu id="aux" 
+		    			required="true" 
+		    			value="#{relatorioAbordagensBean.abordagem.situacao}"
+		    		    validatorMessage="A situação é obrigatória.">		    		    
+		    			<f:selectItem itemLabel="Selecione a situação" />
+		    			<f:selectItems value="#{relatorioAbordagensBean.situacoes}" var="sit"
+							itemLabel="#{sit}" itemValue="#{sit}"/>
+		    		</p:selectOneMenu>
+	    			
+	    			<p:outputLabel value="Nome" for="nomePessoa"/>
+		    		<p:inputText id="nomePessoa" size="70" maxlength="150"
+		    			readonly="true" 
+		    			validatorMessage="O nome é obrigatório."
+		    			value="#{relatorioAbordagensBean.abordagem.pessoa.nome}"/>	    			
+												
+					<p:outputLabel value="Descrição" for="descr"/>
+		    		<h:panelGroup>
+		    			<p:inputTextarea id="descr" size="100" rows="4" cols="80" style="height: 100px; overflow:auto;"
+			    			maxlength="250" 
+		    				value="#{relatorioAbordagensBean.abordagem.descricao}"
+			    			counter="display"
+							counterTemplate="{0} restantes"/>
+				    	<h:outputText id="display" />
+					    <p:watermark for="descr" value="Descreva aqui a abordagem." />		
+		        	</h:panelGroup>	
+		    				
+		    		<h:outputLabel />		    			
+	           		<p:commandButton icon="pi pi-save" id="salvar" value="Salvar" 
+						title="Salva a descrição da abordagem"
+						actionListener="#{relatorioAbordagensBean.alterar}"
+						oncomplete="if (!args.validationFailed) PF('aborDialogWidgetVar').hide()" 			
+						update="addGrid frmAbordagem:listaDataTable frmAbordagem:growl"								
+						process="addGrid">
+					</p:commandButton>
+
+		    	</p:panelGrid>
+	    	</p:dialog>	
+	    	
+	    	
+	    	
+	    	<p:confirmDialog id="confirmacaoExclusaoDialog"
+				widgetVar="confirmacaoExclusaoWidgetVar"
+				message="Confirma a exclusão?"
+				header="Exclusão de ação" severity="alert">
+				
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoExclusaoWidgetVar').hide(); return false;" />
+					
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+				    update="frmAbordagem:listaDataTable frmAbordagem:toolbar frmAbordagem:growl"
+					onclick="PF('confirmacaoExclusaoWidgetVar').hide();"
+					action="#{relatorioAbordagensBean.excluir}" 
+					process="@this"/>
+					
+			</p:confirmDialog>  	
+    	
+    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

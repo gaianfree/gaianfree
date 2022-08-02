@@ -1,0 +1,219 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Encaminhamentos Outros</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Encaminhamento Externo</h2>
+    	
+    	<h:form id="frmEncam">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioEncExternoBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioEncExternoBean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>	    			
+	    			
+	    			<p:spacer width="10px" />
+				
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioEncExternoBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioEncExternoBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Encaminhamentos" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioEncExternoBean.consultarEncaminhamentos}"
+		            	update="encamTable qde toolbar">		            		            	
+	            	</p:commandButton>			
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>				
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="encamTable" fileName="Relatorio_Encaminhamentos_Outros" />
+		            </p:commandButton>
+		            
+		            <p:spacer width="5px" />
+	            	
+	            	<p:commandButton id="bar" title="Obter Gráfico de Barras" value="Gráfico Encaminhamento Externo" icon="pi pi-chart-bar"
+	            		actionListener="#{relatorioEncExternoBean.initGraficoBarras}"
+		            	oncomplete="PF('encDialogWidgetVar').show()"
+		            	update="encDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="encDialog" />		            	
+	            	</p:commandButton>
+					
+				</f:facet>
+			</p:toolbar>
+	    	
+	    	<p:dataTable id="encamTable" value="#{relatorioEncExternoBean.listaEncaminhamentos}" var="encam"
+	    		style="margin-top: 20px" emptyMessage="Nenhum prontuário encaminhado." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" rowsPerPageTemplate="10,15"
+	    		selectionMode="single" selection="#{relatorioEncExternoBean.encaminhamento}"
+		    	rowKey="#{encam.codigo}"> 
+			    		
+	    		<p:ajax event="rowSelect"/>				
+				<p:ajax event="rowUnselect"/>				
+	    		
+	    		<p:column headerText="Data Encaminhamento" style="width: 50px; text-align: center"
+		    		sortBy="#{encam.data}" >		    		
+		    		<h:outputText value="#{encam.data}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Pessoa" style="width: 100px; text-align: center"
+	    			sortBy="#{encam.pessoa.nome}" >
+	    			<h:outputText value="#{encam.pessoa.codigo} - #{encam.pessoa.nome}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Código Encaminhamento" style="width: 60px; text-align: center">
+	    			<h:outputText value="#{encam.codigoEncaminhamento}" />
+	    		</p:column>    		
+	    		
+	    		<p:column headerText="Unidade Destino" style="width: 40px; text-align: center">
+	    			<h:outputText value="#{encam.orgaoUnidadeDestino}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Técnico" style="width: 60px; text-align: center"
+	    			filterBy="#{encam.tecnico.nome}" >
+	    			<h:outputText value="#{encam.tecnico.nome}" />
+	    		</p:column>
+		    		
+	    		<p:column headerText="Operações" style="width: 20px; text-align: center">				    	
+			    	
+			    	<p:commandButton 
+			    		update="frmEncam:detalheGrid" 
+	 						onclick="PF('detalheWidget').show()" 
+	 						title="Ver detalhe" 
+	 						icon="pi pi-info"
+	 						process="@this">
+	 						<f:setPropertyActionListener target="#{relatorioEncExternoBean.encaminhamento}" 
+							value="#{encam}" />			                
+	            	</p:commandButton>
+	            	
+	            	<p:commandButton icon="pi pi-angle-double-right" title="Migrar"
+							rendered="#{relatorioAtendimentosBean.coordenador}"
+							disabled ="#{!relatorioEncExternoBean.mesmaUnidade}"
+		    				onclick="PF('miDialogWidgetVar').show();"
+							process="@this">
+						<f:setPropertyActionListener target="#{relatorioEncExternoBean.itemMigrar}" value="#{encam}" />
+					</p:commandButton>
+					
+	            </p:column>	    	
+    		</p:dataTable> 
+    		
+    		<p:spacer width="10px" />
+    		<h4>
+    			<h:outputText id = "qde" 
+    				value="Quantidade de Encaminhamentos [#{relatorioEncExternoBean.unidade.nome}] = #{relatorioEncExternoBean.qdeTotal}"/>
+    		</h4>	
+	    
+		    
+		    
+		    <p:dialog id="detalheDialog" header="Mostrar Detalhes" 
+		   		widgetVar="detalheWidget" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="true"
+		   		closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:auto"
+				position="left top">
+		   		
+	            <p:panelGrid id="detalheGrid" columns="2" columnClasses="label,value">                
+	                
+	                <h:outputLabel for="enc1" value="Motivo do encaminhamento: " style="font-weight:bold"/>
+	                <h:outputText id="enc1" value="#{relatorioEncExternoBean.encaminhamento.motivo}"/>
+	                
+	                <h:outputLabel for="enc2" value="Anotação Complementar: " style="font-weight:bold"/>
+	                <h:outputText id="enc2" value="#{relatorioEncExternoBean.encaminhamento.anotacaoComplementar}"/>		                
+	                
+	            </p:panelGrid>
+    		</p:dialog>  
+    		
+    		<p:dialog id="encDialog" header="Encaminhamentos" widgetVar="encDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="bar" model="#{relatorioEncExternoBean.barModel}"
+				style="width:600px;height:400px" />
+				
+			</p:dialog>			
+	    	
+	    	<!--  Migração do encaminhamento -->
+	    	
+	    	<p:dialog id="miDialog" header="Migrar encaminhamento" widgetVar="miDialogWidgetVar" 
+				modal="true" resizable="false" closeOnEscape="true">
+				
+				<p:growl id="miGrowl" showDetail="true" />     
+    							
+				<p:panelGrid id="miGrid" columns="2">
+						
+					<p:outputLabel value="Código da Pessoa: " for="pe"/>
+		
+					<h:panelGroup>
+						<p:inputText id="pe" size="10" maxlength="10" 
+			    			value="#{relatorioEncExternoBean.codigoPessoa}">
+			    			
+			    			<p:ajax event="keyup" listener="#{relatorioEncExternoBean.buscarNomePessoa}" update="nomeMigracao" />
+			    		</p:inputText>
+			    		<p:spacer width="10px" />
+						<h:outputText id="nomeMigracao" value="#{relatorioEncExternoBean.nomePessoa}" />
+					</h:panelGroup>
+						
+		    		<p:button icon="pi pi-thumbs-down" value="Cancelar" 
+	        			onclick="PF('miDialogWidgetVar').hide(); return false;" />
+	        			
+		    		<p:commandButton icon="pi pi-save" id="salvarMiButton" value="Confirmar" 
+						actionListener="#{relatorioEncExternoBean.migrarEncaminhamento}"
+						update="encamTable miGrid miGrowl"
+						oncomplete="if (!args.validationFailed) PF('miDialogWidgetVar').hide()" 
+						process="miDialog"/>
+										
+		    		
+		    	</p:panelGrid>
+			</p:dialog>	
+	    		
+    	</h:form>
+    </ui:define>
+</ui:composition>

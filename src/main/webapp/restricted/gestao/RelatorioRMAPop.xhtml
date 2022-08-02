@@ -1,0 +1,345 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Registro Mensal de Atendimentos POP</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>RMA POP</h2>
+     	
+    	<h:form id="frmPop"> 
+    	
+    		<p:growl id="growl" showDetail="true"> 
+    			<p:autoUpdate />
+    		</p:growl>
+			
+			<p:toolbar id="toolbar" rendered="#{!relatorioRMAPopBean.gestor}">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					<p:outputLabel value="Mês : " for="mesesFechar"/>	 
+					
+					<p:spacer width="10px" />
+					
+					<p:selectOneMenu id="mesesFechar"
+		    			value="#{relatorioRMAPopBean.mes}">
+		    			<f:selectItems value="#{relatorioRMAPopBean.mesesFechar}" var="mes" 
+							itemLabel="#{mes}" itemValue="#{mes}"/>
+		    		</p:selectOneMenu>  			
+		    		
+					<p:spacer width="10px" />
+						
+					<p:commandButton title="RMA" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioRMAPopBean.gerarRMA}"
+		            	process="@this mesesFechar"
+		            	update="frmPop toolbar">		            		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="20px" />
+	            	
+	            	<p:commandButton title="Fechar RMA" value="Fechar RMA" icon="pi pi-search"            	
+		            	oncomplete="PF('fecharWidgetDialog').show()"
+		            	disabled="#{!relatorioRMAPopBean.coordenador}"
+		            	update="fecharDialog toolbarGestor"
+		            	process="@this">
+		            	<p:resetInput target="fecharDialog" />
+	            	</p:commandButton>	            	
+	            	           	
+				</f:facet>
+			</p:toolbar>	
+			
+			<p:spacer height="5px" />			
+			
+			<p:toolbar id="toolbarGestor">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="RMA Fechado: "/>
+					<p:spacer width="10px" />	 
+					<p:outputLabel value="Unidade: " for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioRMAPopBean.unidade}">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioRMAPopBean.unidades}" var="unid"
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+							
+						<p:ajax listener="#{relatorioRMAPopBean.buscarRmasFechados}" 
+							update="mesAnoRef2 growl" process="unidade"/>
+	    			</p:selectOneMenu>	
+		    		
+					<p:spacer width="10px" />
+				
+					<p:outputLabel value="Mês/Ano" for="mesAnoRef2"/>	 
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="mesAnoRef2" value="#{relatorioRMAPopBean.mesAnoRef}">
+		    			<f:selectItem itemLabel="Selecione o mês/ano de referência" />
+		    			<f:selectItems value="#{relatorioRMAPopBean.rmasFechados}" var="ref"
+							itemLabel="#{ref}" itemValue="#{ref}"/>
+		    		</p:selectOneMenu>
+		    		
+					<p:spacer width="10px" />
+						
+					<p:commandButton title="Consultar RMA fechado" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioRMAPopBean.buscarRmaFechado}"
+		            	process="@this mesAnoRef2 unidade"
+		            	update="frmPop toolbarGestor">		            		            	
+	            	</p:commandButton>
+	            	
+				</f:facet>
+			</p:toolbar>
+			
+			<p:spacer height="15px" />
+			
+			<!--  Cabecalho RMA-->			
+			<p:panel id="basic" style="margin-bottom:20px" 
+				header="#{relatorioRMAPopBean.rma.unidade.nome}   ---->  #{relatorioRMAPopBean.rma.mesAnoReferencia}">
+			</p:panel>				
+			
+			
+			
+			<!--  Bloco I  -->			
+			
+			<p:panel id="basic1" style="margin-bottom:20px" 
+				header="Bloco I - Serviço Especializado para Pessoas em Situação de Rua.">
+			
+				<p:panelGrid id="blocoA" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="A - Pessoas em situação de rua atendidas no serviço durante o mês de referência." />
+				    </f:facet>				    
+		
+					<h:outputText value="A.1. Quantidade e perfil das pessoas em situação de rua atendida no mes de referência." />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1}" />  				
+					
+					<h:panelGroup>
+					    <p:panelGrid>
+						    <f:facet name="header">			           
+				            <p:row>
+				                <p:column>Sexo</p:column>
+				                <p:column>0 a 12</p:column>
+				                <p:column>13 a 17</p:column>
+				                <p:column>18 a 39</p:column>
+				                <p:column>40 a 59</p:column>
+				                <p:column>60 ou mais</p:column>
+				            </p:row>			
+					        </f:facet>
+					        <p:row>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasFem.sexo}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasFem.idade0a6}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasFem.idade0a12}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasFem.idade13a17}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasFem.idade18a59}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasFem.idade60mais}"/></p:column>
+					        </p:row>
+					        <p:row>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasMasc.sexo}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasMasc.idade0a6}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasFem.idade0a12}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasMasc.idade13a17}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasMasc.idade18a59}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco1.a1vitimasMasc.idade60mais}"/></p:column>
+					        </p:row>	
+					    </p:panelGrid>
+					    
+					 </h:panelGroup>
+					 <h:outputText value=""/>
+				</p:panelGrid>
+				
+				<h:outputText value=""/>
+				<h:outputText value="Atenção: Em A1 cada pessoa deve ser contada uma única vez em cada mês, 
+											mesmo que tenha sido atendidas várias vezes durante o mesmo mês." />
+			
+				
+				<p:panelGrid id="blocoB" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="B - Características específicas identificadas em pessoas atendidas no serviço durante o mês de referência." />
+				    </f:facet>
+				     
+				    <h:outputText value="B.1. Pessoas usuárias de crack ou outras drogas ilícitas" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.b1}" />
+				    
+				    <h:outputText value="B.2. Migrantes" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.b2}" />
+				    
+				    <h:outputText value="B.3. Pessoas com doença ou transtorno mental" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.b3}" />
+				    
+				    <h:outputText value="B.4. Usuárias de alcool" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.b4}" />			    	
+				</p:panelGrid>
+				
+				<p:panelGrid id="blocoC" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="C - Cadastramento de pessoas em situação de rua durante o mês de referência." />
+				    </f:facet>
+				     
+				    <h:outputText value="C.1. Pessoas que foram incluídas no Cadastro Único para Programas Sociais, no mês." />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.c1}" />
+				    
+				    <h:outputText value="C.2. Pessoas que realizaram atualização no Cadastro Único para Programas Sociais, no mês." />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.c2}" />				    
+				</p:panelGrid>
+				
+				<p:panelGrid id="blocoD" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="D. Volume total de atendimentos realizados no mês de referência." />
+				    </f:facet>
+				     
+				    <h:outputText value="D.1. Quantidade total de atendimentos realizados (compreendida como a soma do número de 
+				    					atendimentos realizados a cada dia, durante o mês de referência)" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco1.d1}" />			    
+				</p:panelGrid>
+				
+				
+			</p:panel>
+			
+			
+			
+			
+			<!--  Bloco II -->			
+			
+			<p:panel id="basic2" style="margin-bottom:20px" 
+				header="Bloco II - Serviço Especializado em Abordagem Social no Centro POP.">
+			
+				<p:panelGrid id="blocoE" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="E. Quantidade e perfil das pessoas abordadas pela equipe do Serviço de Abordagem, no mês de referência." />
+				    </f:facet>				    
+		
+					<h:outputText value="E.1. Quantidade e perfil das pessoas abordadas pela equipe do Serviço de Abordagem, no mês de referência." />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1}" />  				
+					
+					<h:panelGroup>
+					    <p:panelGrid>
+						    <f:facet name="header">			           
+				            <p:row>
+				                <p:column>Sexo</p:column>
+				                <p:column>0 a 12</p:column>
+				                <p:column>13 a 17</p:column>
+				                <p:column>18 a 39</p:column>
+				                <p:column>40 a 59</p:column>
+				                <p:column>60 ou mais</p:column>
+				            </p:row>			
+					        </f:facet>
+					        <p:row>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasFem.sexo}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasFem.idade0a6}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasFem.idade0a12}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasFem.idade13a17}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasFem.idade18a59}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasFem.idade60mais}"/></p:column>
+					        </p:row>
+					        <p:row>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasMasc.sexo}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasMasc.idade0a6}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasFem.idade0a12}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasMasc.idade13a17}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasMasc.idade18a59}"/></p:column>
+						        <p:column><h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e1vitimasMasc.idade60mais}"/></p:column>
+					        </p:row>	
+					    </p:panelGrid>
+					    
+					 </h:panelGroup>
+					 <h:outputText value=""/>
+				</p:panelGrid>
+				
+				<h:outputText value=""/>
+				<h:outputText value="Atenção: Em E1 cada pessoa deve ser contada uma única vez em cada mês, 
+										 mesmo que tenha sido abordada várias vezes durante o mesmo mês." />
+				
+				<p:panelGrid id="blocoEE" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="Situações identificadas pelo Serviço Especializado em Abordagem Social, no mês de referência." />
+				    </f:facet>
+				     
+				    <h:outputText value="E.2. Crianças ou adolescentes em situação de trabalho infantil (até 15 anos)" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e2}" />
+				    
+				    <h:outputText value="E.3. Crianças ou adolescentes em situação de exploração sexual" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e3}" />
+				    
+				    <h:outputText value="E.4. Crianças ou adolescentes usuárias de crack ou outras drogras" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e4}" />
+				    
+				    <h:outputText value="E.5. Pessoas adultas usuárias de crack ou outras drogas ilícitas" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e5}" />
+				    
+				    <h:outputText value="E.6. Migrantes" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e6}" />
+				    
+				    <h:outputText value="E.7. Usuárias de alcool" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.e7}" />					
+				</p:panelGrid>
+				
+				<h:outputText value=""/>
+				<h:outputText value="Atenção: Os itens E2 a E6 buscam identificar apenas alguns 'perfis/condições' das pessoas abordadas, 
+									portanto é normal que algumas pesoas contadas no item E1 não se enquadrem em nenhum dos 'perfis/confições' 
+									descritos, enquanto outras pessoas podem se enquadrar simultaneamente em mais de um, portanto, 
+									a soma de E2 a E6 não terá, necessariamente, o mesmo valor relatado no total de E1." />
+						
+				
+				<p:panelGrid id="blocoF" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="F. Volume de abordagens realizadas." />
+				    </f:facet>
+				     
+				    <h:outputText value="F.1. Quantidade total de abordagens realizadas (compreendida como o número de pessoas abordadas, 
+				    					multiplicado pelo número de vezes em que foram abordadas durante o mês)" />
+				    <h:outputText value="#{relatorioRMAPopBean.rma.bloco2.f1}" />							    
+				</p:panelGrid>
+				
+				<h:outputText value="Atenção: Quando a abordagem é feita a um grupo, cada pessoa do grupo é contada como uma abordagem." />
+			
+			</p:panel>
+			
+			
+			
+			
+			
+			
+			<p:dialog id="fecharDialog" header="Fechamento de RMA" widgetVar="fecharWidgetDialog"
+				modal="true" resizable="true" closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				position="center top">	
+				
+				<div class="card">
+	    			<h2>Atenção!</h2>
+									
+					
+					<p:panelGrid id="panelGrid" columns="1" style="width: 100%" 
+						columnClasses="rotulo, campo">
+						
+						<f:facet name="header">
+				        	<h:outputText value="O RMA uma vez fechado não pode ser mais alterado!" />
+				    	</f:facet>
+						
+		    			<p:selectOneMenu id="mesfechar" required="true" 
+			    			value="#{relatorioRMAPopBean.mesFechar}"
+			    			validatorMessage="O mês é obrigatório para o fechamento.">
+			    			<f:selectItem itemLabel="Selecione o mês a ser fechado" />
+			    			<f:selectItems value="#{relatorioRMAPopBean.mesesFechar}" var="mes" 
+								itemLabel="#{mes}" itemValue="#{mes}"/>
+			    		</p:selectOneMenu>    		
+				
+				
+						<p:commandButton icon="pi pi-save" id="botaoFechar" value="Fechar RMA"  
+							title="Fechar o RMA do mês"
+							actionListener="#{relatorioRMAPopBean.fecharRma}"
+							oncomplete="if (!args.validationFailed) PF('fecharWidgetDialog').hide()"
+							update="toolbarGestor toolbar"
+							process="fecharDialog">
+						</p:commandButton>	
+						
+					</p:panelGrid>
+				</div>   	
+			</p:dialog>				
+	    
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

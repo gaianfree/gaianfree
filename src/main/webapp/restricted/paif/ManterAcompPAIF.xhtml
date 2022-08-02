@@ -1,0 +1,324 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">PAIF/PAEFI</ui:define>
+    
+    <ui:define name="corpo">
+    
+    	
+    	
+    	<h:form id="frmPaif">
+    		
+    		<p:growl id="growl" showDetail="false">
+    			<p:autoUpdate />
+    		</p:growl>       		    			
+			
+		
+			<p:toolbar id="toolbar" >			
+				<f:facet name="left">	
+					<p:commandButton value="Pesquisar Pessoa de Referência" icon="pi pi-search" 
+						title="Pesquisar Pessoa de Referência" 
+						actionListener="#{manterAcompPAIFBean.abrirDialogo}"
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{manterAcompPAIFBean.selecionarPessoaReferencia}"
+					 		update="frmPaif growl"
+					 		process="@this"/>
+					</p:commandButton>					
+				</f:facet>
+			</p:toolbar>			
+			
+			
+		    <!-- Prontuario Pessoa de Referencia -->			
+			<!--  Reuso de componente  -->
+			<p:panel id="componente">
+				<ui:include src="/compositions/PessoaReferenciaUI.xhtml">
+	                <ui:param name="pessoaReferencia" value="#{manterAcompPAIFBean.pessoaReferencia}" />
+	                <ui:param name="pessoaReferenciaSelecionada" value="#{manterAcompPAIFBean.pessoaReferenciaSelecionada}" />
+	            </ui:include>
+    		</p:panel>
+    		
+		    <!-- Panel Plano de Acompanhamento -->
+    		
+    		
+		    <p:outputPanel id="planoPanel" rendered="#{manterAcompPAIFBean.pessoaReferenciaSelecionada}">
+		    	
+	    		<p:toolbar id="toolbar1" style="margin-top: 5px">
+	    			<f:facet name="left">
+		    			<p:commandButton title="Novo Plano" icon="pi pi-user-plus"
+			            	value="Novo Plano" 
+			            	disabled="#{not manterAcompPAIFBean.prontuarioSelecionado}"
+			            	actionListener="#{manterAcompPAIFBean.limpar}" 
+			            	oncomplete="PF('planoDialogWidgetVar').show()"
+			            	update="planoDialog" 
+			            	process="@this">
+			            	<p:resetInput target="planoDialog" />	
+		            	</p:commandButton>
+					</f:facet>
+				</p:toolbar>		    	
+		    	
+		    	<p:dataTable id="planosTable" value="#{manterAcompPAIFBean.planos}" var="plano"
+		    		style="margin-top: 5px" emptyMessage="Nenhum plano encontrado." rows="5"
+		    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+		    		selectionMode="single" selection="#{manterAcompPAIFBean.plano}" rowKey="#{plano.codigo}"> 
+			    		
+		    		<p:ajax event="rowSelect" update=":frmPaif:metasTable :frmPaif:toolbar2" process="@this" 
+		    			listener="#{manterAcompPAIFBean.metaBean.buscarMetas}"/>
+					<p:ajax event="rowUnselect"/>
+			    		
+			    	<f:facet name="header">
+			            Lista de Planos de Acompanhamento
+			        </f:facet>	
+			    	
+			    	<p:column headerText="Código" style="width: 8px; text-align: center">
+						<h:outputText value="#{plano.codigo}" />
+					</p:column>
+					
+					<p:column headerText="Ingresso" style="width: 35px; text-align: center"
+						sortBy="#{plano.dataIngresso}" >					
+		    			<h:outputText value="#{plano.dataIngresso}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>
+					
+		    		<p:column headerText="Desligamento" style="width: 35px; text-align: center"
+		    			sortBy="#{plano.dataDesligamento}">
+		    			<h:outputText value="#{plano.dataDesligamento}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+		    		</p:column>
+		    		
+		    		<p:column headerText="Atualização" style="width: 25px; text-align: center">					
+		    			<h:outputText value="#{plano.dataModificacao}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>
+		    			    		
+		    		<p:column headerText="Objetivos" style="width: 120px; text-align: center">
+		    			<h:outputText value="#{plano.objetivos}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Tec. Responsável" style="width: 60px; text-align: center">
+		    			<h:outputText value="#{plano.tecnico.nome}" />	
+	    			</p:column> 
+		    		
+		    		<p:column headerText="Técnicos Adicionais" style="width: 80px; text-align: center">
+		    			<p:dataList id="nomesTecs" value="#{plano.tecnicos}" var="tec" type="ordered">
+					       	#{tec.nome}
+					    </p:dataList>			
+	    			</p:column> 
+	    			
+	    			<p:column headerText="Operações" style="width: 70px; text-align: center" >				    	
+				    	
+				    	<p:commandButton 
+				    		update=":frmPaif:detPanel :frmPaif:detGrid" 
+	  						onclick="PF('detPlanWidgetDialog').show()" 
+	  						title="Ver detalhe" 
+	  						icon="pi pi-info"
+	  						process="@this">
+	  						<f:setPropertyActionListener target="#{manterAcompPAIFBean.plano}" 
+									value="#{plano}" />		                
+		            	</p:commandButton>			    	
+			    		
+			    		<p:commandButton icon="pi pi-pencil" title="Editar" disabled="#{plano.dataDesligamento ne null}"
+			    			actionListener="#{manterAcompPAIFBean.carregarTecnicosPlano(plano)}"	    			
+			    			oncomplete="PF('planoDialogWidgetVar').show();"
+			    			update="planosTable :frmPaif:planoGrid" 
+							process="@this">
+							<f:setPropertyActionListener target="#{manterAcompPAIFBean.plano}" 
+								value="#{plano}" />
+						</p:commandButton>		    		
+	
+			    		<p:commandButton icon="pi pi-trash" title="Excluir" disabled="#{plano.dataDesligamento ne null}"
+			    			onclick="PF('confirmacaoExclusao').show();"
+							process="@this">
+							<f:setPropertyActionListener target="#{manterAcompPAIFBean.plano}" 
+								value="#{plano}" />
+						</p:commandButton>
+
+			    		
+			    		<p:commandButton icon="pi pi-power-off" value="Encerrar" title="Encerrar Acompanhamento" 
+			    			disabled="#{plano.dataDesligamento ne null}"
+			    			actionListener="#{manterAcompPAIFBean.metaBean.limpar}" 	    			
+			    			oncomplete="PF('encDialogWidgetVar').show();"
+			    			update="planosTable frmPaif:componente frmPaif:metasTable :frmPaif:encGrid" 
+							process="@this">
+							<f:setPropertyActionListener target="#{manterAcompPAIFBean.plano}" 
+								value="#{plano}" />
+						</p:commandButton>	
+						
+			    	</p:column>
+			    	
+			   	</p:dataTable>
+		    </p:outputPanel>  
+		    
+		   	
+		   	<!-- Dialogs Plano de Acompanhamento -->
+		   	
+		   	<p:dialog id="planoDialog" header="Novo plano" 
+		   		widgetVar="planoDialogWidgetVar" responsive="true"
+				modal="true" resizable="false" closeOnEscape="true" 
+				style="max-height:600px;overflow:auto" >
+    			
+			
+				<p:growl id="atendGrowl" showDetail="true" />      	
+				
+				<p:panelGrid id="planoGrid" columns="2" >
+		    		
+		    		<p:outputLabel value="Código Plano" for="codigo"/>
+		    		<p:inputText id="codigo" size="20" maxlength="20" 
+		    			value="#{manterAcompPAIFBean.plano.codigo}" readonly="true"/>
+		    		
+		    		<p:outputLabel value="Data Ingresso" for="dataIngresso" />
+					<p:calendar id="dataIngresso" size="20"
+						value="#{manterAcompPAIFBean.plano.dataIngresso}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						required="true" 
+						mask="99/99/9999"
+				    	validatorMessage="A data de ingresso é obrigatória."/>
+				    	
+				    <p:outputLabel value="Prazo(meses)" for="prazo"/>
+		    		<p:inputText id="prazo" size="10" maxlength="10" 
+		    			value="#{manterAcompPAIFBean.plano.prazoMeses}"
+		    			required="true" 
+		    			validatorMessage="O prazo é obrigatório."/>	
+		    			
+		    		<p:outputLabel value="Técnico Responsável" for="tecnico"/>
+	    			<p:selectOneMenu id="tecnico" 
+		    			value="#{manterAcompPAIFBean.plano.tecnico}">
+		    			<f:selectItem itemLabel="Selecione o técnico" />
+		    			<f:selectItems value="#{manterAcompPAIFBean.tecnicos}" var="tecnico" 
+							itemLabel="#{tecnico.nome}" itemValue="#{tecnico}"/>
+		    		</p:selectOneMenu>								
+				    				    
+				    <p:outputLabel value="Objetivos" for="obj"/>
+	    			<h:panelGroup>
+			    		<p:inputTextarea id="obj" size="3000" rows="8" cols="100" style="height: 100px; overflow:auto;"
+			    			maxlength="3000" 
+		    				value="#{manterAcompPAIFBean.plano.objetivos}"
+			    			counter="display"
+							counterTemplate="{0} restantes"
+							required="true" 
+				    		validatorMessage="Os objetivos do plano é obrigatório."/>
+						<h:outputText id="display" />
+			    		<p:watermark for="obj" value="Descreva os objetivos do plano." />		    		
+		    		</h:panelGroup>
+		    		
+		    		<p:outputLabel value="Compromissos" for="compro"/>
+	    			<h:panelGroup>
+			    		<p:inputTextarea id="compro" size="3000" rows="8" cols="100" style="height: 100px; overflow:auto;"
+			    			maxlength="3000" 
+		    				value="#{manterAcompPAIFBean.plano.compromissos}"
+			    			counter="display2"
+							counterTemplate="{0} restantes"
+							required="true" 
+				    		validatorMessage="Os compromissos da família é obrigatório."/>
+						<h:outputText id="display2" />
+			    		<p:watermark for="compro" value="Descreva os compromissos da família." />		    		
+		    		</h:panelGroup>	
+		    		
+		    		
+		    		<p:outputLabel value="Perfil da Família" for="perfis" />
+				    <p:selectManyCheckbox id="perfis" value="#{manterAcompPAIFBean.plano.perfisFamilia}" layout="grid" columns="2"
+				    	required="true" 
+		    			validatorMessage="Pelo menos um perfil é obrigatório."
+		    			converter="perfilFamiliaConverter">
+		    			<f:attribute name="collectionType" value="java.util.ArrayList"/>
+				        <f:selectItems value="#{manterAcompPAIFBean.perfis}" var="perf" 
+				        	itemLabel="#{perf.descricao}" 
+				        	itemValue="#{perf}" />
+				    </p:selectManyCheckbox>
+		    		
+		    		<p:outputLabel value="Técnicos adicionais" for="pickList"/>
+	    			<p:pickList id="pickList"
+	    				responsive="true"	    				
+	    				converter="pickListTecConverter"
+	    				value="#{manterAcompPAIFBean.tecnicosAdicionais}"
+	    				var="tecnico" 
+	    				itemValue="#{tecnico}" itemLabel="#{tecnico.nome}">
+	    				
+	    				<f:facet name="sourceCaption">Disponíveis</f:facet>
+        				<f:facet name="targetCaption">Selecionados</f:facet>
+			        </p:pickList> 
+		    				
+		    		<h:outputLabel />
+					<p:commandButton icon="pi pi-save" id="salvarCommandButton" value="Salvar" 
+						actionListener="#{manterAcompPAIFBean.salvar}"
+						update="planosTable componente planoGrid"
+						oncomplete="if (!args.validationFailed) PF('planoDialogWidgetVar').hide()" 
+						process="planoDialog"/>
+		    		
+		    	</p:panelGrid>			
+				
+			</p:dialog>			   	
+		   	
+		   	<!--  Encerramento do acompanhamento -->
+		   	
+		   	<p:dialog id="encDialog" header="Encerrar Acompanhamento" widgetVar="encDialogWidgetVar" 
+				modal="true" resizable="true" closeOnEscape="true" responsive="true"
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll"
+				position="center top">
+	
+    							
+				<p:panelGrid id="encGrid" columns="2" >	    		
+		    		
+			    	    		
+		    		<p:outputLabel value="Razão Desligamento" for="rd" />	    		
+		    		<p:selectOneMenu id="rd" 
+		    			required="true" 
+				    	validatorMessage="A razão é obrigatória."
+		    			value="#{manterAcompPAIFBean.plano.razaoDesligamento}">
+		    			<f:selectItem itemLabel="Selecione a razão do desligamento" />
+		    			<f:selectItems value="#{manterAcompPAIFBean.razoes}" var="razao" 
+							itemLabel="#{razao}" itemValue="#{razao}"/>
+		    		</p:selectOneMenu>
+		    				
+		    		<h:outputLabel />
+					<p:commandButton icon="pi pi-save" id="salvarEncButton" value="Encerrar" 
+						actionListener="#{manterAcompPAIFBean.salvarEncerramento}"
+						update="planosTable metasTable toolbar2 encGrid growl"
+						oncomplete="if (!args.validationFailed) PF('encDialogWidgetVar').hide()" 
+						process="encDialog"/>
+		    		
+		    	</p:panelGrid>				
+			</p:dialog>	
+		   	
+		   	<p:confirmDialog id="confirmacaoExclusaoDialog" 
+		   		widgetVar="confirmacaoExclusao"
+	        	message="O plano só pode ser excluído se não houver avaliações registradas. Continuar?"  
+	            header="Exclusão de plano" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	        		
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		process="@this"
+	        		update="planosTable"
+	        		onclick="PF('confirmacaoExclusao').hide();"
+	        		action="#{manterAcompPAIFBean.excluir}" />
+	    	</p:confirmDialog>  	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	<!--  Metas -->	    	
+	    	
+	    	<ui:include src="MetasPlanoPAIF.xhtml"/>
+	    	
+	    	<!--  Reuso de componente DetalharPlanoUI.xhtml  -->
+			
+			<ui:include src="/compositions/DetalharPlanoUI.xhtml">
+			   <ui:param name="plano" value="#{manterAcompPAIFBean.plano}" />               
+            </ui:include>
+	    
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

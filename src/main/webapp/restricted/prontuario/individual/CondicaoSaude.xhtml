@@ -1,0 +1,147 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel id="condicaoSaudePanel" rendered="#{ciBean.pessoaSelecionada}">
+
+		<h2> Condição Saúde </h2> 
+
+		<p:toolbar id="toolbarsa">
+			<f:facet name="left">
+				<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"
+					actionListener="#{ciBean.saudeBean.salvar}"
+					update="condicaoSaudePanel toolbarsa"
+					process="@this condicaoSaudeGrid">
+				</p:commandButton>
+				
+				<p:spacer width="20px" />
+				
+				<p:outputLabel value="Data da última atualização: "/>
+				<h:outputText value="#{ciBean.saudeBean.condicaoSaude.dataModificacao}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</f:facet>
+		</p:toolbar>
+
+		<p:panelGrid id="condicaoSaudeGrid" columns="4" style="margin-top: 10px">
+			<f:facet name="header">
+	            Condições de Saúde
+	        </f:facet>
+
+			<p:outputLabel value="Código" for="codigosa" rendered="false" />
+			<p:inputText id="codigosa" size="20" maxlength="20"
+				value="#{ciBean.saudeBean.condicaoSaude.codigo}"
+				readonly="true" rendered="false" />
+
+			<p:outputLabel value="Necessita de cuidados constantes de outra pessoa para realizar atividades básicas?" 
+				for="pessoaNecessitada" />
+			<h:selectOneRadio id="pessoaNecessitada"
+				value="#{ciBean.saudeBean.condicaoSaude.pessoaNecessitada}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="Se sim, quem é a pessoa?" 
+				for="responsavelPeloCuidado" />
+			<p:inputText id="responsavelPeloCuidado" size="60"
+				value="#{ciBean.saudeBean.condicaoSaude.responsavelPeloCuidado}"/>
+
+			<p:outputLabel value="Está em situação de insegurança alimentar devido a insuficiência de alimentos?"
+				for="insuficienciaAlimentar" />
+			<h:selectOneRadio id="insuficienciaAlimentar"
+				value="#{ciBean.saudeBean.condicaoSaude.insuficienciaAlimentar}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="" /><p:outputLabel value="" />
+
+			<p:outputLabel value="É portador de alguma deficiência ou doença grave?"
+				for="portadorDoencaGrave" />
+			<h:selectOneRadio id="portadorDoencaGrave"
+				value="#{ciBean.saudeBean.condicaoSaude.portadorDoencaGrave}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="Se sim, qual o tipo de doença ou deficiência?" 
+				for="tipoDeficiencia" />
+			<p:selectOneMenu id="tipoDeficiencia"
+				value="#{ciBean.saudeBean.condicaoSaude.tipoDeficiencia}">
+				<f:selectItem itemLabel="" />
+				<f:selectItems value="#{ciBean.saudeBean.tiposDeficiencias}"
+					var="tipoDeficiencia" itemLabel="#{tipoDeficiencia}"
+					itemValue="#{tipoDeficiencia}"/>
+			</p:selectOneMenu>
+			
+			<p:outputLabel value="Faz uso de remédios controlados (tarja preta)?"
+				for="usoRemedioControlado" />
+			<h:selectOneRadio id="usoRemedioControlado"
+				value="#{ciBean.saudeBean.condicaoSaude.usoRemedioControlado}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="" /><p:outputLabel value="" />
+
+			<p:outputLabel value="Faz uso abusivo de alcool?" 
+				for="usoAbusivoAlcool" />
+			<h:selectOneRadio id="usoAbusivoAlcool"
+				value="#{ciBean.saudeBean.condicaoSaude.usoAbusivoAlcool}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="" /><p:outputLabel value="" />
+
+			<p:outputLabel value="Faz uso abusivo de crak ou outras drogras?" 
+				for="usoAbusivoDroga" />
+			<h:selectOneRadio id="usoAbusivoDroga"
+				value="#{ciBean.saudeBean.condicaoSaude.usoAbusivoDroga}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>				
+			
+			
+			<p:outputLabel value="" /><p:outputLabel value="" />
+			
+			<p:outputLabel value="Está referenciada na Saúde?" 
+				for="referenciaSaude" />
+			<h:selectOneRadio id="referenciaSaude"
+				value="#{ciBean.saudeBean.condicaoSaude.referenciaSaude}">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO" />
+			</h:selectOneRadio>				
+			
+			<p:outputLabel value="Se sim, em que local?" 
+				for="local" />
+			<p:inputText id="local" size="60"
+				value="#{ciBean.saudeBean.condicaoSaude.local}" />
+				
+			<p:outputLabel value="Qual a qde de meses de gestação?" 
+				for="qtdMesesGestacao" 
+				rendered="#{ciBean.saudeBean.pessoa.sexo == 'FEMININO'}" />
+			<p:inputText id="qtdMesesGestacao" size="10" maxlenght="2"
+				value="#{ciBean.saudeBean.condicaoSaude.qtdMesesGestacao}"
+				rendered="#{ciBean.saudeBean.pessoa.sexo == 'FEMININO'}"
+				placeholder="qde" />
+				
+			<p:outputLabel value="Já iniciou o Pré-Natal?" 
+				for="iniciouPreNatal" 
+				rendered="#{ciBean.saudeBean.pessoa.sexo == 'FEMININO'}" />
+			<h:selectOneRadio id="iniciouPreNatal"
+				value="#{ciBean.saudeBean.condicaoSaude.iniciouPreNatal}" 
+				rendered="#{ciBean.saudeBean.pessoa.sexo == 'FEMININO'}" >
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO" />
+			</h:selectOneRadio>
+						
+		</p:panelGrid>
+		
+	</p:outputPanel>
+
+</ui:composition>

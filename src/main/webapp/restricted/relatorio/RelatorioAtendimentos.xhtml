@@ -1,0 +1,311 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Atendimentos</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Atendimentos</h2>
+     	
+    	<h:form id="frmPesquisa"> 
+    	
+    		<p:growl id="growl" showDetail="false">
+    			<p:autoUpdate />
+    		</p:growl>  
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">				
+
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Ano" for="anoRef"/>
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="anoRef" value="#{relatorioAtendimentosBean.ano}">
+		    			<f:selectItems value="#{relatorioAtendimentosBean.anos}" var="ano"
+							itemLabel="#{ano}" itemValue="#{ano}"/>
+		    		</p:selectOneMenu>
+		    		
+					<p:spacer width="10px" />
+				
+					<p:outputLabel value="Mês de referência" for="mesRef"/>	 
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="mesRef" value="#{relatorioAtendimentosBean.mes}">
+		    			<f:selectItem itemLabel="Selecione o mês" />
+		    			<f:selectItems value="#{relatorioAtendimentosBean.meses}" var="mes" 
+							itemLabel="#{mes}" itemValue="#{mes}"/>
+		    		</p:selectOneMenu>
+					
+					<p:spacer width="10px" />				
+					
+						
+					<p:commandButton title="Atendimentos" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioAtendimentosBean.consultarAtendimentos}"
+		            	process="@this mesRef anoRef"
+		            	update="listaDataTable toolbar">		            		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="10px" />
+					
+					<p:commandButton title="Gráfico de Atendimentos Individualizados" value="Individualizados" icon="pi pi-chart-bar"
+						rendered="#{relatorioAtendimentosBean.consultado}"	            		
+		            	actionListener="#{relatorioAtendimentosBean.initGraficoAtendimentos}"
+		            	oncomplete="PF('atendDialogWidgetVar').show()"
+		            	update="atendDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="atendDialog" />		            	
+	            	</p:commandButton>
+	            	<!--  
+	            	<p:spacer width="5px" /> 	            	
+	            	
+	            	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel" 
+	            		process="@this"
+	            		rendered="#{relatorioAtendimentosBean.consultado}"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_atendimentos" />
+		            </p:commandButton>	
+					-->
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de itens de atendimento -->	   		      
+
+			<p:dataTable id="listaDataTable" var="item" value="#{relatorioAtendimentosBean.lazyAtendimentos}"
+	    		style="margin-top: 20px" emptyMessage="Nenhum atendimento realizado." paginator="true" rows="10"
+	    		paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+	    		currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+	    		rowsPerPageTemplate="10,15,20" lazy="true" scrollable="true"> 
+
+	    		
+		    	<p:column headerText="Data Atendimento" style="width: 30px; text-align: center"
+		    		sortBy="#{item.dataAtendimento}" >		    		
+		    		<h:outputText value="#{item.dataAtendimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+	    			</h:outputText>
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Codigo Pessoa" style="width: 25px; text-align: Center"
+	    			filterBy="#{item.pessoa.codigo}" >
+	    			<h:outputText value="#{item.pessoa.codigo}" />
+	    		</p:column> 	    	
+	    		 				    		
+	    		<p:column headerText="Nome" style="width: 100px; text-align: Center" 
+	    			filterBy="#{item.pessoa.nome}">
+	    			<h:outputText value="#{item.pessoa.nome}" />
+	    		</p:column> 	    		
+	    		
+	    			    		
+	    		<p:column headerText="Cod.Aux.Atendimento" style="width: 90px; text-align: center"
+	    			filterBy="#{item.codigoAuxiliar}" sortBy="#{item.codigoAuxiliar}">	    	    			   			
+	    			<h:outputText value="#{item.codigoAuxiliar}"/>
+	    		</p:column>     			
+	    		
+	    		<p:column headerText="Técnico" style="width: 80px; text-align: center"
+	    			filterBy="#{item.tecnico.nome}" >	    			
+	    			<h:outputText value="#{item.tecnico.nome}" />	
+    			</p:column>   
+    			
+    			<p:column headerText="Agendador" style="width: 80px; text-align: center" >	    			
+	    			<h:outputText value="#{item.agendador.nome}" />	
+    			</p:column>  		
+	    		
+	    		<p:column headerText="Técnicos adicionais" style="width: 80px; text-align: center">
+	    			<p:dataList id="nomesTecs" value="#{item.tecnicos}" var="tec" type="ordered">
+				       		#{tec.nome}
+				    </p:dataList>			
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Operações" style="width: 30px; text-align: center">
+	    			<p:commandButton icon="pi pi-pencil" title="Alterar"		    					    				
+		    				oncomplete="PF('atendimentoWidgetVar').show();"
+		    				update="frmPesquisa:atendGrid" 
+							process="@this">
+						<f:setPropertyActionListener target="#{relatorioAtendimentosBean.itemAlterar}" value="#{item}" />
+					</p:commandButton>
+					
+		    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+		    				rendered="#{relatorioAtendimentosBean.coordenador}"		    				
+		    				onclick="PF('confirmacaoExclusao').show();"
+							process="@this">
+						<f:setPropertyActionListener target="#{relatorioAtendimentosBean.itemExcluir}" value="#{item}" />
+					</p:commandButton>
+					
+					<p:commandButton icon="pi pi-angle-double-right" title="Migrar"
+							rendered="#{relatorioAtendimentosBean.coordenador}"
+		    				onclick="PF('miDialogWidgetVar').show();"
+							process="@this">
+						<f:setPropertyActionListener target="#{relatorioAtendimentosBean.itemMigrar}" value="#{item}" />
+					</p:commandButton>
+	    		</p:column> 
+	    		
+    		
+		   	</p:dataTable>
+		   	
+		   	<!--  gravação do atendimento -->
+		   	
+		   	<p:dialog id="atendimentoDialog" header="Atendimento" widgetVar="atendimentoWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				width="1000" height="600"
+				position="center top">					
+						
+				<!--  Atendimento -->
+				<p:panelGrid columns="2" id="atendGrid" 					
+					columnClasses="rotulo, campo" 
+					style="max-height:600px;overflow:scroll">	
+					
+					<p:outputLabel value="Prontuário" for="pront"/>
+	    			<h:outputText id="pront" value="#{relatorioAtendimentosBean.itemAlterar.pessoa.familia.prontuario}"/>	
+					
+					<p:outputLabel value="Pessoa Atendida" for="nomeAtendido"/>
+	    			<h:outputText id="nomeAtendido" value="#{relatorioAtendimentosBean.itemAlterar.pessoa.nome}" />	
+	    				
+	    			<p:outputLabel value="Cod. Aux." for="codAuxil"/>
+	    			<h:outputText id="codAuxil" value="#{relatorioAtendimentosBean.itemAlterar.codigoAuxiliar}" />	
+	    					    	
+	    					    		    		
+	    			<p:outputLabel value="Data Atendimento" for="dataAtendimento" />
+					<p:calendar 
+						readonly="#{!relatorioAtendimentosBean.coordenador}"
+						id="dataAtendimento" size="30"	
+						required="true"									
+						value="#{relatorioAtendimentosBean.itemAlterar.dataAtendimento}"
+						showOn="button"
+						pattern="dd/MM/yyyy HH:mm"
+						mask="99/99/9999 99:99"/> 		
+		    		    		
+		    		<p:outputLabel value="Atendimento" for="editor"/>
+		    		<h:panelGroup>
+			    		<p:textEditor 
+			    			id="editor"  
+			    			widgetVar="editor" 
+			    			value="#{relatorioAtendimentosBean.itemAlterar.resumoAtendimento}" 
+			    			height="300" 			    			
+			    			style="margin-bottom:10px">			    			
+					        <f:facet name="toolbar">
+					             <span class="ql-formats">
+					                <button class="ql-bold"></button>
+					                <button class="ql-italic"></button>
+					                <button class="ql-underline"></button>
+					                <button class="ql-strike"></button>
+					            </span>
+					            <span class="ql-formats">
+						            <button class="ql-clean" />
+						        </span>
+					            <span class="ql-formats">
+					                <select class="ql-font"></select>
+					                <select class="ql-size"></select>
+					            </span>
+					            <span class="ql-formats">
+						            <button class="ql-script" value="sub" />
+						            <button class="ql-script" value="super" />
+						        </span>						        
+						        <span class="ql-formats">
+						            <button class="ql-list" value="ordered" />
+						            <button class="ql-list" value="bullet" />
+						            <button class="ql-indent" value="-1" />
+						            <button class="ql-indent" value="+1" />
+						        </span>
+						        <span class="ql-formats">
+						            <button class="ql-direction" value="rtl" />
+						            <select class="ql-align" />
+						        </span>						        
+					        </f:facet>					           
+					    </p:textEditor>
+		    		</h:panelGroup>	
+    				
+		    		<h:outputLabel />		    		
+		    		
+					<p:commandButton icon="pi pi-save" id="salvarButton" value="Salvar"  
+						title="Grava a alteração do atendimento"
+						actionListener="#{relatorioAtendimentosBean.alterar}"
+						update="listaDataTable growl toolbar"
+						oncomplete="if (!args.validationFailed) PF('atendimentoWidgetVar').hide()" 
+						process="atendimentoDialog">
+					</p:commandButton>						
+						
+				</p:panelGrid>				
+			</p:dialog>	
+			
+			<!--  grafico atendimentos -->
+		   	
+		   	<p:dialog id="atendDialog" header="Atendimentos Individualizados (Total)" widgetVar="atendDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="pie" model="#{relatorioAtendimentosBean.graficoAtendimentos}" 
+				style="width:600px;height:400px" />	
+			
+				<p:outputLabel value="Quantidade de Atendimentos Individualizados =  " for="qde"/>
+				<h:outputText id="qde" value="#{relatorioAtendimentosBean.qdeAtendimentos}"/>			
+			</p:dialog>	
+			
+			<p:dialog id="atendColDialog" header="Atendimentos Coletivos (Total)" widgetVar="atendDialogColWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="pie" model="#{relatorioAtendimentosBean.graficoAtendimentosCol}" 
+				style="width:600px;height:400px" />	
+			
+				<p:outputLabel value="Quantidade de Atendimentos Coletivos =  " for="qdeCol"/>
+				<h:outputText id="qdeCol" value="#{relatorioAtendimentosBean.qdeAtendimentosCol}"/>			
+			</p:dialog>	
+			
+			<!--  Exclusão definitiva do atendimento -->
+			
+			<p:confirmDialog id="confirmacaoExclusaoDialog" 
+		   			widgetVar="confirmacaoExclusao"
+	        		message="Ao excluir o atendimento não pode mais ser recuperado. Tem certeza que deseja excluir?"  
+	                header="Exclusão de atendimento" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		update="listaDataTable growl"
+	        		onclick="PF('confirmacaoExclusao').hide();" action="#{relatorioAtendimentosBean.excluir}"
+	        		process="@this"/>
+	    	</p:confirmDialog>		   	
+    	
+    	
+    		<!--  Migração do atendimento -->
+		   	
+		   	<p:dialog id="miDialog" header="Migrar atendimento" widgetVar="miDialogWidgetVar" 
+				modal="true" resizable="false" closeOnEscape="true">
+				
+				<p:growl id="miGrowl" showDetail="true" />     
+    							
+				<p:panelGrid id="miGrid" columns="2">
+						
+					<p:outputLabel value="Código da Pessoa: " for="pe"/>
+		
+					<h:panelGroup>
+						<p:inputText id="pe" size="10" maxlength="10" 
+			    			value="#{relatorioAtendimentosBean.codigoPessoa}">
+			    			
+			    			<p:ajax event="keyup" listener="#{relatorioAtendimentosBean.buscarNomePessoa}" update="nomeMigracao" />
+			    		</p:inputText>
+			    		<p:spacer width="10px" />
+						<h:outputText id="nomeMigracao" value="#{relatorioAtendimentosBean.nomePessoa}" />
+					</h:panelGroup>
+						
+		    		<p:button icon="pi pi-thumbs-down" value="Cancelar" 
+	        			onclick="PF('miDialogWidgetVar').hide(); return false;" />
+	        			
+		    		<p:commandButton icon="pi pi-save" id="salvarMiButton" value="Confirmar" 
+						actionListener="#{relatorioAtendimentosBean.migrarAtendimento}"
+						update="listaDataTable miGrid miGrowl"
+						oncomplete="if (!args.validationFailed) PF('miDialogWidgetVar').hide()" 
+						process="miDialog"/>
+										
+		    		
+		    	</p:panelGrid>
+			</p:dialog>	
+    	
+    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,149 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">    		    					
+    		
+    <!-- Panel Condições Habitacionais -->
+
+
+		<p:outputPanel id="condicaoHabitacionalPanel" rendered="#{cfBean.pessoaReferenciaSelecionada}">	
+					
+			<h2> Condição Habitacional </h2>  
+			
+			<p:toolbar id="toolbarch">
+				<f:facet name="left">
+					<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"
+						actionListener="#{cfBean.habitacionalBean.salvar}"
+						update="condicaoHabitacionalGrid"
+						process="@this condicaoHabitacionalGrid">
+					</p:commandButton>					
+							
+					<p:spacer width="20px" />
+					
+					<p:outputLabel value="Data da última atualização:  "/><p:spacer width="20px" />
+					<h:outputText value="#{cfBean.habitacionalBean.condicaoHabitacional.dataModificacao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</f:facet>
+			</p:toolbar>
+			
+			<p:panelGrid id="condicaoHabitacionalGrid" columns="4" style="margin-top: 10px">
+				
+				<p:outputLabel value="Quantidade de Cômodos" for="qtdComodo"/>
+				<p:inputText id="qtdComodo" size="25" maxlenght="2"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.qtdComodo}"				
+					placeholder="Apenas números(1,2,3...)"/>
+				
+				<p:outputLabel value="Quantidade de Dormitórios" for="qtdDormitorio"/>
+				<p:inputText id="qtdDormitorio" size="25" maxlenght="2"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.qtdDormitorio}"				
+					placeholder="Apenas números(1,2,3...)"/>
+	
+				<p:outputLabel value="Tipo de Residência" for="tipoResidencia" />
+				<p:selectOneMenu id="tipoResidencia" 
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.tipoResidencia}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems
+						value="#{cfBean.habitacionalBean.tiposResidencias}"
+						var="tipoResidencia" 
+						itemLabel="#{tipoResidencia}" 
+						itemValue="#{tipoResidencia}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Forma de Abastecimento" for="formaAbastecimento" />
+				<p:selectOneMenu id="formaAbastecimento"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.formaAbastecimento}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems
+						value="#{cfBean.habitacionalBean.tiposAbastecimento}"
+						var="formaAbastecimento" 
+						itemLabel="#{formaAbastecimento}"
+						itemValue="#{formaAbastecimento}" />
+				</p:selectOneMenu>
+	
+				<p:outputLabel value="Acesso a Energia Elétrica" for="acessoEnergiaEletrica" />
+				<p:selectOneMenu id="acessoEnergiaEletrica" 
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.acessoEnergiaEletrica}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems value="#{cfBean.habitacionalBean.tiposAcesso}"
+						var="acessoEnergiaEletrica" 
+						itemLabel="#{acessoEnergiaEletrica}"
+						itemValue="#{acessoEnergiaEletrica}" />
+				</p:selectOneMenu>
+	
+				<p:outputLabel value="Material da Parede" for="materialParede" />
+				<p:selectOneMenu id="materialParede"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.materialParede}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems value="#{cfBean.habitacionalBean.tiposMateriais}"
+						var="materialParede" 
+						itemLabel="#{materialParede}"
+						itemValue="#{materialParede}" />
+				</p:selectOneMenu>
+	
+				<p:outputLabel value="Coleta de Lixo" for="coletaLixo" />
+				<p:selectOneMenu id="coletaLixo"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.coletaLixo}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems value="#{cfBean.habitacionalBean.tiposColeta}"
+						var="coletaLixo" 
+						itemLabel="#{coletaLixo}"
+						itemValue="#{coletaLixo}" />
+				</p:selectOneMenu>
+	
+				<p:outputLabel value="Acessibilidade" for="possuiAcessibilidade" />
+				<p:selectOneMenu id="possuiAcessibilidade"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.possuiAcessibilidade}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems
+						value="#{cfBean.habitacionalBean.tiposAcessibilidade}"
+						var="possuiAcessibilidade" 
+						itemLabel="#{possuiAcessibilidade}"
+						itemValue="#{possuiAcessibilidade}" />
+				</p:selectOneMenu>
+	
+				<p:outputLabel value="Escoamento Sanitário"	for="escoamentoSanitario" />
+				<p:selectOneMenu id="escoamentoSanitario"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.escoamentoSanitario}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems value="#{cfBean.habitacionalBean.tiposEscoamento}"
+						var="escoamentoSanitario" 
+						itemLabel="#{escoamentoSanitario}"
+						itemValue="#{escoamentoSanitario}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Possui Água Canalizada?" for="aguaCanalizada" />
+				<h:selectOneRadio id="aguaCanalizada"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.aguaCanalizada}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="Possui Risco de Desabamento?" for="riscoDesabamento" />
+				<h:selectOneRadio id="riscoDesabamento"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.riscoDesabamento}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="Possui Difícil Acesso Demográfico?" for="dificilAcessoDemografico" />
+				<h:selectOneRadio id="dificilAcessoDemografico"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.dificilAcessoDemografico}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="Área Violenta?" for="areaViolenta" />
+				<h:selectOneRadio id="areaViolenta"
+					value="#{cfBean.habitacionalBean.condicaoHabitacional.areaViolenta}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>				
+				
+				
+			</p:panelGrid>	
+		</p:outputPanel>	
+		
+</ui:composition>

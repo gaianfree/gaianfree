@@ -1,0 +1,116 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">		
+			
+	
+	<!--  Bloco III (J) -->
+	
+	
+	<p:panel id="basic3" style="margin-bottom:20px"
+		header="Bloco III – Serviço de Proteção Social a Adolescente em Cumprimento de Medida Socioeducativa (LA/PSC)" 
+		footer="Atenção! O mesmo raciocínio do alerta anterior vale para o quadro acima. A soma de J5 e J6 pode ser maior que o valor relatado
+							em J4, entretanto a soma de J5 e J6 nunca pode ser menor que J4.">			
+	
+		<p:panelGrid id="blocoJ" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="J. Volume de adolescentes em cumprimento de Medidas Socioeducativas" />
+		    </f:facet>
+		    
+		    <h:outputText value="J.1. Total de adolescentes em cumprimento de Medidas Socioeducativas (LA e/ou PSC)" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j1}" />
+		    
+		    <h:outputText value="J.2. Quantidade de adolescentes em cumprimento de Liberdade Assistida - LA" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j2}" />
+		    
+		    <h:outputText value="J.3. Quantidade de adolescentes em cumprimento de Prestação de Serviços à Comunidade - PSC" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j3}" />
+		    
+		    <h:outputText value="Atenção! Eventualmente um mesmo adolescente pode estar cumprindo, simultaneamente, as medidas de LA e de PSC, portanto
+				pode ocorrer que a soma de J2 e J3 seja maior que o valor relatado em J1, entretanto a soma de J2 e J3 nunca pode ser menor que J1.
+				O mesmo raciocínio vale para o quadro abaixo (J4. J5 e J6)." />
+			<h:outputText value="" />		    
+		</p:panelGrid>
+		
+		<p:panelGrid id="blocoJa" columns="2" style="width: 100%">
+		    <f:facet name="header">
+		        <h:outputText value="Quantidade e perfil dos novos adolescentes inseridos no Serviço, no mês de referência" />
+		    </f:facet>
+		    
+		    <h:outputText value="J.4. Total de novos adolescentes em cumprimento de Medidas Socioeducativas (LA e/ou PSC), inseridos em acompanhamento no mês de referência" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j4}" />
+		    		    
+		    <h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>Qde</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j4vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j4vitimasFem.total}"/></p:column>
+				    </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j4vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j4vitimasMasc.total}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			 </h:panelGroup>
+			 <h:outputText value=""/> 	 
+
+		    
+		    
+		    <h:outputText value="J.5. Novos adolescentes em cumprimento de LA, inseridos em acompanhamento, no mês de referência" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j5}" />
+		    
+	    	<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>Qde</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j5vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j5vitimasFem.total}"/></p:column>
+				    </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j5vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j5vitimasMasc.total}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			 </h:panelGroup>
+			 <h:outputText value=""/> 
+		    
+		    <h:outputText value="J.6. Novos adolescentes em cumprimento de PSC, inseridos em acompanhamento, no mês de referência" />
+		    <h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j6}" />
+		    
+	    	<h:panelGroup>
+			    <p:panelGrid>
+				    <f:facet name="header">			           
+		            <p:row>
+		                <p:column>Sexo</p:column>
+		                <p:column>Qde</p:column>
+		            </p:row>			
+			        </f:facet>
+			         <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j6vitimasFem.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j6vitimasFem.total}"/></p:column>
+				    </p:row>
+			        <p:row>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j6vitimasMasc.sexo}"/></p:column>
+				        <p:column><h:outputText value="#{relatorioRMACreasBean.rma.bloco3.j6vitimasMasc.total}"/></p:column>
+			        </p:row>		
+			    </p:panelGrid>
+			 </h:panelGroup>
+			 <h:outputText value=""/> 
+		</p:panelGrid>
+	</p:panel>
+			
+			
+</ui:composition>

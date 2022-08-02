@@ -1,0 +1,191 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Serviços</ui:define>
+    
+    <ui:define name="corpo">
+    
+    	<f:metadata>
+			<o:viewParam name="servico" value="#{manterSCFVPesqBean.servico}"/>
+		</f:metadata>
+    	    	
+    	<h:form id="frmScfv">    	
+    	
+    		<p:growl id="growl" showDetail="false" closable="true">
+    			<p:autoUpdate />
+   			</p:growl>  	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+		
+		<div class="card">
+		<p:accordionPanel id="accordion" multiple="true" widgetVar="multiple">
+			<p:tab title="Serviços">
+	    	<p:toolbar id="toolbar" style="margin-top: 5px">
+	    		<p:toolbarGroup>
+	    		
+	    			<p:outputLabel value="Ano" for="ano"/>
+		    			<p:spacer width="5px" />
+			    		<p:selectOneMenu id="ano"  
+			    			value="#{manterSCFVPesqBean.ano}">
+			    			<f:selectItem itemLabel="Selecione o ano" />
+			    			<f:selectItems value="#{manterSCFVPesqBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"/>
+							<p:ajax listener="#{manterSCFVPesqBean.buscarServicos}" 
+								update="accordion:servicosTable 
+										accordion:inscricoesTable 
+										accordion:atividadesTable
+										accordion:listaTable" process="ano"/>										
+			    		</p:selectOneMenu>
+			    		
+			    	<p:spacer width="10px" /> 	    			
+	    			
+	    			<p:commandButton icon="pi pi-plus" value="Novo Serviço" id="botaoNovo"
+						action="/restricted/scfv/ManterSCFVCadastro.xhtml" 
+						process="@this"/>
+	    			
+	    			
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+        
+	    	
+	    	<p:dataTable id="servicosTable" value="#{manterSCFVPesqBean.servicos}" var="servico"
+	    		style="margin-top: 5px" emptyMessage="Nenhum servico encontrado." rows="5" resizableColumns="true"	    		
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" 
+	    		rowsPerPageTemplate="5,10,15"
+	    		rowStyleClass="#{servico.status eq 'INATIVO' ? 'inativo' : null}"
+	    		selectionMode="single" selection="#{manterSCFVPesqBean.servico}" rowKey="#{servico.codigo}">		    		
+    		
+				<p:ajax event="rowSelect"
+		   			update="frmScfv:accordion:atividadesTable 
+		   					frmScfv:accordion:inscricoesTable 
+		   					frmScfv:accordion:listaTable 
+		   					frmScfv:accordion:toolbarInscr 
+		   					frmScfv:accordion:toolbarPlano"
+		   			process="@this"		   			
+	    			listener="#{manterSCFVPesqBean.buscarAtividades}"/>
+				<p:ajax event="rowUnselect"/>
+
+		    		
+		    	<f:facet name="header">
+		            <p:outputLabel value="Serviços"/>
+		        </f:facet>	
+		    	
+		    	<p:column headerText="Código" style="width: 8px; text-align: center">
+					<h:outputText value="#{servico.codigo}" />
+				</p:column>
+				
+				<p:column headerText="Data Início" style="width: 18px; text-align: center"
+					sortBy="#{servico.dataIni}" >					
+	    			<h:outputText value="#{servico.dataIni}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+				</p:column>				
+	    			
+	    		<p:column headerText="Descrição" style="width: 100px; text-align: center"
+	    			sortBy="#{servico.nome}">
+	    			<h:outputText value="#{servico.nome}" />
+	    		</p:column>	 
+	    		
+	    		<p:column headerText="Tipo Serviço" style="width: 100px; text-align: center"
+	    			sortBy="#{servico.tipoServico}">
+	    			<h:outputText value="#{servico.tipoServico}" />
+	    		</p:column> 	    		
+	    		
+	    		<p:column headerText="Responsável" style="width: 40px; text-align: center"
+	    			sortBy="#{servico.tecnicoResponsavel.nome}">
+	    			<h:outputText value="#{servico.tecnicoResponsavel.nome}" />
+	    		</p:column>	 
+	    		
+	    		<p:column headerText="Qde" style="width: 8px; text-align: center">
+					<h:outputText value="#{servico.totalInscritos}" />
+				</p:column> 
+				
+				<p:column headerText="Unidade Executora" style="width: 40px; text-align: center">
+					<h:outputText value="#{servico.unidadeExecutora.nome}" />
+				</p:column>		
+	    		    		
+	    		<p:column headerText="Operações" style="width: 40px; text-align: center">	    						    	
+	    			
+		    		<p:button outcome="ManterSCFVCadastro" icon="pi pi-pencil" title="Editar">
+		    			<f:param name="servico" value="#{servico.codigo}"/>
+		    		</p:button>		    		
+
+		    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+		    			onclick="PF('confirmacaoExclusao').show();"
+						process="@this">
+						<f:setPropertyActionListener target="#{manterSCFVPesqBean.servico}" 
+							value="#{servico}" />						
+					</p:commandButton>
+        
+					<p:commandButton icon="pi pi-copy" title="Copiar" 
+		    			onclick="PF('confirmacaoCopia').show();"
+						process="@this">
+						<f:setPropertyActionListener target="#{manterSCFVPesqBean.servico}" 
+							value="#{servico}" />
+					</p:commandButton>
+		    	</p:column>
+		    	
+		   	</p:dataTable>
+		   	
+		   	<!-- 
+		   		Dialogs
+		   	-->
+		   	
+		   	<p:confirmDialog id="confirmacaoExclusaoDialog" 
+		   		widgetVar="confirmacaoExclusao"
+	        	message="O serviço só pode ser excluído se não houver atividades registradas. Continuar?"  
+	            header="Exclusão de servico" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	        		
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		process="@this"
+	        		update="servicosTable"
+	        		onclick="PF('confirmacaoExclusao').hide();"
+	        		action="#{manterSCFVPesqBean.excluir}" />
+	    	</p:confirmDialog>  
+	    	 	
+			
+			<!--  Fim do diário dialog -->
+			
+			<p:confirmDialog id="confirmacaoCopiaDialog" 
+		   		widgetVar="confirmacaoCopia"
+	        	message="Confirma a cópia para este ano?"  
+	            header="Cópia de servico" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoCopia').hide(); return false;" />
+	        		
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim"
+	        		process="@this"
+	        		update="servicosTable ano"
+	        		onclick="PF('confirmacaoCopia').hide();"
+	        		action="#{manterSCFVPesqBean.copiar}" />
+	    	</p:confirmDialog>  
+		    	    
+    		</p:tab>
+	    	
+	    	<!-- Forms: Plano / Inscrição / Diário -->
+	    	
+    	
+		    <p:tab title="Atividades">
+	        	<ui:include src="/restricted/scfv/composition/PlanoAtividadesSCFV.xhtml"/>
+			</p:tab>
+	
+            <p:tab title="Inscrições">
+            	<ui:include src="/restricted/scfv/composition/InscricaoSCFV.xhtml"/>
+            </p:tab>
+
+        </p:accordionPanel>      
+    	</div>
+    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

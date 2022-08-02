@@ -1,0 +1,166 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório Atendimento Coletivo</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório Atendimento Coletivo</h2>
+    	
+    	<h:form id="frmAtend">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">		    			
+	    			
+	    			<p:spacer width="5px" />
+				
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioAtendimentoColetivoBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioAtendimentoColetivoBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Atendimentos" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioAtendimentoColetivoBean.consultarAtendimentos}"
+		            	update="atendTable qde toolbar">		            		            	
+	            	</p:commandButton>			
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>				
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="atendTable" fileName="Relatorio_Atendimento_Coletivo" />
+		            </p:commandButton>
+		            
+		            <p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Gráfico de Atendimento Coletivo" value="Gráfico de Atendimento Coletivo" icon="pi pi-chart-bar"
+		            	actionListener="#{relatorioAtendimentoColetivoBean.initGraficoAtendimentoColetivo}"
+		            	oncomplete="PF('atendDialogWidgetVar').show()"
+		            	update="atendDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="atendDialog" />		            	
+	            	</p:commandButton>
+					
+				</f:facet>
+			</p:toolbar>
+	    	
+	    	<p:dataTable id="atendTable" value="#{relatorioAtendimentoColetivoBean.listaAtendimentoColetivo}" var="atend"
+	    		style="margin-top: 20px" emptyMessage="Nenhum atendimento coletivo." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" rowsPerPageTemplate="10,15"
+	    		selectionMode="single" selection="#{relatorioAtendimentoColetivoBean.agendamentoColetivo}"
+		    	rowKey="#{atend.codigo}"> 
+			    		
+	    		<p:ajax event="rowSelect"/>				
+				<p:ajax event="rowUnselect"/>	
+				
+				<p:column headerText="Data Atendimento" style="width: 30px; text-align: center"
+		    		sortBy="#{atend.dataAtendimento}" >		    		
+		    		<h:outputText value="#{atend.dataAtendimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column> 		
+	    		
+	    		<p:column headerText="Pessoas" style="width: 75px; text-align: center"	>			    		
+	    			<p:dataList id="pessoas1" value="#{atend.pessoas}" var="p" type="ordered">
+				       		#{p.nome}
+				    </p:dataList>			
+    			</p:column>
+	    		
+	    		<p:column headerText="Código Auxiliar de Atendimento" style="width: 75px; text-align: center"
+	    			filterBy="#{atend.codigoAuxiliar}" >
+	    			<h:outputText value="#{atend.codigoAuxiliar}" />
+	    		</p:column>   
+	    		
+	    		<p:column headerText="Técnico" style="width: 60px; text-align: center">
+	    			<h:outputText value="#{atend.tecnico.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Agendador" style="width: 60px; text-align: center">
+	    			<h:outputText value="#{atend.agendador.nome}" />
+	    		</p:column>
+		    		
+	    		<p:column headerText="Detalhes" style="width: 20px; text-align: center">				    	
+			    	<p:commandButton 
+			    		update="frmAtend:detalheGrid" 
+	 						onclick="PF('detalheWidget').show()" 
+	 						title="Ver detalhe" 
+	 						icon="pi pi-info"
+	 						process="@this">
+	 						<f:setPropertyActionListener target="#{relatorioAtendimentoColetivoBean.agendamentoColetivo}" 
+							value="#{atend}" />			                
+	            	</p:commandButton>
+	            </p:column>	    	
+    		</p:dataTable> 
+    		
+    		<p:spacer width="10px" />
+    		<h4>
+    			<h:outputText id = "qde" 
+    				value="Quantidade de Atendimento Coletivo [#{relatorioAtendimentoColetivoBean.unidade.nome}] = #{relatorioAtendimentoColetivoBean.qdeTotal}"/>
+    		</h4>	
+	    
+		    
+		    
+		    <p:dialog id="detalheDialog" header="Mostrar Detalhes" 
+		   		widgetVar="detalheWidget" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="true"
+		   		closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:auto"
+				position="left top">
+		   		
+	            <p:panelGrid id="detalheGrid" columns="2" columnClasses="label,value">  
+	            
+	            	<h:outputLabel value="Resumo do atendimento: " style="font-weight:bold"/>
+	            	<p:textEditor  			    			
+		    			value="#{relatorioAtendimentoColetivoBean.agendamentoColetivo.resumoAtendimento}" 			    					    			
+		    			readonly="true">
+		    			<f:facet name="toolbar"> 
+		    				<span class="ql-formats"> </span>						            
+		    			</f:facet>
+				    </p:textEditor>	                 
+	                
+	            </p:panelGrid>
+    		</p:dialog>  
+    		
+    		<p:dialog id="atendDialog" header="Atendimentos" widgetVar="atendDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="pie" model="#{relatorioAtendimentoColetivoBean.graficoAtendimentoColetivo}"
+				style="width:600px;height:400px" />
+				
+			</p:dialog>			
+	    		
+    	</h:form>
+    </ui:define>
+</ui:composition>

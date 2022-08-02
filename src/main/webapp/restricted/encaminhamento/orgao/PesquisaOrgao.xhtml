@@ -1,0 +1,82 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Órgãos</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Órgãos Externos</h2>
+    	
+    	<h:form id="frmPesquisa">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton icon="pi pi-plus" value="Novo" id="botaoNovo" action="/restricted/encaminhamento/orgao/CadastroOrgao.xhtml"/>
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    		    	
+	    	<p:dataTable id="orgaosTable" value="#{pesquisaOrgaoBean.orgaos}" var="orgao"
+		    		style="margin-top: 20px" emptyMessage="Nenhum orgão encontrado." rows="10"
+		    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+		    		rowsPerPageTemplate="5,10,15">
+		    		
+	    		<p:column headerText="Código" style="width: 20px; text-align: center">
+	    			<h:outputText value="#{orgao.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Código de Encaminhamento" style="width: 130px; text-align: center"
+	    			filterBy="#{orgao.codigoEncaminhamento}"
+	    			footerText="contains" filterMatchMode="contains" >
+	    			<h:outputText value="#{orgao.codigoEncaminhamento}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Orgão" style="width: 100px; text-align: center"
+	    			filterBy="#{orgao.nome}"
+	    			footerText="contains" filterMatchMode="contains" >
+	    			<h:outputText value="#{orgao.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Endereço" style="width: 100px; text-align: center"
+	    			filterBy="#{orgao.endereco.endereco}"
+	    			footerText="contains" filterMatchMode="contains" >
+	    			<h:outputText value="#{orgao.endereco.endereco}, #{orgao.endereco.numero}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Cep" style="width: 35px; text-align: center"
+	    			filterBy="#{orgao.endereco.cep}"
+	    			footerText="contains" filterMatchMode="contains" >
+	    			<h:outputText value="#{orgao.endereco.cep}" />
+	    		</p:column>	    		
+	    		
+	    		<p:column headerText="Operações" style="width: 30px; text-align: center">
+		    		<p:button outcome="CadastroOrgao" icon="pi pi-pencil" title="Editar">
+		    			<f:param name="orgao" value="#{orgao.codigo}"/>
+		    		</p:button>
+		    		<p:commandButton icon="pi pi-trash" title="Excluir" 		    				
+		    				onclick="PF('confirmacaoExclusao').show();"
+							process="@this" >
+						<f:setPropertyActionListener target="#{pesquisaOrgaoBean.orgaoSelecionado}" value="#{orgao}" />
+					</p:commandButton>
+		    	</p:column>
+		   	</p:dataTable>
+		   	<p:confirmDialog id="confirmacaoExclusaoDialog" 
+		   			widgetVar="confirmacaoExclusao"
+	        		message="Tem certeza que deseja excluir o orgão #{pesquisaOrgaoBean.orgaoSelecionado.nome}?"  
+	                header="Exclusão de orgão" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		update=":frmPesquisa:orgaosTable"
+	        		onclick="PF('confirmacaoExclusao').hide();" action="#{pesquisaOrgaoBean.excluir}" />
+	    	</p:confirmDialog>
+    	</h:form>
+    </ui:define>
+</ui:composition>

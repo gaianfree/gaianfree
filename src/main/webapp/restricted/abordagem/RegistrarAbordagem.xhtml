@@ -1,0 +1,205 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Registrar Abordagem Social</ui:define>
+    
+    <ui:define name="corpo">    	
+    
+    	<h2>Registrar Abordagem Social</h2>
+    	
+    	<h:form id="frmAbordagem">
+    	
+    		<p:growl id="growl" showDetail="false"> 
+    			<p:autoUpdate />
+    		</p:growl>
+  
+    		
+    		<p:toolbar id="toolbar">
+				<f:facet name="left">
+	    	
+	    		<p:commandButton icon="pi pi-user-plus" title="Nova" value="Registrar Abordagem" 	
+	    			disabled="#{!registrarAbordagemBean.creas}"	            	
+	            	actionListener="#{registrarAbordagemBean.limpar}" 	            
+	            	oncomplete="PF('aborDialogWidgetVar').show()"
+	            	update="aborDialog toolbar" 
+	            	process="@this">
+	            	<p:resetInput target="aborDialog" />	
+            	</p:commandButton>
+            	
+	       		</f:facet>
+			</p:toolbar>
+	    	
+	    	 <!--  Lista de abordagens nao terminadas -->
+			<p:dataTable id="listaDataTable"  value="#{registrarAbordagemBean.abordagens}" var="abordagem"
+				allowUnsorting="true" sortMode="single"
+	    		style="margin-top: 20px" emptyMessage="Nenhuma abordagem encontrada." rows="10" 
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" 
+	    		rowsPerPageTemplate="10,15,20"
+	    		selectionMode="single" selection="#{registrarAbordagemBean.abordagem}" rowKey="#{abordagem.codigo}">
+	    		
+	    		<p:ajax event="rowSelect" update="listaDataTable" />			
+				<p:ajax event="rowUnselect" update="listaDataTable" />
+
+		    		
+		    	<p:column headerText="Data" style="width: 15px; text-align: center"
+		    		sortBy="#{abordagem.data}">		    		
+		    		<h:outputText value="#{abordagem.data}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>	    		
+	    		</p:column>	    				    		
+
+
+				<p:column headerText="Código" style="width: 15px; text-align: center">	    			
+	    			<h:outputText value="#{abordagem.pessoa.codigo}"/>
+	    		</p:column>
+	    		
+    			<p:column headerText="Nome" style="width: 80px; text-align: center">	    			
+	    			<h:outputText value="#{abordagem.pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Situação" style="width: 60px; text-align: center">	    			
+	    			<h:outputText value="#{abordagem.situacao}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Descrição" style="width: 80px; text-align: center">	    			
+	    			<h:outputText value="#{abordagem.descricao}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Técnico" style="width: 80px; text-align: center">		
+	    			<h:outputText value="#{abordagem.tecnico.nome}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Operações" style="width: 25px; text-align: center" >		    		
+		    		
+		    		<p:commandButton icon="pi pi-pencil" title="Editar abordagem"
+		    			oncomplete="PF('aborDialogWidgetVar').show();"
+		    			update="frmAbordagem:addGrid frmAbordagem:toolbar frmAbordagem:growl listaDataTable" 
+		            	process="@this">
+						<f:setPropertyActionListener target="#{registrarAbordagemBean.abordagem}" 
+							value="#{abordagem}" />
+					</p:commandButton>									    		
+
+		    		<p:commandButton icon="pi pi-trash" title="Excluir abordagem"
+		    			oncomplete="PF('confirmacaoExclusaoWidgetVar').show()"		            	
+		            	update="listaDataTable frmAbordagem:toolbar frmAbordagem:growl"
+		            	process="@this">
+						<f:setPropertyActionListener target="#{registrarAbordagemBean.abordagem}" 
+							value="#{abordagem}" />
+					</p:commandButton>					
+		    	</p:column>
+    		
+		   	</p:dataTable>
+		   	
+		   	
+	   		<p:dialog id="aborDialog" header="Abordagem" widgetVar="aborDialogWidgetVar"				
+	   			modal="true" resizable="true" closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll" position="center top">
+				
+		    	<p:panelGrid id="addGrid" columns="2" 
+		    		columnClasses="rotulo, campo">
+		    		
+		    		<p:outputLabel value="Data " for="data" size="30"/>
+		    		<p:calendar id="data" 
+		    			value="#{registrarAbordagemBean.abordagem.data}" 
+			    		required="true"
+			    		showOn="button" 
+				    	validatorMessage="A data é obrigatória."
+				    	pattern="dd/MM/yyyy"
+						mask="99/99/9999"/>
+						
+						
+						
+		    		<p:outputLabel value="Nome" for="nomePessoa"/>
+		    		<p:autoComplete id="nomePessoa" value="#{registrarAbordagemBean.abordagem.pessoa.nome}" 
+		    			size="60" maxlength="80" 
+		    			required="true" 
+        				effect="blind"  
+		    			completeMethod="#{registrarAbordagemBean.buscarNomes}">
+		    			
+		    			<p:ajax partialSubmit="nomePessoa" 
+		    				event="itemSelect" listener="#{registrarAbordagemBean.buscarPessoa}" update="sex datan" />  
+		    			
+		    		</p:autoComplete>
+ 		    					    	
+			    	<p:outputLabel value="Sexo" for="sex" />
+		    		<p:selectOneMenu id="sex" 
+		    			required="true" 
+		    			value="#{registrarAbordagemBean.abordagem.pessoa.sexo}"
+		    		    validatorMessage="O sexo é obrigatório.">		    		    
+		    			<f:selectItem itemLabel="Selecione o sexo" />
+		    			<f:selectItems value="#{registrarAbordagemBean.sexos}" var="sexo" 
+							itemLabel="#{sexo}" itemValue="#{sexo}"/>
+		    		</p:selectOneMenu>
+		    			
+	    			<p:outputLabel value="Data Nascimento " for="datan" size="30"/>
+		    		<p:calendar id="datan" 
+		    			value="#{registrarAbordagemBean.abordagem.pessoa.dataNascimento}" 
+			    		required="true"
+			    		showOn="button" 
+				    	validatorMessage="A data de nascimento é obrigatória."
+				    	pattern="dd/MM/yyyy"
+						mask="99/99/9999"/>
+						
+						
+  
+	    			<p:outputLabel value="Situação" for="aux" />
+		    		<p:selectOneMenu id="aux" 
+		    			required="true" 
+		    			value="#{registrarAbordagemBean.abordagem.situacao}"
+		    		    validatorMessage="A situação é obrigatória.">		    		    
+		    			<f:selectItem itemLabel="Selecione a situação" />
+		    			<f:selectItems value="#{registrarAbordagemBean.situacoes}" var="sit" 
+							itemLabel="#{sit}" itemValue="#{sit}"/>
+		    		</p:selectOneMenu>    			
+						
+					<p:outputLabel value="Descrição" for="descr"/>
+		    		<h:panelGroup>
+		    			<p:inputTextarea id="descr" size="150" rows="4" cols="80" style="height: 100px; overflow:auto;"
+			    			maxlength="250" 
+		    				value="#{registrarAbordagemBean.abordagem.descricao}"
+			    			counter="display"
+							counterTemplate="{0} restantes"/>
+				    	<h:outputText id="display" />
+					    <p:watermark for="descr" value="Descreva aqui a abordagem." />		
+		        	</h:panelGroup>	
+		    				
+		    		<h:outputLabel />		    			
+	           		<p:commandButton icon="pi pi-save" id="salvar" value="Salvar" 
+						title="Salva a descrição da abordagem"
+						actionListener="#{registrarAbordagemBean.salvar}"
+						oncomplete="if (!args.validationFailed) PF('aborDialogWidgetVar').hide()" 			
+						update="addGrid frmAbordagem:listaDataTable frmAbordagem:growl"								
+						process="addGrid">
+					</p:commandButton>
+
+		    	</p:panelGrid>
+	    	</p:dialog>	
+	    	
+	    	
+	    	
+	    	<p:confirmDialog id="confirmacaoExclusaoDialog"
+				widgetVar="confirmacaoExclusaoWidgetVar"
+				message="Confirma a exclusão?"
+				header="Exclusão de ação" severity="alert">
+				
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoExclusaoWidgetVar').hide(); return false;" />
+					
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+				    update="frmAbordagem:listaDataTable frmAbordagem:toolbar frmAbordagem:growl"
+					onclick="PF('confirmacaoExclusaoWidgetVar').hide();"
+					action="#{registrarAbordagemBean.excluir}" 
+					process="@this"/>
+					
+			</p:confirmDialog>
+	    	
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

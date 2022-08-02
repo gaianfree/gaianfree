@@ -1,0 +1,139 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Atendimentos por Técnico</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Atendimentos Individualizados por Técnico</h2>
+     	
+    	<h:form id="frmPesquisa">     	
+    	
+    		<p:spacer height="5px" /> 
+    		
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<h:panelGroup id="uni" rendered="#{relatorioTecnicoProdBean.gestor}">
+						<p:spacer width="5px" />					
+		    			<p:outputLabel value="Unidade" for="unidade" />
+						<p:spacer width="5px" />
+		    			<p:selectOneMenu id="unidade" 
+		    				value="#{relatorioTecnicoProdBean.unidade}"
+		    				required="true" 
+				    		validatorMessage="A unidade é obrigatória.">
+		    				<f:selectItem itemLabel="Selecione uma unidade" />
+		     				<f:selectItems value="#{relatorioTecnicoProdBean.unidades}" var="unid" 
+								itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+		    			</p:selectOneMenu>	
+		    		</h:panelGroup>
+	    			
+	    			<p:spacer width="5px" />
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioTecnicoProdBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioTecnicoProdBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Atendimentos" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioTecnicoProdBean.consultarProdPeriodo}"
+		            	update="listaDataTable toolbar totaisGrid">		            		            	
+	            	</p:commandButton>			
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>			
+					
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_produtividade_tecnicos" />
+		            </p:commandButton>	
+					
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de itens de atendimento -->
+			<p:dataTable id="listaDataTable"  value="#{relatorioTecnicoProdBean.listaAtendimentos}" 
+				var="item"
+	    		style="margin-top: 20px" emptyMessage="Nenhum atendimento cadUnico encontrado" >
+	    		
+		    	
+	    		<p:column headerText="Técnico" style="width: 100px; text-align: left">	    			
+	    			<h:outputText value="#{item.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Perfil" style="width: 60px; text-align: left"
+	    			filterBy="#{item.role}">	    			
+	    			<h:outputText value="#{item.role}" />
+	    		</p:column>  	    		
+	    		
+	    		<p:column headerText="Unidade" style="width: 100px; text-align: center"
+	    			filterBy="#{item.unidade}">
+	    			<h:outputText value="#{item.unidade}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Qde Atendimentos" style="width: 50px; text-align: center">	    			
+	    			<h:outputText value="#{item.qdeAtendimentos}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="%" style="width: 50px; text-align: center">	    			
+	    			<h:outputText value="#{item.percentual}">
+	    			  <f:convertNumber type="percent" />
+    			 	</h:outputText>
+	    		</p:column>	    		
+    		
+		   	</p:dataTable>
+		   	
+			<p:spacer height="5px" />	
+
+		   	<p:panelGrid columns="3" id="totaisGrid" align="center" style="align: center">
+
+				<f:facet name="header">
+			        Indicadores de Atendimentos Individualizados por Período
+			    </f:facet>
+			    
+			    <h:outputText/>
+	    		<h:outputText value="Unidade" style="font-weight: bold;"/>
+	    		<h:outputText value="Geral" style="font-weight: bold;"/>
+	    		
+	    		<h:outputText value="Quantidade Total de Atendimentos" style="font-weight: bold;"/>
+			    <h:outputText id="total" value="#{relatorioTecnicoProdBean.total}"/>
+			    <h:outputText id="totalGeral" value="#{relatorioTecnicoProdBean.totalGeral}"/>
+			    
+			    <h:outputText value="Média de Atendimentos por Técnico" style="font-weight: bold;"/>
+			    <h:outputText id="media" value="#{relatorioTecnicoProdBean.media}">
+			    	<f:convertNumber minFractionDigits="2" />
+			    </h:outputText>		    
+		    	<h:outputText id="mediaGeral" value="#{relatorioTecnicoProdBean.mediaGeral}">
+			    	<f:convertNumber minFractionDigits="2" />			    
+			    </h:outputText>		    
+		   	</p:panelGrid>
+			   	
+			   			   	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

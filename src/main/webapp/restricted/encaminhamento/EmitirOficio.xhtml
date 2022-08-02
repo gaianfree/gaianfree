@@ -1,0 +1,292 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Emitir Ofício</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Emitir Ofício</h2>
+    	
+    	<h:form id="frmPesquisa" enctype="multipart/form-data"
+			target="_blank">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>		
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">				
+					<p:commandButton icon="pi pi-send" title="Emitir ofício" value="Emitir" 		            	
+		            	actionListener="#{emitirOficioBean.limpar}" 
+		            	oncomplete="PF('addDialogWidgetVar').show()"
+		            	update="addDialog toolbar nome" 
+		            	process="@this">
+		            	<p:resetInput target="addDialog" />	
+	            	</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+				    
+	    
+		    <!--  Lista de oficios emitidos -->
+			<p:dataTable id="oficiosEmitidosDataTable"  
+				value="#{emitirOficioBean.listaOficios}" var="oficioEmitido"
+	    		style="margin-top: 20px" emptyMessage="Nenhum ofício emitido." rows="10" 
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" 
+	    		rowsPerPageTemplate="10,15,20"
+	    		selectionMode="single" selection="#{emitirOficioBean.oficioEmitido}" rowKey="#{oficioEmitido.codigo}">
+	    		
+	    		<p:ajax event="rowSelect" update=":frmPesquisa:toolbar oficiosEmitidosDataTable" />			
+				<p:ajax event="rowUnselect" update=":frmPesquisa:toolbar oficiosEmitidosDataTable" />
+
+		    		
+		    	<p:column headerText="Data Emissão" style="width: 45px; text-align: center"
+		    		sortBy="#{oficioEmitido.dataEmissao}" >		    		
+		    		<h:outputText value="#{oficioEmitido.dataEmissao}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>	    		
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nr. Ofício" style="width: 20px; text-align: center"
+	    			filterBy="#{oficioEmitido.nrOficioEmitido}"
+	    			footerText="contains" filterMatchMode="contains">
+	    			<h:outputText value="#{oficioEmitido.nrOficioEmitido}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Prontuário" style="width: 15px; text-align: center">
+	    			<h:outputText value="#{oficioEmitido.pessoa.familia.prontuario.codigo}" />
+	    		</p:column>
+	    		 				    		
+	    		<p:column headerText="Pessoa" style="width: 85px; text-align: center"
+	    			filterBy="#{oficioEmitido.pessoa.codigo} - #{oficioEmitido.pessoa.nome}"
+	    			footerText="contains" filterMatchMode="contains">
+	    			<h:outputText value="#{oficioEmitido.pessoa.codigo} - #{oficioEmitido.pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Pessoa não registrada" style="width: 85px; text-align: center"
+	    			filterBy="#{oficioEmitido.nome}">
+	    			<h:outputText value="#{oficioEmitido.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Cod. Encaminhamento" style="width: 60px; text-align: center">
+	    			<h:outputText value="#{oficioEmitido.codigoEncaminhamento}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Orgão" style="width: 40px; text-align: center"
+	    			filterBy="#{oficioEmitido.nomeOrgao}" >	 	    			
+	    			<h:outputText value="#{oficioEmitido.nomeOrgao}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Operações" style="width: 65px; text-align: center" >		    		
+		    		
+		    		<p:commandButton 
+			    		update="frmPesquisa:detalheGrid" 
+  						onclick="PF('detalheWidget').show()" 
+  						title="Ver detalhe" 
+  						icon="pi pi-info"
+  						process="@this">
+  						<f:setPropertyActionListener target="#{emitirOficioBean.oficioEmitido}" 
+							value="#{oficioEmitido}" />		                
+	            	</p:commandButton>
+		    		
+		    		<p:commandButton icon="pi pi-pencil" title="Editar"	    			
+		    			oncomplete="PF('addDialogWidgetVar').show();"
+		    			update=":frmPesquisa:addDialog :frmPesquisa:toolbar :frmPesquisa:messages" 
+		            	process="@this">
+						<f:setPropertyActionListener target="#{emitirOficioBean.oficioEmitido}" 
+							value="#{oficioEmitido}" />
+					</p:commandButton>						    		
+
+		    		<p:commandButton icon="pi pi-trash" title="Excluir"
+		    			oncomplete="PF('confirmacaoExclusao').show()"		            	
+		            	update=":frmPesquisa:oficiosEmitidosDataTable :frmPesquisa:toolbar :frmPesquisa:messages"
+		            	process="@this">
+						<f:setPropertyActionListener target="#{emitirOficioBean.oficioEmitido}" 
+							value="#{oficioEmitido}" />
+					</p:commandButton>	
+					
+					<p:commandButton id="show" icon="pi pi-print" title="Imprimir PDF"
+						disabled="#{not emitirOficioBean.oficioSelecionado}"
+						action="#{emitirOficioBean.showPDF(oficioEmitido)}"
+						process="show" immediate="true" ajax="false"
+						update="frmPesquisa:addGrowl">
+					</p:commandButton>
+					
+					<p:commandButton id="download" icon="pi pi-file-o" title="Download PDF"
+						disabled="#{not emitirOficioBean.oficioSelecionado}"           			
+            			action="#{emitirOficioBean.downloadPDF(oficioEmitido)}" 
+            			process="download" immediate="true" ajax="false"
+            			update="frmPesquisa:addGrowl">
+            		</p:commandButton>
+					
+										
+		    	</p:column>    		
+    		
+		   	</p:dataTable>
+		   	
+		   	<p:dialog id="detalheDialog" header="Mostrar Detalhes" 
+		   		widgetVar="detalheWidget" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="true"
+		   		closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:auto"
+				position="left top">
+		   		
+	            <p:panelGrid id="detalheGrid" columns="2" columnClasses="label,value">
+	                
+	                <h:outputLabel value="Técnico: " style="font-weight:bold"/>
+	                <h:outputText value="#{emitirOficioBean.oficioEmitido.tecnico.nome}" />
+	                
+	                <h:outputLabel value="Assunto: " style="font-weight:bold"/>
+	                <h:outputText value="#{emitirOficioBean.oficioEmitido.assunto}" />
+	                
+	                <h:outputLabel value="Endereço do Orgão: " style="font-weight:bold"/>
+	                <h:outputText value="#{emitirOficioBean.oficioEmitido.endereco}" />	                
+	                
+	           	 </p:panelGrid>
+    		</p:dialog>
+		   	
+		   	
+		   	<p:dialog id="addDialog" header="Emissão" widgetVar="addDialogWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				width="100%" position="center top" maximizable="true"
+				height="70%" fitViewport="true" responsive="true">	
+				       
+    			<p:growl id="addGrowl" showDetail="true" />     				
+							
+				<!--  Cadastro de oficioAtendimento com busca de pessoa antes -->
+				<p:panelGrid columns="2" id="addPanelGrid" style="width: 100%" 				
+					columnClasses="rotulo, campo" >					
+					
+					<p:outputLabel value="Pesquisar Pessoa"/>
+					<p:commandButton id="Pesquisar" icon="pi pi-plus" title="Adicionar uma pessoa" value="Pesquisar" 
+						disabled="#{emitirOficioBean.oficioSelecionado}"
+						actionListener="#{emitirOficioBean.abrirDialogo}"
+					 	process="@this">
+					 	<p:ajax event="dialogReturn" listener="#{emitirOficioBean.selecionarPessoa}" 
+					 		update="addGrowl nomePessoa nome"
+					 		process="@this"/>
+					</p:commandButton>
+									
+		    		<p:outputLabel value="Pessoa" for="nomePessoa"/>
+		    		<p:inputText id="nomePessoa" size="60" maxlength="80"
+		    			required="false"
+		    			readonly="true"
+		    			value="#{emitirOficioBean.oficioEmitido.pessoa.nome}"/>
+		    			
+		    		<p:outputLabel value="Pessoa não registrada" for="nome"/>
+		    		<p:inputText id="nome" size="60" maxlength="80"
+		    			disabled="#{emitirOficioBean.pessoaSelecionada}"
+		    			value="#{emitirOficioBean.oficioEmitido.nome}"/>
+		    					    
+				    
+		    		<p:outputLabel value="Data Emissão" for="dataEmissao" />
+					<p:calendar id="dataEmissao" size="30"
+						value="#{emitirOficioBean.oficioEmitido.dataEmissao}"
+						required="true"
+						showOn="button" 
+						pattern="dd/MM/yyyy"
+						mask="99/99/9999"/>						
+					
+							
+		    			
+		    		<p:outputLabel value="Cod. Encaminhamento" for="codigoEncaminhamento"/>
+	    			<p:selectOneMenu id="codigoEncaminhamento" 	    				
+	    				value="#{emitirOficioBean.oficioEmitido.codigoEncaminhamento}" 		    			
+	    				required="true" 	    				
+		    			validatorMessage="O código de encaminhamento é obrigatório."  >
+		    			<f:selectItem itemLabel="Selecione o codigo de encaminhamento" />
+		    			<f:selectItems value="#{emitirOficioBean.codigoEncaminhamento}" var="codenc"
+							itemLabel="#{codenc}" itemValue="#{codenc}" />
+							
+						<p:ajax listener="#{emitirOficioBean.carregarOrgaos}"
+							update="orgaos" process="codigoEncaminhamento" />						
+	    			</p:selectOneMenu>
+					
+					<p:outputLabel value="Orgão Externo" for="orgaos" />
+					<p:selectOneMenu id="orgaos"
+						disabled="#{emitirOficioBean.orgaos eq null}"
+						value="#{emitirOficioBean.orgao}">
+						<f:selectItem itemLabel="Selecione o orgão" />
+						<f:selectItems value="#{emitirOficioBean.orgaos}"
+							var="orgaos" itemLabel="#{orgaos.nome}" itemValue="#{orgaos}" />
+
+						<p:ajax listener="#{emitirOficioBean.selecionarOrgao}"
+							update="nomeOrgao endereco"
+							process="orgaos" />
+					</p:selectOneMenu>
+					
+					
+					<p:outputLabel value="Nome do Orgão" for="nomeOrgao" />
+					<h:panelGroup>
+
+						<p:inputTextarea id="nomeOrgao" size="250" rows="2"
+							cols="70" style="height: 100px; overflow:auto;" maxlength="250"
+							value="#{emitirOficioBean.oficioEmitido.nomeOrgao}"
+							required="true"
+							counter="displayNomeOrgao"
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="displayNomeOrgao" />
+						<p:watermark for="nomeOrgao"
+							value="Nome do Orgao." />
+					</h:panelGroup>
+
+					<p:outputLabel value="Endereco do Orgao Emissor" for="endereco" />
+					<h:panelGroup>
+						<p:inputTextarea id="endereco" size="250" rows="2"
+							cols="70" style="height: 100px; overflow:auto;" maxlength="250"
+							value="#{emitirOficioBean.oficioEmitido.endereco}"
+							required="true"
+							counter="displayEndereco"
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="displayEndereco" />
+						<p:watermark for="endereco"
+							value="Endereco do Orgao." />
+					</h:panelGroup>						
+					
+	    			<p:outputLabel value="Assunto" for="assunto"/>
+		    		<h:panelGroup>
+			    		<p:inputTextarea id="assunto" size="10000" rows="10" cols="600"  style="width: 100%; overflow:auto;"
+			    			maxlength="10000" 
+			    			value="#{emitirOficioBean.oficioEmitido.assunto}"
+			    			counter="display"
+							counterTemplate="{0} caracteres restantes" 
+			    			required="true"
+			    			placeholder="Até 10000 caracteres."
+					    	validatorMessage="O assunto é obrigatório."/>
+		    			<h:outputText id="display" />
+				    	<p:watermark for="assunto" value="Descreva o assunto" />	
+			    	</h:panelGroup>
+		    		
+					<p:spacer height="10px" /> 
+	
+					<p:commandButton icon="pi pi-save" id="salvarCommandButton" value="Salvar" 
+							actionListener="#{emitirOficioBean.salvar}"
+							update="addPanelGrid oficiosEmitidosDataTable addGrowl"
+							oncomplete="if (!args.validationFailed) PF('addDialogWidgetVar').hide()" 
+							process="@this addDialog"/>
+				</p:panelGrid>
+			</p:dialog>	
+			
+			
+			<p:confirmDialog id="confirmacaoExclusaoDialog"
+				widgetVar="confirmacaoExclusao"
+				message="Confirma exclusão da emissão?"
+				header="Exclusão da Emissão" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoExclusao').hide(); return false;" />
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+				    update="messages oficiosEmitidosDataTable toolbar confirmacaoExclusaoDialog"
+					action="#{emitirOficioBean.excluir}" 
+					process="@this"/>	
+			</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

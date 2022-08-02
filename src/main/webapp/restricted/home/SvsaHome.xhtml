@@ -1,0 +1,225 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">SVSA</ui:define>
+	
+	<ui:define name="corpo">
+	
+	<f:metadata>
+		<o:viewParam name="historico" value="#{avisosBean.historico}" />
+	</f:metadata>
+	
+	<div style="height:100%">
+    	<h:form>
+			<p:growl id="growl" sticky="true" showDetail="true" life="2000" />
+					    
+		    			
+		    <p:dashboard id="board" model="#{avisosBean.model}">
+		    
+	           <p:ajax event="reorder" listener="#{avisosBean.handleReorder}" update="growl" />
+	            	            
+	           <p:panel id="encaminhamentos" header="Prontuários a Receber" 
+	           		toggleable="true" closable="true" 
+	           		toggleSpeed="500" closeSpeed="500" style="width: 400px;"
+                	rendered="#{avisosBean.coordenador}" 
+                	collapsed="true">
+
+			        <p:ajax event="close" listener="#{avisosBean.onClose}" update="growl"/>			        
+					
+					<p:dataTable id="historicoTable" value="#{avisosBean.pendentes}"
+						var="enc" style="margin-top: 1px">	
+											
+						<p:column headerText="Data do Encaminhamento" style="width: 40px; text-align: center">
+							<h:outputText value="#{enc.dataEncaminhamento}">
+			    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    				</h:outputText>	 
+						</p:column>
+						
+						<p:column headerText="Prontuário" style="width: 50px; text-align: center">
+							<h:outputText value="#{enc.prontuario.codigo} #{enc.prontuario.familia.pessoaReferencia.nome}" />
+						</p:column>	
+											
+						<p:column headerText="Unidade que Encaminhou" style="width: 50px; text-align: center">
+							<h:outputText value="#{enc.unidadeEncaminhou.nome}" />
+						</p:column>	
+												
+						<p:column headerText="Receber" style="width: 20px; text-align: center">
+				    		<p:button outcome="/restricted/encaminhamento/ReceberEncaminhamento" icon="pi pi-download" title="Receber">
+				    			<f:param name="historico" value="#{enc.codigo}"/>
+				    		</p:button>					    			
+				    	</p:column>									
+					</p:dataTable>			        
+			    </p:panel>
+			    	 
+
+	            <p:panel id="statusEncaminhamentos" header="Prontuários Encaminhados"
+	            	toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" 
+                	rendered="#{avisosBean.coordenador}" style="width: 400px;"
+                	collapsed="true">
+
+			        <p:ajax event="close" listener="#{avisosBean.onClose}" update="growl"/>
+			        			        	
+	            	<p:dataTable id="historicoTable2" value="#{avisosBean.recebidos}"
+						var="enc" style="margin-top: 1px">	
+											
+						<p:column headerText="Data do Recebimento" style="width: 30px; text-align: center">
+							<h:outputText value="#{enc.dataRecebimento}">
+			    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    				</h:outputText>	 
+						</p:column>	
+						
+						<p:column headerText="Prontuario" style="width: 50px; text-align: center">
+							<h:outputText value="#{enc.prontuario.codigo} #{enc.prontuario.familia.pessoaReferencia.nome}" />
+						</p:column>	
+						
+						<p:column headerText="Unidade destino" style="width: 30px; text-align: center">
+							<h:outputText value="#{enc.unidadeDestino.nome}" />
+						</p:column>	
+									
+						<p:column headerText="Despacho" style="width: 50px; text-align: center">
+							<h:outputText value="#{enc.despacho}" />
+						</p:column>	
+						
+						<p:column headerText="Ciente" style="width: 30px; text-align: center">
+							<p:commandButton title="Ok" value="Ok" icon="pi pi-thumbs-up"
+								rendered="#{enc.dataRecebimento ne null}"
+								actionListener="#{avisosBean.ok(enc)}"
+								update="historicoTable2"/>
+		            	</p:column>										
+					</p:dataTable>										          	
+	            </p:panel>
+	            
+
+	            <p:panel id="prazosPlanos" header="Planos Acompanhamento Familiar"
+	            	toggleable="true" closable="true" 
+	            	toggleSpeed="500" closeSpeed="500" 
+                	rendered="#{avisosBean.tecnico}" style="width: 400px;"
+                	collapsed="true">
+
+			        <p:ajax event="close" listener="#{avisosBean.onClose}" update="growl"/>
+			        			        
+	            	<p:dataTable id="prazosTable" value="#{avisosBean.planosTO}"
+						var="to" style="margin-top: 1px">
+						
+						<p:column headerText="Pront." style="width: 18px; text-align: center">
+							<h:outputText value="#{to.prontuario}" />
+						</p:column>	
+						
+						<p:column headerText="Pessoa Referência" style="width: 80px; text-align: left">
+							<h:outputText value="#{to.pessoaReferencia}" />
+						</p:column>	
+												
+						<p:column headerText="Ingresso" style="width: 34px; text-align: center">
+							<h:outputText value="#{to.dataIngresso}">
+			    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    				</h:outputText>	 
+						</p:column>						
+											
+						<p:column headerText="Dias" style="width: 8px; text-align: center">
+							<h:outputText value="#{to.terminoDias}" />
+						</p:column>	
+													
+					</p:dataTable>	            	
+	            </p:panel>	            
+	            
+
+	           	<p:panel id="oficios" header="Ofícios Pendentes de Resposta"
+	            	toggleable="true" closable="true" 
+	            	toggleSpeed="500" closeSpeed="500" 
+                	rendered="#{avisosBean.tecnico}" style="width: 400px;"
+                	collapsed="true">
+
+			        <p:ajax event="close" listener="#{avisosBean.onClose}" update="growl"/>
+			        			         	
+	            	<p:dataTable id="oficiosTable" value="#{avisosBean.oficios}"
+						var="oficio" style="margin-top: 1px">
+						
+						<p:column headerText="Ofício" style="width: 25px; text-align: center">
+							<h:outputText value="#{oficio.nrOficio}" />
+						</p:column>	
+						
+						<p:column headerText="Data" style="width: 27px; text-align: center">
+							<h:outputText value="#{oficio.dataRecebimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+		    				</h:outputText>	
+						</p:column>	
+												
+						<p:column headerText="Técnico" style="width: 80px; text-align: center">
+							<h:outputText value="#{oficio.tecnico.nome}"/>
+						</p:column>
+													
+					</p:dataTable>	            	
+            	</p:panel>
+	            
+
+	           	<p:panel id="prazosPlanosMse" header="Planos Acompanhamento Individual"
+	            	toggleable="true" closable="true" 
+	            	toggleSpeed="500" closeSpeed="500" 
+                	rendered="#{avisosBean.tecnicoCreas}" style="width: 400px;"
+                	collapsed="true">
+                	
+	            	<p:dataTable id="prazosTableMse" value="#{avisosBean.planosMseTO}"
+						var="to" style="margin-top: 1px">
+						
+						<p:column headerText="Pront." style="width: 18px; text-align: center">
+							<h:outputText value="#{to.prontuario}" />
+						</p:column>	
+						
+						<p:column headerText="Pessoa" style="width: 80px; text-align: left">
+							<h:outputText value="#{to.pessoaReferencia}" />
+						</p:column>	
+												
+						<p:column headerText="Ingresso" style="width: 30px; text-align: center">
+							<h:outputText value="#{to.dataIngresso}">
+			    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    				</h:outputText>	 
+						</p:column>
+													
+					</p:dataTable>	            	
+	            </p:panel>	            
+	        </p:dashboard>
+		
+		    <div style="clear:both" />
+
+    	</h:form>
+    	
+    	<h:form target="_blank">
+    		<p:dock position="bottom">		    	
+        		<p:menuitem value="E-Mail" icon="/resources/imagens/email_t.png" 
+        			url="mailto:atendimento@gaian.com.br"/> 
+        				
+        		<p:menuitem value="YouTube"  icon="/resources/imagens/youtube_t.png" 
+        			rendered="#{avisosBean.usuarioLogado.grupo == 'ADMINISTRATIVOS'}"
+        			url="https://www.youtube.com/playlist?list=PLYRU5MnB6WxdLNPJDdxFASla175LrNhWE"/>
+       			<p:menuitem value="YouTube"  icon="/resources/imagens/youtube_t.png" 
+        			rendered="#{avisosBean.usuarioLogado.grupo == 'TECNICOS'}" 
+        			url="https://www.youtube.com/playlist?list=PLYRU5MnB6WxfiOoRrJdKgKlsaZyXh6n-1"/>
+       			<p:menuitem value="YouTube"  icon="/resources/imagens/youtube_t.png" 
+        			rendered="#{avisosBean.usuarioLogado.grupo == 'COORDENADORES'}" 
+        			url="https://www.youtube.com/playlist?list=PLYRU5MnB6WxfgUh3VkG4c-P8HBQBQggdP"/>
+       			<p:menuitem value="YouTube"  icon="/resources/imagens/youtube_t.png" 
+        			rendered="#{avisosBean.usuarioLogado.grupo == 'GESTORES'}"
+        			url="https://www.youtube.com/playlist?list=PLYRU5MnB6WxdaIn4mSZI2Pf7YNXNr1F1y"/>
+        			
+        			
+        		<p:menuitem value="Facebook" icon="/resources/imagens/facebook_t.png" 
+        			url="https://www.facebook.com/GaianOficial"/>
+        		<p:menuitem value="Instagran" icon="/resources/imagens/instagran_t.png" 
+        			url="https://www.instagram.com/gaianoficial/"/>
+       			<p:menuitem value="Gaian.com.br" icon="/resources/imagens/whatsapp_t.png" 
+        			url="https://api.whatsapp.com/send?phone=5519992607200"/>       			
+        		<p:menuitem value="Gaian.com.br" icon="/resources/imagens/gaian_t.png" 
+        			url="https://gaian.com.br/"/>
+			</p:dock>
+    	</h:form>
+    	
+	</div>	
+	</ui:define>
+
+
+</ui:composition>

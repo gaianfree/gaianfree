@@ -1,0 +1,109 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Usuário do Sistema</ui:define>
+
+	<ui:define name="corpo">
+		<h2>Usuário do Sistema</h2>
+
+		<h:form id="frmPesquisa" enctype="multipart/form-data">
+		
+			<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:commandButton icon="pi pi-plus" value="Novo" id="botaoNovo"
+						action="/restricted/usuario/CadastroUsuario.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable id="usuariosTable" var="usuario" value="#{pesquisaUsuarioBean.lazyUsuarios}"  paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                rowsPerPageTemplate="10,15,{ShowAll|'All'}" lazy="true"
+				rowStyleClass="#{usuario.status eq 'INATIVO' ? 'inativo' : null}">
+
+				<p:column headerText="Código" style="width: 40px; text-align: center">
+					<h:outputText value="#{usuario.codigo}" />
+				</p:column>				
+				
+				<p:column headerText="Nome" style="width: 150px; text-align: left"
+					filterBy="#{usuario.nome}">
+					<h:outputText value="#{usuario.nome}" />
+				</p:column>	
+				
+				<p:column headerText="Nr.Reg. Profissional" style="width: 50px; text-align: center">
+					<h:outputText value="#{usuario.registroProfissional}" />
+				</p:column>	
+							
+				<p:column headerText="E-mail" style="width: 150px; text-align: center">
+					<h:outputText value="#{usuario.email}" />
+				</p:column>				
+				<p:column headerText="Perfil" style="width: 90px; text-align: center">
+					<h:outputText value="#{usuario.role}" />
+				</p:column>
+				<p:column headerText="Unidade" style="width: 80px; text-align: center"
+					sortBy="#{usuario.unidade.nome}">
+	    			<h:outputText value="#{usuario.unidade.nome}" />
+	    		</p:column>
+	    		<p:column headerText="Grupo" style="width: 90px; text-align: center">
+					<h:outputText value="#{usuario.grupo}" />
+				</p:column>
+				<p:column headerText="Status" style="width: 30px; text-align: center">
+					<h:outputText value="#{usuario.status}" />
+				</p:column>
+							
+				<p:column headerText="Operações" style="width: 40px; text-align: center">
+				
+					<p:button outcome="CadastroUsuario" icon="pi pi-pencil" title="Editar">
+						<f:param name="usuario" value="#{usuario.codigo}" />
+					</p:button>					
+				
+					<p:commandButton icon="pi pi-refresh"  title="Reset de senha"
+						rendered="#{pesquisaUsuarioBean.coordenador}"
+						onclick="PF('confirmacaoReset').show();"
+						process="@this"	>
+						<f:setPropertyActionListener
+							target="#{pesquisaUsuarioBean.usuarioSelecionadoExcluir}"
+							value="#{usuario}" />
+					</p:commandButton>
+					
+				</p:column>
+			</p:dataTable>
+
+
+			<p:confirmDialog id="confirmacaoExclusaoDialog"
+				widgetVar="confirmacaoExclusao"
+				message="Tem certeza que deseja excluir o usuário #{pesquisaUsuarioBean.usuarioSelecionadoExcluir.nome}?"
+				header="Exclusão de usuário" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoExclusao').hide(); return false;" />
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+				    update=":frmPesquisa:usuariosTable"
+					onclick="PF('confirmacaoExclusao').hide();"
+					action="#{pesquisaUsuarioBean.excluir}" />
+			</p:confirmDialog>
+			
+			<p:confirmDialog id="confirmacaoResetDialog"
+				widgetVar="confirmacaoReset"
+				message="Tem certeza que deseja reiniciar a senha do usuário #{pesquisaUsuarioBean.usuarioSelecionadoExcluir.nome}?"
+				header="Reset de senha de usuário" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoReset').hide(); return false;" />
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+				    update=":frmPesquisa:usuariosTable"
+					onclick="PF('confirmacaoReset').hide();"
+					action="#{pesquisaUsuarioBean.reset}"/>
+			</p:confirmDialog>
+			
+
+		</h:form>
+	</ui:define>
+</ui:composition>

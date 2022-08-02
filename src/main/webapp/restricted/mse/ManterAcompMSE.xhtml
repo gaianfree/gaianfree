@@ -1,0 +1,430 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">MSE</ui:define>
+    
+    <ui:define name="corpo">
+        	
+    	
+    	<h:form id="frmMse">
+    		
+    		<p:growl id="growl" showDetail="false">
+    			<p:autoUpdate />
+    		</p:growl>       		    			
+			
+		
+			<p:toolbar id="toolbar" >			
+				<f:facet name="left">	
+					<p:commandButton value="Pesquisar Pessoa" icon="pi pi-search" 
+						disabled="#{manterAcompMSEBean.cras}" 
+						title="Pesquisar Pessoa"
+						actionListener="#{manterAcompMSEBean.abrirDialogo}"
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{manterAcompMSEBean.selecionarPessoa}"
+					 		update="frmMse growl"
+					 		process="@this"/>
+					</p:commandButton>					
+						
+				</f:facet>
+			</p:toolbar>		
+			
+			
+		    <!-- Pessoa -->			
+			<!-- Reuso de componente  -->
+			<p:panel id="componente">
+				<ui:include src="/compositions/PessoaUI.xhtml">
+	                <ui:param name="pessoa" value="#{manterAcompMSEBean.pessoa}" />
+	                <ui:param name="pessoaSelecionada" value="#{manterAcompMSEBean.pessoaSelecionada}" />
+	            </ui:include>
+    		</p:panel>
+    		
+		    <!-- Panel Plano de Acompanhamento -->
+    		
+    		
+		    <p:outputPanel id="planoPanel" rendered="#{manterAcompMSEBean.pessoaSelecionada}">
+		    	
+	    		<p:toolbar id="toolbar1" style="margin-top: 5px">
+	    			<f:facet name="left">				
+						<p:outputLabel value="Ano" for="ano"/>
+		    			<p:spacer width="5px" />
+			    		<p:selectOneMenu id="ano"  
+			    			value="#{manterAcompMSEBean.ano}">
+			    			<f:selectItem itemLabel="Selecione o ano" />
+			    			<f:selectItems value="#{manterAcompMSEBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"/>
+							<p:ajax listener="#{manterAcompMSEBean.buscarPlanosAno}" 
+								update="planosTable metasTable" process="@this"/>										
+			    		</p:selectOneMenu>
+				    		
+				    	<p:spacer width="10px" /> 	    			
+		    			
+		    			<p:commandButton title="Novo Plano" icon="pi pi-user-plus"
+			            	value="Novo Plano" 
+			            	disabled="#{not manterAcompMSEBean.pessoaSelecionada}"
+			            	actionListener="#{manterAcompMSEBean.limpar}" 
+			            	oncomplete="PF('planoDialogWidgetVar').show()"
+			            	update="planoDialog" 
+			            	process="@this">
+			            	<p:resetInput target="planoDialog" />	
+		            	</p:commandButton>
+					</f:facet>
+				</p:toolbar>   	
+		    	
+		    	<p:dataTable id="planosTable" value="#{manterAcompMSEBean.planos}" var="plano"
+		    		style="margin-top: 5px" emptyMessage="Nenhum plano encontrado." rows="3"
+		    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+		    		selectionMode="single" selection="#{manterAcompMSEBean.plano}" rowKey="#{plano.codigo}"> 
+			    		
+		    		<p:ajax event="rowSelect" update="frmMse:metasTable frmMse:toolbar2" process="@this" 
+		    			listener="#{manterAcompMSEBean.buscarMetas}"/> 
+					<p:ajax event="rowUnselect"/>
+			    		
+			    	<f:facet name="header">
+			            Planos Individuais de Acompanhamento
+			        </f:facet>	
+			    	
+			    	<p:column headerText="Código" style="width: 5px; text-align: center">
+						<h:outputText value="#{plano.codigo} #{plano.tipoMse}" />
+					</p:column>					
+					
+		    		<p:column headerText="Número do processo" style="width: 23px; text-align: center">
+		    			<h:outputText value="#{plano.nrProcesso}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Reincidente" style="width: 12px; text-align: center">
+			    		<h:outputText value="#{plano.reincidente}" />
+					</p:column>
+		    		
+		    		<p:column headerText="Data Ingresso" style="width: 20px; text-align: center"
+						sortBy="#{plano.dataEncaminhamento}" >					
+		    			<h:outputText value="#{plano.dataEncaminhamento}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Data Desligamento" style="width: 20px; text-align: center"
+						sortBy="#{plano.dataDesligamento}" >					
+		    			<h:outputText value="#{plano.dataDesligamento}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>	
+					
+					<p:column headerText="Situação" style="width: 25px; text-align: center">
+		    			<h:outputText value="#{plano.situacao}" />	
+	    			</p:column>				
+		    		
+		    		<p:column headerText="Tec. Responsável" style="width: 80px; text-align: center">
+		    			<h:outputText value="#{plano.responsavel.nome}" />	
+	    			</p:column> 		    					
+		    			
+		    		<p:column headerText="Operações" style="width: 55px; text-align: center" >		    		
+			    		
+			    		<p:commandButton icon="pi pi-pencil" title="Editar" 
+			    			disabled="#{plano.dataDesligamento ne null}"
+			    			actionListener="#{manterAcompMSEBean.carregarTecnicosPlano(plano)}" 			
+			    			oncomplete="PF('planoDialogWidgetVar').show();"
+			    			update="planosTable :frmMse:planoGrid" 
+							process="@this">
+							<f:setPropertyActionListener target="#{manterAcompMSEBean.plano}" 
+								value="#{plano}" />
+						</p:commandButton>		    		
+	
+			    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+			    			disabled="#{plano.dataDesligamento ne null}"
+			    			onclick="PF('confirmacaoExclusao').show();"
+							process="@this">
+							<f:setPropertyActionListener target="#{manterAcompMSEBean.plano}" 
+								value="#{plano}" />
+						</p:commandButton>
+						
+						<p:commandButton icon="pi pi-info" title="Ver detalhe" 
+				    		update="frmMse:detalheGrid" 
+	 						onclick="PF('detalheWidget').show()"		 							 						
+	 						process="@this">
+	 						<f:setPropertyActionListener target="#{manterAcompMSEBean.plano}" 
+							value="#{plano}" />
+		            	</p:commandButton>			            	
+			    				    		
+			    		<p:commandButton icon="pi pi-power-off" value="Encerrar" title="Encerrar Acompanhamento" 
+			    			disabled="#{plano.dataDesligamento ne null}"  			
+			    			oncomplete="PF('encDialogWidgetVar').show();"
+			    			update="planosTable frmMse:componente frmMse:metasTable :frmMse:encGrid" 
+							process="@this">
+							<f:setPropertyActionListener target="#{manterAcompMSEBean.plano}" 
+								value="#{plano}" />
+						</p:commandButton>
+						
+			    	</p:column>
+			    	
+			   	</p:dataTable>
+		    </p:outputPanel>  
+		    
+		   	
+		   	<!-- Dialogs Plano de Acompanhamento -->
+		   	
+		   	<p:dialog id="planoDialog" header="PIA" 
+		   		widgetVar="planoDialogWidgetVar" responsive="true"
+				modal="true" resizable="false" closeOnEscape="true" 
+				style="max-height:600px;overflow:auto" >
+			
+				<p:growl id="planoGrowl" showDetail="true" />      	
+				
+				<p:panelGrid id="planoGrid" columns="2" >
+				
+					<p:outputLabel value="Situação do Plano" for="situa"/>	    		
+		    		<p:selectOneMenu id="situa" 
+		    			required="true" 
+				    	validatorMessage="A situação é obrigatória."
+		    			value="#{manterAcompMSEBean.plano.situacao}">
+		    			<f:selectItem itemLabel="Selecione a situação do plano" />
+		    			<f:selectItems value="#{manterAcompMSEBean.situacoes}" var="situacao" 
+							itemLabel="#{situacao}" itemValue="#{situacao}"/>
+		    		</p:selectOneMenu>
+		    		
+		    		<p:outputLabel value="Tipo da Medida" for="tipo" />	    		
+		    		<p:selectOneMenu id="tipo" 
+		    			required="true" 
+				    	validatorMessage="O tipo é obrigatório."
+		    			value="#{manterAcompMSEBean.plano.tipoMse}">
+		    			<p:ajax event="valueChange" process="@this" update="psc2 psc4"
+	               			listener="#{manterAcompMSEBean.verificaPsc}" />
+		    			<f:selectItem itemLabel="Selecione o tipo" />
+		    			<f:selectItems value="#{manterAcompMSEBean.tipos}" var="tipo" 
+							itemLabel="#{tipo}" itemValue="#{tipo}"  />		
+		    		</p:selectOneMenu>
+	    	 	
+		    	 	<p:outputLabel value="Local PSC" for="psc2"/>
+				    <p:inputText id="psc2" size="20" maxlength="80"  
+				    	disabled="#{not manterAcompMSEBean.psc}" 
+				       	value="#{manterAcompMSEBean.plano.localPSC}"
+				       	required="true" 
+		    			validatorMessage="O local é obrigatório."/>
+				       	
+				    <p:outputLabel value="Responsavel Externo PSC" for="psc4"/>
+				    <p:inputText id="psc4"  size="80" maxlength="80"
+				    	value="#{manterAcompMSEBean.plano.responsavelExterno}"  
+				    	disabled="#{not manterAcompMSEBean.psc}"
+				    	required="true" 
+		    			validatorMessage="O responsável externo é obrigatório."/>	
+		    			
+		    			
+		    		<p:outputLabel value="É reincidente?" for="reincidente" />
+					<h:selectOneRadio id="reincidente"
+						value="#{manterAcompMSEBean.plano.reincidente}">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>	
+		    			
+		    			
+		    		<p:outputLabel value="Número do Processo" for="proc"/>
+				    <p:inputText id="proc" size="20" maxlength="20" 			    	
+				       	value="#{manterAcompMSEBean.plano.nrProcesso}"
+				       	required="true" 
+				    	validatorMessage="O número do processo é obrigatório."/>		    				    						
+				    				    
+				    <p:outputLabel value="Avaliação Interdisciplinar" for="avalia"/>
+	    			<h:panelGroup>
+			    		<p:inputTextarea id="avalia" size="3000" rows="6" cols="80"  style="height: 100px; overflow:auto;"
+			    			maxlength="3000" 
+		    				value="#{manterAcompMSEBean.plano.avalInterdisciplinar}"
+			    			counter="display"
+							counterTemplate="{0} restantes"
+							required="true" 
+				    		validatorMessage="A avaliação é obrigatória."/>
+						<h:outputText id="display" />
+			    		<p:watermark for="avalia" value="Descreva a avaliação interdisciplinar." />		    		
+		    		</h:panelGroup>
+		    		
+		    		<p:outputLabel value="Responsabilidades do Adolescente" for="adol"/>
+	    			<h:panelGroup>
+			    		<p:inputTextarea id="adol" size="3000" rows="6" cols="80" style="height: 100px; overflow:auto;"
+			    			maxlength="3000" 
+		    				value="#{manterAcompMSEBean.plano.responsAdolescente}"
+			    			counter="display2"
+							counterTemplate="{0} restantes"
+							required="true" 
+				    		validatorMessage="As responsabilidades do adolescente são obrigatórias."/>
+						<h:outputText id="display2" />
+			    		<p:watermark for="adol" value="Descreva as responsabilidades do adolescente." />		    		
+		    		</h:panelGroup>
+		    		
+		    		<p:outputLabel value="Responsabilidades da Família" for="fam"/>
+	    			<h:panelGroup>
+			    		<p:inputTextarea id="fam" size="3000" rows="6" cols="80" style="height: 100px; overflow:auto;"
+			    			maxlength="3000" 
+		    				value="#{manterAcompMSEBean.plano.responsFamilia}"
+			    			counter="display3"
+							counterTemplate="{0} restantes"
+							required="true" 
+				    		validatorMessage="As responsabilidades da família são obrigatórias."/>
+						<h:outputText id="display3" />
+			    		<p:watermark for="fam" value="Descreva as responsabilidades da família" />		    		
+		    		</h:panelGroup>
+		    		
+		    		<p:outputLabel value="Responsabilidades da Equipe Técnica" for="equi"/>
+	    			<h:panelGroup>
+			    		<p:inputTextarea id="equi" size="3000" rows="6" cols="80" style="height: 100px; overflow:auto;"
+			    			maxlength="3000" 
+		    				value="#{manterAcompMSEBean.plano.responsEquipe}"
+			    			counter="display4"
+							counterTemplate="{0} restantes"
+							required="true" 
+				    		validatorMessage="As responsabilidades da equipe são obrigatórias."/>
+						<h:outputText id="display4" />
+			    		<p:watermark for="equi" value="Descreva as responsabilidades da equipe técnica" />		    		
+		    		</h:panelGroup>	
+				    	
+				    <p:outputLabel value="Data Ingresso" for="dataEnc" />
+					<p:calendar id="dataEnc" size="20"
+						value="#{manterAcompMSEBean.plano.dataEncaminhamento}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						required="true" 
+						mask="99/99/9999"
+				    	validatorMessage="A data de encaminhamento é obrigatória."/>
+				    	
+		    		
+		    		
+		    		<p:outputLabel value="Data Homologação" for="dataHom" />
+					<p:calendar id="dataHom" size="20"
+						value="#{manterAcompMSEBean.plano.dataHomologacao}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>
+				    	
+				    <p:outputLabel value="Técnico Responsável" for="tecnico"/>
+	    			<p:selectOneMenu id="tecnico" 
+		    			value="#{manterAcompMSEBean.plano.responsavel}" >
+		    			<f:selectItem itemLabel="Selecione o técnico" />
+		    			<f:selectItems value="#{manterAcompMSEBean.tecnicos}" var="tecnico" 
+							itemLabel="#{tecnico.nome}" itemValue="#{tecnico}"/>
+		    		</p:selectOneMenu>		
+		    		
+		    		<p:outputLabel value="Técnicos adicionais" for="pickList"/>
+	    			<p:pickList id="pickList"
+	    				responsive="true"	    				
+	    				converter="pickListTecConverter"
+	    				value="#{manterAcompMSEBean.tecnicosAdicionais}"
+	    				var="tecnico" 
+	    				itemValue="#{tecnico}" itemLabel="#{tecnico.nome}">
+	    				
+	    				<f:facet name="sourceCaption">Disponíveis</f:facet>
+        				<f:facet name="targetCaption">Selecionados</f:facet>
+        			</p:pickList> 				
+		    		
+
+					<p:outputLabel></p:outputLabel>
+		    		<h:panelGroup>
+			    		
+						<p:commandButton icon="pi pi-save" id="salvarCommandButton" value="Salvar" 
+							actionListener="#{manterAcompMSEBean.salvar}"
+							update="planosTable componente planoGrid planoGrowl"
+							oncomplete="if (!args.validationFailed) PF('planoDialogWidgetVar').hide()" 						
+							process="planoDialog"/>
+														
+						<p:spacer width="10px" />
+							
+						<p:button icon="pi pi-arrow-left" value="Cancelar" 
+		        			onclick="PF('planoDialogWidgetVar').hide(); return false;" />
+	        		</h:panelGroup>
+		    		
+		    	</p:panelGrid>			
+				
+			</p:dialog>			   	
+		   	
+		   	<!--  Encerramento do acompanhamento -->
+		   	
+		   	<p:dialog id="encDialog" header="Encerrar Acompanhamento" widgetVar="encDialogWidgetVar" 
+				modal="true" resizable="true" closeOnEscape="true" responsive="true"
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll"
+				position="center top">
+	
+    							
+				<p:panelGrid id="encGrid" columns="2" >
+										
+					<p:outputLabel value="Razão Desligamento" for="rd" />	    		
+		    		<p:selectOneMenu id="rd" 
+		    			required="true" 
+				    	validatorMessage="A razão é obrigatória."
+		    			value="#{manterAcompMSEBean.plano.razaoDesligamento}">
+		    			<f:selectItem itemLabel="Selecione a razão do desligamento" />
+		    			<f:selectItems value="#{manterAcompMSEBean.razoes}" var="razao" 
+							itemLabel="#{razao}" itemValue="#{razao}"/>
+		    		</p:selectOneMenu>			    		
+		    				
+		    		<p:outputLabel></p:outputLabel>
+		    		<h:panelGroup>
+						<p:commandButton icon="pi pi-save" id="salvarEncButton" value="Encerrar" 
+							actionListener="#{manterAcompMSEBean.salvarEncerramento}"
+							update="planosTable metasTable encGrid growl"
+							oncomplete="if (!args.validationFailed) PF('encDialogWidgetVar').hide()" 
+							process="encDialog"/>
+							
+						<p:spacer width="10px" />
+								
+							<p:button icon="pi pi-arrow-left" value="Cancelar" 
+			        			onclick="PF('encDialogWidgetVar').hide(); return false;" />
+	        		</h:panelGroup>
+		    		
+		    	</p:panelGrid>				
+			</p:dialog>	
+		   	
+		   	<p:confirmDialog id="confirmacaoExclusaoDialog" 
+		   		widgetVar="confirmacaoExclusao"
+	        	message="O plano só pode ser excluído se não houver metas registradas. Continuar?"  
+	            header="Exclusão de plano" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	        		
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		process="@this"
+	        		update="planosTable"
+	        		onclick="PF('confirmacaoExclusao').hide();"
+	        		action="#{manterAcompMSEBean.excluir}" />
+	    	</p:confirmDialog>  	    	
+	    	    	
+	    	
+	    	<p:dialog id="detalheDialog" header="Mostrar Detalhes" 
+		   		widgetVar="detalheWidget" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="true"
+		   		closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:auto"
+				position="left top">
+		   		
+	            <p:panelGrid id="detalheGrid" columns="2" columnClasses="label,value">                
+	                
+	                <h:outputLabel for="plano1" value="Razão do desligamento: " style="font-weight:bold"/>
+	                <h:outputText id="plano1" value="#{manterAcompMSEBean.plano.razaoDesligamento}"/>	                
+	                
+	                <h:outputLabel for="nomesTecs" value="Técnicos Adicionais: " style="font-weight:bold"/>		    		
+	    			<p:dataList id="nomesTecs" value="#{manterAcompMSEBean.plano.tecnicos}" var="tec" type="ordered" emptyMessage="Não há técnicos adicionais.">
+				       	#{tec.nome}
+				    </p:dataList>	    			                 
+	                
+	            </p:panelGrid>
+    		</p:dialog>
+	    	
+	    	
+	    	<!--  Metas -->
+	    	
+	    	
+	    	<ui:include src="MetasPlanoMSE.xhtml"/>
+	    	
+	    	
+	    	
+	    	
+					 	    	
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>

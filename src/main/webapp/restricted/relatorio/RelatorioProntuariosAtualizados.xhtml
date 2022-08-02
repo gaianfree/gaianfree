@@ -1,0 +1,197 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Prontuários Atualizados</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Relatório de Prontuários Atualizados</h1>
+     	
+    	<h:form id="frmPesquisa"> 
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 	    				
+	    				value="#{relProntuariosAttBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relProntuariosAttBean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>
+				
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relProntuariosAttBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relProntuariosAttBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Prontuários" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relProntuariosAttBean.consultarPeriodo}"
+		            	update="listaDataTable toolbar, qtdProntuarios">		            		            	
+	            	</p:commandButton>	
+	            	
+	            	<p:spacer width="5px" />					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_prontuarios_atualizados" />
+		            </p:commandButton>	
+
+				</f:facet>
+			</p:toolbar>
+			
+		    <!--  Lista de itens de prontuarios atualizados -->
+		    
+			<p:dataTable id="listaDataTable"  value="#{relProntuariosAttBean.listaProntuarios}" 
+				var="prontuario"
+	    		style="margin-top: 20px" emptyMessage="Nenhum prontuario." 
+	    		rowsPerPageTemplate="10,15,20" rows="10" 
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+	    		rowStyleClass="#{prontuario.status eq 'INATIVO' ? 'inativo' : null}">	
+	    		
+	    		<p:column headerText="Prontuário" style="width: 30px; text-align: left"
+	    			filterBy="#{prontuario.codigo}" >
+	    			<h:outputText value="#{prontuario.codigo}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Prontuário físico" style="width: 30px; text-align: left"
+	    			filterBy="#{prontuario.prontuario}" >
+	    			<h:outputText value="#{prontuario.prontuario}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Codigo Pessoa" style="width: 30px; text-align: left"
+	    			filterBy="#{prontuario.familia.pessoaReferencia.codigo}" >
+	    			<h:outputText value="#{prontuario.familia.pessoaReferencia.codigo}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Pessoa de referência" style="width: 100px; text-align: left" 
+	    			filterBy="#{prontuario.familia.pessoaReferencia.nome}" >
+	    			<h:outputText value="#{prontuario.familia.pessoaReferencia.nome}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Data da Entrada" style="width: 30px; text-align: left"
+	    			sortBy="#{prontuario.dataEntrada}" >
+	    			<h:outputText value="#{prontuario.dataEntrada}">
+	    				  <f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Data da Última Modificação" style="width: 30px; text-align: left"
+	    			sortBy="#{prontuario.dataModificacao}" >
+	    			<h:outputText value="#{prontuario.dataModificacao}">
+	    				  <f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+	    		</p:column> 
+	    		
+	    		
+	    		<p:column headerText="Detalhes" style="width: 20px; text-align: center" >			        
+		            <p:commandButton icon="pi pi-info" title="Detalhe do Prontuário"	    			
+		    			oncomplete="PF('prontuarioDialog').show();"
+		    			update=":frmPesquisa:dialog" 
+		            	process="@this">
+						<f:setPropertyActionListener target="#{relProntuariosAttBean.prontuario}" 
+							value="#{prontuario}" />
+					</p:commandButton>	
+	    		</p:column>	    		
+	    		
+		   	</p:dataTable>
+		   	
+		   	<h:panelGrid columns="2">
+			   <p:outputLabel value="Quantidade de Prontuarios Atualizados no Período =  " for="qtdProntuarios"/>
+			   <h:outputText id="qtdProntuarios"  value="#{relProntuariosAttBean.qdeProntuarios}" />
+			</h:panelGrid>
+			
+			<p:dialog id="dialog" header="Detalhe do Prontuário" 
+		   		showEffect="fade" 
+		   		widgetVar="prontuarioDialog" 
+		   		modal="true" 
+		   		resizable="false">
+		        <p:outputPanel id="prontuarioPanel">
+		            <p:panelGrid  columns="2" columnClasses="label,value">
+		                
+		                <h:outputLabel for="name" value="Nome Pessoa de Referência: "/>
+		                <h:outputText id="name" value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.nome}" style="font-weight:bold" />
+		                
+		                <h:outputLabel for="soc" value="Nome Social: "/>
+		                <h:outputText id="soc" value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.nomeSocial}" style="font-weight:bold" />
+		 		 		
+		 		 		<h:outputLabel for="nis" value="Nis: "/>
+		                <h:outputText id="nis" value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.nis}" style="font-weight:bold" />
+		                
+		                <p:outputLabel value="Idade: " for="idade"/>
+		                <h:outputText id="idade" value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.idade}" style="font-weight:bold" />
+		 
+		 				<p:outputLabel value="Nome da Mãe: " for="mae"/>
+		                <h:outputText id="mae" value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.nomeMae}" style="font-weight:bold" />
+		                		                
+		                <p:outputLabel value="Endereço: " for="end"/>
+		                <h:outputText id="end" 
+		                value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.familia.endereco.endereco}, 
+		                #{relatorioProntuariosNovosBean.prontuario.familia.pessoaReferencia.familia.endereco.numero}" style="font-weight:bold" />
+		                		                   
+		                <p:outputLabel value="Bairro: " for="b"/>
+		                <h:outputText id="b" 
+		                value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.familia.endereco.bairro}" style="font-weight:bold" />
+		                
+		                <p:outputLabel value="Município: " for="cid"/>
+		                <h:outputText id="cid" 
+		                value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.familia.endereco.municipio}-#{relatorioProntuariosNovosBean.prontuario.familia.pessoaReferencia.familia.endereco.uf}" style="font-weight:bold" />
+		                
+		                <p:outputLabel value="Telefone " for="te"/>
+			            <h:outputText id="te" value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.telefone}" style="font-weight:bold" />
+			            
+		                <p:outputLabel value="Data de Entrada: " for="dat"/>  
+	   					<h:outputText id="dat" value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.familia.prontuario.dataEntrada}" style="font-weight:bold" >
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+		    			
+		    			<p:outputLabel value="Forma de Acesso: " for="fi"/>
+			            <h:outputText id="fi" 
+			            value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.formaIngresso.formaAcesso}" style="font-weight:bold" />
+			            
+			            <p:outputLabel value="Programa Social: " for="ps"/>
+			            <h:outputText id="ps" 
+			            value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.formaIngresso.programaSocial}" style="font-weight:bold" />
+		    			
+		    			<p:outputLabel value="Unidade: " for="u"/>  
+			    		<h:outputText id="u" 
+			    		value="#{relProntuariosAttBean.prontuario.familia.pessoaReferencia.familia.prontuario.unidade.nome}" style="font-weight:bold" />	 
+
+		            </p:panelGrid>
+		        </p:outputPanel>
+    		</p:dialog>
+    	
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

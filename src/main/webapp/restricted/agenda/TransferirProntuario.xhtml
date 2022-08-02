@@ -1,0 +1,138 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Transferir Prontuário</ui:define>
+    
+    <ui:define name="corpo">    
+    	
+    	<h2>Transferir Prontuário</h2>    	
+    	  	
+    	<h:form id="frmProntuario"> 		    	
+    	    		
+    		<p:growl id="growl" showDetail="true"> 
+    			<p:autoUpdate />
+    		</p:growl>  
+    		
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>     		    			
+			
+		
+			<p:toolbar id="toolbar" >
+				<f:facet name="left">	
+					<p:commandButton value="Pesquisar Pessoa de Referência" icon="pi pi-search" title="Pesquisar Pessoa de Referência" 
+						actionListener="#{transfererirProntuarioBean.abrirDialogo}"
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{transfererirProntuarioBean.selecionarPessoaReferencia}" 
+					 		update="frmProntuario growl"
+					 		process="@this"/>
+					</p:commandButton>
+										
+					<p:spacer height="10px"/>
+					
+					<p:commandButton title="Transferir Prontuário" value="Transferir Prontuário" icon="pi pi-angle-double-right"	           		
+		            	rendered="#{transfererirProntuarioBean.pessoaReferenciaSelecionada}"
+		            	actionListener="#{transfererirProntuarioBean.limpar}"
+		            	oncomplete="PF('incluiDialogWidgetVar').show()"
+		            	update="incluiDialog growl messages toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="incluiDialog" />	
+	            	</p:commandButton>	
+				</f:facet>
+			</p:toolbar>			
+			
+			
+			
+			<!--  Reuso de componente  -->
+			
+			<ui:include src="/compositions/PessoaReferenciaUI.xhtml">
+                <ui:param name="pessoaReferencia" value="#{transfererirProntuarioBean.pessoaReferencia}" />
+                <ui:param name="pessoaReferenciaSelecionada" value="#{transfererirProntuarioBean.pessoaReferenciaSelecionada}" />
+            </ui:include>
+			
+		   
+    		
+			<p:dataTable id="historicoTable" value="#{transfererirProntuarioBean.historicosTransferencia}"
+				allowUnsorting="true" sortMode="single"
+				var="historico" style="margin-top: 20px"
+				emptyMessage="Nenhum histórico encontrado." rows="10" 
+				rowsPerPageTemplate="10,15,20" paginator="true"
+				paginatorAlwaysVisible="true" paginatorPosition="bottom">
+				
+				<p:column headerText="Data da Transferência" sortBy="#{historico.nome}" style="width: 30px; text-align: left">
+					<h:outputText value="#{historico.dataTransferencia}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				</h:outputText>	 
+				</p:column>				
+				<p:column headerText="Motivo da Transferência" style="width: 100px; text-align: left">
+					<h:outputText value="#{historico.motivo}" />
+				</p:column>
+				<p:column headerText="Unidade Anterior" style="width: 50px; text-align: center">
+					<h:outputText value="#{historico.unidade.nome}" />
+				</p:column>
+				<p:column headerText="Responsável pela Transferência" style="width: 50px; text-align: center">
+					<h:outputText value="#{historico.usuario.nome}" />
+				</p:column>	
+				
+			</p:dataTable>
+		   
+			<p:dialog id="incluiDialog" header="Transferir Prontuário" widgetVar="incluiDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">
+    			
+				<p:defaultCommand target="salvarButton" scope="incluiDialog" />				
+				
+				<p:panelGrid columns="2" id="panelGrid" style="width: 100%" 
+					columnClasses="rotulo, campo"
+					rendered="#{transfererirProntuarioBean.historicoTransferencia ne null}">
+					
+					<p:outputLabel value="Unidade Destino" for="unidade"/>
+	    			<p:selectOneMenu id="unidade" required="true" 
+		    			value="#{transfererirProntuarioBean.unidade}"
+		    			validatorMessage="A unidade é obrigatória.">
+		    			<f:selectItem itemLabel="Selecione a unidade destino" />
+		    			<f:selectItems value="#{transfererirProntuarioBean.unidades}" var="unidade" 
+							itemLabel="#{unidade.nome}" itemValue="#{unidade}"/>
+		    		</p:selectOneMenu>
+	    		
+		    		<p:outputLabel value="Motivo" for="motivo"/>
+		    		<p:inputTextarea id="motivo" size="500" rows="5" cols="80" style="height: 100px; overflow:auto;"
+		    			maxlength="200" 
+		    			value="#{transfererirProntuarioBean.historicoTransferencia.motivo}"
+		    			required="true"
+		    			placeholder="Até 200 caracteres."
+				    	validatorMessage="O motivo é obrigatório."/>	
+			
+			
+			
+					<h:outputLabel />					
+					<p:commandButton icon="pi pi-save" id="salvarButton" value="Salvar" 
+						onclick="PF('confirmacao').show();"						
+						oncomplete="if (!args.validationFailed) PF('incluiDialogWidgetVar').hide()" 
+						process="incluiDialog"/>
+					
+				</p:panelGrid>
+			</p:dialog>
+			
+			
+			<p:confirmDialog id="confirmacaoDialog"
+				widgetVar="confirmacao"
+				message="Tem certeza que deseja transferir este prontuário?"
+				header="Transferência de prontuário" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacao').hide(); return false;" />
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim" 				    
+					onclick="PF('confirmacao').hide();"
+					update="panelGrid historicoTable pessoaReferenciaGrid growl"
+					action="#{transfererirProntuarioBean.salvar}" />
+			</p:confirmDialog>
+			
+    	</h:form>				    
+		 
+			
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,140 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Acompanhamento MSE</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Adolescentes em Acompanhamento MSE</h2>
+    	
+    	<h:form id="frmPesquisa">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:toolbar id="toolbar" style="margin-top: 20px" >
+	    		<p:toolbarGroup>
+	    			<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 	    				
+	    				value="#{relatorioAcompMSEBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioAcompMSEBean.unidades}" var="unid"
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>	
+	    			
+	    			<p:spacer width="5px" />
+			
+					<p:outputLabel value="Ano" for="anoRef"/>
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="anoRef" value="#{relatorioAcompMSEBean.ano}">
+		    			<f:selectItems value="#{relatorioAcompMSEBean.anos}" var="ano"
+							itemLabel="#{ano}" itemValue="#{ano}"/>
+		    		</p:selectOneMenu>
+		    		
+					<p:spacer width="5px" />
+				
+					<p:outputLabel value="Mês" for="mesRef"/>	 
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="mesRef" value="#{relatorioAcompMSEBean.mes}">
+		    			<f:selectItem itemLabel="Selecione o mês" />
+		    			<f:selectItems value="#{relatorioAcompMSEBean.meses}" var="mes" 
+							itemLabel="#{mes}" itemValue="#{mes}"/>
+		    		</p:selectOneMenu>
+					
+					<p:spacer width="5px" />
+	            	<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+		            <p:spacer width="5px" />    			
+						
+					<p:commandButton title="Novos casos que entraram em acompanhamento" value="Consultar" icon="pi pi-search"
+		            	actionListener="#{relatorioAcompMSEBean.consultarNovosCasos}"
+		            	process="@this unidade mesRef anoRef"
+		            	update="acompTable qde toolbar">		            		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="10px" />	
+						
+					<p:commandButton title="Consultar todos os Adolescentes em acompanhamento" value="Consultar Todos" icon="pi pi-search"
+						actionListener="#{relatorioAcompMSEBean.consultarAdolescentes}"
+		            	update="acompTable qde toolbar">		            		            	
+	            	</p:commandButton>			
+					
+					<p:spacer width="5px" />
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+		            <p:spacer width="5px" />		            
+		                        	
+	            	<p:commandButton title="Exportar para Excel" value="Exportar para Excel" icon="pi pi-file-excel"	            		
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="acompTable" fileName="Relatorio_adolescentes_em_acompanhamento" />
+		            </p:commandButton>
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:dataTable id="acompTable" value="#{relatorioAcompMSEBean.listaDTO}" var="plano"
+	    		style="margin-top: 20px" emptyMessage="Nenhum adolescente em Acompanhamento." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+	    		rowsPerPageTemplate="5,10,15">
+		    		
+		    		
+	    		<p:column headerText="Código Plano" style="width: 15px; text-align: center">
+	    			<h:outputText value="#{plano.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nr. Processo" style="width: 50px; text-align: left"
+		    		filterBy="#{plano.nrProcesso}" >		    		
+		    		<h:outputText value="#{plano.nrProcesso}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Adolescente" style="width: 100px; text-align: left"
+	    			filterBy="#{plano.adolescente}">
+	    			<h:outputText value="#{plano.adolescente}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Medida" style="width: 20px; text-align: center"
+	    			filterBy="#{plano.tipoMse}" >
+	    			<h:outputText value="#{plano.tipoMse}" />
+	    		</p:column>	 	
+	    		
+	    		<p:column headerText="Data Ingresso" style="width: 20px; text-align: center"
+		    		sortBy="#{plano.dataEncaminhamento}" >		    		
+		    		<h:outputText value="#{plano.dataEncaminhamento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Data Homologação" style="width: 20px; text-align: center"
+		    		sortBy="#{plano.dataHomologacao}" >		    		
+		    		<h:outputText value="#{plano.dataHomologacao}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>	   		
+	    		
+	    		
+	    		<p:column headerText="Técnico responsável" style="width: 80px; text-align: left"
+	    			filterBy="#{plano.responsavel}" >
+	    			<h:outputText value="#{plano.responsavel}" />
+	    		</p:column>	    		
+	    		
+	    		
+    		</p:dataTable> 
+    		
+    		<p:spacer width="10px" />	
+    		<h:outputText value="Quantidade Total de Adolescentes em Acompanhamento: "/> 	
+		    <h:outputText id="qde" value="#{relatorioAcompMSEBean.qdeTotal}"/> 	  		
+	    		
+    	</h:form>
+    </ui:define>
+</ui:composition>

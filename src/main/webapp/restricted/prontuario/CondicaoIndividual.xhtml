@@ -1,0 +1,86 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Condição Individual</ui:define>
+    
+    <ui:define name="corpo"> 
+       
+    	<h1>Condição Individual</h1>
+    	    	
+    	<h:form id="frmIndividual"> 		    	
+    	    		
+    		<p:growl id="growl" showDetail="true">
+    			<p:autoUpdate />
+    		</p:growl>       		    			
+			
+		
+			<p:toolbar id="toolbarci" style="margin-top: 10px">
+				<f:facet name="left">	
+					<p:commandButton value="Pesquisar Pessoa" icon="pi pi-search" 
+						title="Pesquisar Pessoa"
+						rendered ="#{not ciBean.pessoaSelecionada}"
+						actionListener="#{ciBean.abrirDialogo}"
+					 	process="@this"
+					 	update= "@none">
+					 	<p:ajax event="dialogReturn" listener="#{ciBean.selecionarPessoa}" 
+					 		update="frmIndividual frmEducacional frmSaude frmTrabalho frmViolencia toolbarci growl"
+					 		process="@this"/>
+					</p:commandButton>					
+
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+		            
+					<p:button icon="pi pi-refresh" value="Nova Pessoa" 
+						rendered ="#{ciBean.pessoaSelecionada}"
+						title="Pesquisar Pessoa"
+						update="toolbarci"
+						outcome="/restricted/prontuario/CondicaoIndividual.xhtml" />
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>				
+
+					<p:commandButton icon="pi pi-arrow-circle-left" value="Voltar para Atendimento" onclick="window.history.back();"/>
+
+				</f:facet>
+			</p:toolbar>	
+			
+					
+			
+			<!--  Reuso de componente PessoaReferenciaUI -->
+			
+			<ui:include src="/compositions/PessoaUI.xhtml">
+                <ui:param name="pessoa" value="#{ciBean.pessoa}" />
+                <ui:param name="pessoaSelecionada" value="#{ciBean.pessoaSelecionada}" />
+            </ui:include>
+       </h:form> 
+	 
+		    
+	    	<!-- ***********
+	    	     Reuso - Familia 
+	    	     *********** -->
+	    	     
+   	    <h:form id="frmViolencia">
+	        <ui:include src="/restricted/prontuario/individual/SituacaoViolencia.xhtml"/>
+	    </h:form>
+	    
+		<h:form id="frmEducacional">     
+	        <ui:include src="/restricted/prontuario/individual/CondicaoEducacional.xhtml"/>
+	       	</h:form>         	
+	       
+	   	<h:form id="frmSaude">	   		
+	        <ui:include src="/restricted/prontuario/individual/CondicaoSaude.xhtml"/>
+		</h:form>
+	    
+		<h:form id="frmTrabalho">
+	        <ui:include src="/restricted/prontuario/individual/CondicaoTrabalho.xhtml"/>
+	    </h:form>    
+		 
+			
+    </ui:define>
+</ui:composition>

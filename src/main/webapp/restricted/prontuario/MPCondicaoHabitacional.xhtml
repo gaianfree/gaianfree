@@ -1,0 +1,131 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    		
+		    <!-- Panel Condicao habitacional -->
+		        		
+    		
+		    <p:outputPanel id="habPanel" rendered="#{manterProntuarioBean.mpHabitacionalBean.pessoaReferenciaSelecionada}">
+		    
+		    	<p:outputLabel value="Copndição habitacional não cadastrada!" style="font-weight:bold" 
+		    		rendered="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional eq null}"/>
+		    	
+	    		<p:panelGrid id="condicaoHabitacionalGrid" columns="4" 
+	    			rendered="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional ne null}">
+	    				    			
+					<f:facet name="header">
+						Condições Habitacionais
+					</f:facet>
+					
+					<p:outputLabel value="Código:" for="codigo" style="font-weight:bold"/>
+               		<h:outputText id="codigo" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.codigo}" />					
+
+					<p:outputLabel value="Tipo de Residência:" for="tipoResidencia" style="font-weight:bold"/>
+					<h:outputText id="tipoResidencia" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.tipoResidencia}" />
+					
+					<p:outputLabel value="Forma de Abastecimento:" for="formaAbastecimento" style="font-weight:bold"/>
+					<h:outputText id="formaAbastecimento" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.formaAbastecimento}" />
+					
+					<p:outputLabel value="Acesso a Energia Elétrica:" for="acessoEnergiaEletrica" style="font-weight:bold"/>
+					<h:outputText id="acessoEnergiaEletrica" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.acessoEnergiaEletrica}" />
+					
+					<p:outputLabel value="Material da Parede:" for="materialParede" style="font-weight:bold"/>
+					<h:outputText id="materialParede" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.materialParede}" />
+					
+					<p:outputLabel value="Coleta de Lixo:" for="coletaLixo" style="font-weight:bold"/>
+					<h:outputText id="coletaLixo" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.coletaLixo}" />
+					
+					<p:outputLabel value="Acessibilidade:" for="possuiAcessibilidade" style="font-weight:bold"/>
+					<h:outputText id="possuiAcessibilidade" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.possuiAcessibilidade}" />
+					
+					<p:outputLabel value="Escoamento Sanitário:"	for="escoamentoSanitario" style="font-weight:bold"/>
+					<h:outputText id="escoamentoSanitario" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.escoamentoSanitario}" />
+					
+					<p:outputLabel value="Quantidade de Cômodos" for="qtdComodo" style="font-weight:bold"/>
+               		<h:outputText id="qtdComodo" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.qtdComodo}" />
+               		
+               		<p:outputLabel value="Quantidade de Dormitórios" for="qtdDormitorio" style="font-weight:bold"/>
+               		<h:outputText id="qtdDormitorio" value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.qtdDormitorio}" />
+               		
+               		<p:outputLabel value="Possui Água Canalizada?" for="aguaCanalizada" style="font-weight:bold"/>
+               		<h:selectOneRadio id="aguaCanalizada"
+						value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.aguaCanalizada}"
+						disabled="true" >
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+               		
+               		<p:outputLabel value="Possui Risco de Desabamento?" for="riscoDesabamento" style="font-weight:bold"/>
+               		<h:selectOneRadio id="riscoDesabamento"
+						value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.riscoDesabamento}"
+						disabled="true" >
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+               		
+               		<p:outputLabel value="Possui Difícil Acesso Demográfico?" for="dificilAcessoDemografico" style="font-weight:bold"/>
+               		<h:selectOneRadio id="dificilAcessoDemografico"
+						value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.dificilAcessoDemografico}"
+						disabled="true" >
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+               		
+               		<p:outputLabel value="Área Violenta?" for="areaViolenta" style="font-weight:bold"/>
+               		<h:selectOneRadio id="areaViolenta"
+						value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.areaViolenta}"
+						disabled="true" >
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+					</h:selectOneRadio>
+					
+				</p:panelGrid>
+
+		    
+		        	
+	    	
+	    	<!-- Panel das Avaliações do plano selecionado -->
+	    	
+	    	
+		    
+				
+						    	
+		    	<p:dataTable id="observacoesTable"		    		
+		    		value="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional.observacoes}" var="observacao"
+		    		style="margin-top: 5px" emptyMessage="Nenhuma observação encontrada." rows="5"
+		    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+		    		rendered="#{manterProntuarioBean.mpHabitacionalBean.condicaoHabitacional ne null}"> 
+							
+					<f:facet name="header">
+			            Observações
+			        </f:facet>
+			    		
+			    	<p:column headerText="Código" style="width: 10px; text-align: center">
+						<h:outputText value="#{observacao.codigo}" />
+					</p:column>
+
+					<p:column headerText="Data" style="width: 20px; text-align: center"
+						sortBy="#{observacao.data}">
+						<h:outputText value="#{observacao.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Relato" style="width: 120px; text-align: center">
+						<h:outputText value="#{observacao.relato}" />
+					</p:column>
+
+					<p:column headerText="Técnico Avaliou" style="width: 80px; text-align: center">
+						<h:outputText value="#{observacao.tecnico.nome}" />
+					</p:column>
+			    			    	
+			   	</p:dataTable>
+    	
+			</p:outputPanel>			
+	    	
+
+</ui:composition>

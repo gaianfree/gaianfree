@@ -1,0 +1,18 @@
+package com.softarum.svsa.modelo.enums;
+
+/**
+ * @author murakamiadmin
+ *
+ */
+public enum TipoServico {
+
+	CRIANCAS_ATE_6_ANOS,
+	//CRIANCAS_E_ADOLECENTES_DE_6_A_15_ANOS,
+	CRIANCAS_E_ADOLECENTES_DE_7_A_14_ANOS,
+	ADOLESCENTES_E_JOVENS_DE_15_A_17_ANOS,
+	JOVENS_DE_18_A_29_ANOS,
+	ADULTOS_DE_30_A_59_ANOS,
+	IDOSOS,
+	GRUPO_AMBITO_PAIF,
+	ATIVIDADES_CARATER_NAO_CONTINUADO
+}

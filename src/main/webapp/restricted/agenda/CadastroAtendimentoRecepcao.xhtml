@@ -1,0 +1,72 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Cadastro Atendimento Recepção</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+			<o:viewParam name="item" value="#{cadastroAtendimentoRecepcaoBean.item}" />
+		</f:metadata>
+    
+    	<h2>Cadastro Atendimento Recepção</h2>
+    	
+    	<h:form id="frmCadastro">
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+    		<p:defaultCommand target="botaoSalvar" />
+    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Salvar" id="botaoSalvar" icon="pi pi-save"
+	    				action="#{cadastroAtendimentoRecepcaoBean.salvar}" update="frmCadastro" ajax="false"/>
+	    			<span class="ui-separator">
+			            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+			        </span>
+					<p:button icon="pi pi-search" value="Pesquisar" outcome="/restricted/agenda/PesquisaAtendimentoRecepcao.xhtml"/>
+				</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	
+	    	
+			<p:panelGrid columns="2" id="painel" style="width: 100%" columnClasses="rotulo, campo">			
+			
+												
+				<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome" size="80" maxlength="80" 
+	    			value="#{cadastroAtendimentoRecepcaoBean.nomePessoaAtendida}"
+	    			required="true" 
+			    	validatorMessage="O nome é obrigatório."/>
+			    	
+			    <p:outputLabel value="Data Atendimento" for="dataAtendimento" />
+				<p:calendar id="dataAtendimento" size="30"										
+					value="#{cadastroAtendimentoRecepcaoBean.item.dataAtendimento}"
+					required="true" 
+					showOn="button"
+					pattern="dd/MM/yyyy"
+					mask="99/99/9999"
+				/> 
+					
+				<p:outputLabel value="Descrição" for="resumo"/>
+	    		<h:panelGroup>
+		    		<p:inputTextarea id="resumo" size="1000" rows="10" cols="80" style="height: 100px; overflow:auto;"
+		    			maxlength="1000" 
+	    				value="#{cadastroAtendimentoRecepcaoBean.item.resumoAtendimento}"
+		    			counter="display"
+						counterTemplate="{0} caracteres restantes" 
+						required="true" 
+			    		validatorMessage="O nome é obrigatório."/>
+					<h:outputText id="display" />
+		    		<p:watermark for="resumo" value="Descreva o resumo do atendimento." />		    		
+	    		</h:panelGroup>
+	    		
+			</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

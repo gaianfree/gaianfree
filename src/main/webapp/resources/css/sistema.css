@@ -1,0 +1,161 @@
+@charset "utf-8";
+
+body {
+	font-size: 12px;
+	font-family: Gill Sans Extrabold, Trebuchet MS, sans-serif;	
+	margin: 0px;
+	font-weight: normal;
+}
+
+header {	
+	padding: 5px 5px;
+	margin-bottom: 20px;	
+}
+
+header > div {
+	margin-left: 8px;
+}
+
+#conteudo {
+	padding: 0px 8px
+}
+
+footer {
+	padding: 0px 8px;
+	margin-bottom: 10px
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: 500;
+	text-align: center;
+	padding: 0px;
+	margin: 0px
+}
+h3 {
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	padding: 0px;
+	margin: 0px
+}
+IMG.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto 
+}
+
+div.container4 {
+    height: 10em;
+    position: relative }
+div.container4 p {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
+    
+
+.rotulo {
+	width: 150px
+}
+
+.ui-panelgrid td {
+	height: 34px
+}
+
+.ajax-status {
+	position: fixed;
+	top: 55px;
+	right: 10px;
+	width: 35px;
+	height: 35px
+}
+
+.ui-selectmanycheckbox td {
+	border-width: 0px;
+	padding: 0px ;
+}
+
+.ui-selectmanycheckbox td label {
+	padding-right: 10px;
+}
+
+/* Customiza TabView - início */
+.ui-tabs .ui-tabs-panel {
+    padding: 0.5em 0.2em;
+}
+
+.ui-tabs {
+    padding: 0px;
+}
+
+.ui-tabs .ui-tabs-nav {
+    margin: -1px;
+}
+
+.ui-tabs.ui-tabs-top > .ui-tabs-nav {
+    padding: 0px;
+}
+/* Customiza TabView - fim */
+ 
+/* Menu sistema inicio */
+.menu-sistema {	
+    border: 0px;
+    padding: 0px;
+    background: none;
+}
+
+.menu-sistema .ui-menu-parent > a .ui-menuitem-text, .menu-sistema > .ui-menu-list > .ui-menuitem > a > .ui-menuitem-text {
+	overflow: visible; 
+    color: #191970;   /* Texto dos itens de menu   */
+}
+
+/* Menu sistema fim */
+
+.many-checkbox td {
+	border-width: 0px;
+	padding: 0px;
+}
+
+.many-checkbox td label {
+	padding-right: 10px;
+}
+
+.inativo {	
+    background-color: #ffffff;
+    background-image: none;
+    color: #ff0000;
+}
+
+.panelGridCenter {
+    margin: 0 auto;
+}
+
+
+/*
+ * Alinhamento de texto/componentes
+ */
+.vertical-align {
+  vertical-align: middle;
+}
+
+.contact-container {
+  color: #000000;
+  text-align: center;
+  font-family: Gill Sans Extrabold, Trebuchet MS, sans-serif;
+}
+
+.margin-right-10 {
+  margin-right: 10px;
+}
+
+.margin-left-30 {
+  margin-left: 30px;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+

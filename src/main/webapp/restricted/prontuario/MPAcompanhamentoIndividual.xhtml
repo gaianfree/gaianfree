@@ -1,0 +1,232 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+
+    		
+		    <!-- Panel Acompanhamento Individual  --> 
+    		
+    		
+		   <p:dataTable id="membrosMseTable"  value="#{manterProntuarioBean.mpIndividualBean.membros}" 
+	    		var="pessoa" emptyMessage="Nenhum membro encontrado."
+	    		paginator="true" rows="7" paginatorPosition="bottom" paginatorAlwaysVisible="true"
+	    		rowStyleClass="#{pessoa.status eq 'INATIVO' ? 'inativo' : null}"
+	    		selectionMode="single" selection="#{manterProntuarioBean.mpIndividualBean.pessoa}" rowKey="#{pessoa.codigo}"> 
+			    		
+	    		<p:ajax event="rowSelect" update="frmProntuario:tab1:tabViewIndividual:planosMseTable"/>
+				<p:ajax event="rowUnselect"/>
+	    		
+	    		<f:facet name="header">
+			            Membros da Família
+			    </f:facet>
+	    													    			    				    		
+	    		<p:column headerText="Código" style="width: 10px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.codigo}" />
+	    		</p:column>
+	    		<p:column style="width: 3px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.mse}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome" style="width: 100px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome Social" style="width: 80px; text-align: center">
+	    			<h:outputText value="#{pessoa.nomeSocial}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Parentesco" style="width: 40px; text-align: center">
+	    			<h:outputText value="#{pessoa.parentescoPessoaReferencia}" />
+	    		</p:column>  
+	    		
+	    		<p:column headerText="Idade" style="width: 10px; text-align: center">
+	    			<h:outputText value="#{pessoa.idade}" />
+	    		</p:column>	    		
+	 	    		
+		   	</p:dataTable>
+		    	
+		    <p:spacer height="5px" />
+	    		
+	    	<p:dataTable id="planosMseTable" 
+	    		value="#{manterProntuarioBean.mpIndividualBean.planos}" 
+	    		var="plano"
+	    		style="margin-top: 5px" 
+	    		emptyMessage="Nenhum plano encontrado para esse membro." rows="5"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom">
+		    		
+		    	<f:facet name="header">
+		            Acompanhamento Individual
+		        </f:facet>	
+		    	
+		    	<p:column headerText="Código" style="width: 8px; text-align: center">
+					<h:outputText value="#{plano.codigo}" />
+				</p:column>
+				
+				<p:column headerText="Número do Processo"
+				style="width: 100px; text-align: center">
+				<h:outputText value="#{plano.nrProcesso}" />
+				</p:column>
+				
+				<p:column headerText="Data Ingresso"
+				style="width: 30px; text-align: center" sortBy="#{plano.dataEncaminhamento}">
+				<h:outputText value="#{plano.dataEncaminhamento}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				</p:column>
+				
+	    		<p:column headerText="Data Desligamento"
+				style="width: 30px; text-align: center" sortBy="#{plano.dataDesligamento}">
+				<h:outputText value="#{plano.dataDesligamento}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+				</p:column>
+
+				<p:column headerText="Razão Desligamento"
+					style="width: 40px; text-align: center">
+					<h:outputText value="#{plano.razaoDesligamento}" />
+				</p:column>
+		
+				<p:column headerText="Tec. Responsável"
+					style="width: 80px; text-align: center">
+					<h:outputText value="#{plano.responsavel.nome}" />
+				</p:column>
+		
+				<p:column headerText="Técnicos Adicionais"
+					style="width: 80px; text-align: center">
+					<p:dataList id="nomesTecs" value="#{plano.tecnicos}" var="tec"
+						type="ordered">
+							       	#{tec.nome}
+							    </p:dataList>
+				</p:column>
+				
+				<p:column headerText="Detalhar Plano" style="width: 20px; text-align: center">				    	
+			    	<p:commandButton 
+			    		update="frmProntuario:tab1:tabViewIndividual:mseGrid"   						
+  						title="Detalhar Plano MSE" 
+  						icon="pi pi-info"
+  						process="@this">
+  						<f:setPropertyActionListener target="#{manterProntuarioBean.mpIndividualBean.plano}"
+							value="#{plano}" />			                  						
+	            	</p:commandButton>
+	            </p:column>
+	            
+	            <p:column headerText="Exibir Metas" style="width: 20px; text-align: center">				    	
+			    	<p:commandButton 
+			    		update="frmProntuario:tab1:tabViewIndividual:metasTable"   						
+  						title="Detalhar Metas MSE" 
+  						icon="pi pi-info"
+  						process="@this">
+  						<f:setPropertyActionListener target="#{manterProntuarioBean.mpIndividualBean.planoSelecionado}"
+							value="#{plano}" />			                  						
+	            	</p:commandButton>
+	            </p:column>
+		   	</p:dataTable>
+		   	
+		   	<p:dialog id="mseDialog"
+		   		widgetVar="mseWidget"				
+				header="Plano Individual(MSE)"
+				showEffect="fade" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="false"
+		   		style="max-height:600px;overflow:scroll">
+				
+				<p:panelGrid id="mseGrid" columns="4" columnClasses="label,value">
+	               
+	                <p:outputLabel value="Tipo da Medida" for="tipoMedida" style="font-weight:bold"/>
+					<h:outputText id="tipoMedida" value="#{manterProntuarioBean.mpIndividualBean.plano.tipoMse}" />
+					
+					<p:outputLabel value="Local PSC" for="localPSC" style="font-weight:bold"/>
+					<h:outputText id="localPSC" value="#{manterProntuarioBean.mpIndividualBean.plano.localPSC}" />
+					
+					<p:outputLabel value="Responsável Externo PSC" for="responsavelExterno" style="font-weight:bold"/>
+					<h:outputText id="responsavelExterno" value="#{manterProntuarioBean.mpIndividualBean.plano.responsavelExterno}" />
+					
+					<p:outputLabel value="Número do Processo" for="nrProcesso" style="font-weight:bold"/>
+					<h:outputText id="nrProcesso" value="#{manterProntuarioBean.mpIndividualBean.plano.nrProcesso}" />
+					
+					<p:outputLabel value="Avaliacao Interdisciplinar" for="avalInterdisciplinar" style="font-weight:bold"/>
+					<h:outputText id="avalInterdisciplinar" value="#{manterProntuarioBean.mpIndividualBean.plano.avalInterdisciplinar}" />
+					
+					<p:outputLabel value="Responsabilidades do Adolescente" for="responsAdolescente" style="font-weight:bold"/>
+					<h:outputText id="responsAdolescente" value="#{manterProntuarioBean.mpIndividualBean.plano.responsAdolescente}" />
+					
+					<p:outputLabel value="Responsabilidades da Família" for="responsFamilia" style="font-weight:bold"/>
+					<h:outputText id="responsFamilia" value="#{manterProntuarioBean.mpIndividualBean.plano.responsFamilia}" />
+					
+					<p:outputLabel value="Responsabilidades da Equipe Técnica" for="responsEquipe" style="font-weight:bold"/>
+					<h:outputText id="responsEquipe" value="#{manterProntuarioBean.mpIndividualBean.plano.responsEquipe}" />
+								
+					<p:outputLabel value="Data Ingresso" for="dataEncaminhamento1" style="font-weight:bold"/>
+		    		<h:outputText id="dataEncaminhamento1" value="#{manterProntuarioBean.mpIndividualBean.plano.dataEncaminhamento}">
+		    			<f:convertDateTime pattern="dd/MM/yyyy" />
+		    		</h:outputText>
+				
+					<p:outputLabel value="Data Homologação" for="dataHomologacao1" style="font-weight:bold"/>
+		    		<h:outputText id="dataHomologacao1" value="#{manterProntuarioBean.mpIndividualBean.plano.dataHomologacao}">
+		    			<f:convertDateTime pattern="dd/MM/yyyy" />
+		    		</h:outputText>
+
+	            </p:panelGrid>
+	            
+			</p:dialog>
+			
+			<p:dialog id="metasDialog"
+		   		widgetVar="metasWidget"				
+				header="Plano Individual(MSE)"
+				showEffect="fade" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="false"
+		   		style="max-height:600px;overflow:scroll">
+		   		
+		   		<p:dataTable id="metasTable"
+		    		value="#{manterProntuarioBean.mpIndividualBean.metas}" var="meta"
+		    		style="margin-top: 5px" emptyMessage="Não há metas definidas."> 
+
+					<f:facet name="header">
+			            Lista de Metas
+			        </f:facet>	
+			    		
+			    	<p:column headerText="Código" style="width: 10px; text-align: center">
+						<h:outputText value="#{meta.codigo}" />
+					</p:column>	
+		    		
+		    		<p:column headerText="Data meta" style="width: 20px; text-align: center"
+		    			sortBy="#{meta.data}" >
+						<h:outputText value="#{meta.data}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>					
+						    		
+		    		<p:column headerText="Descrição" style="width: 160px; text-align: center">
+		    			<h:outputText value="#{meta.descricao}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Meta" style="width: 70px; text-align: center">
+		    			<h:outputText value="#{meta.medidaMse}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Resultado" style="width: 30px; text-align: center">	
+			    		<h:outputText value="#{meta.avaliacao}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Data" style="width: 20px; text-align: center"
+		    			sortBy="#{meta.dataModificacao}" >
+						<h:outputText value="#{meta.dataModificacao}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>	
+		    		
+		    		<p:column headerText="Técnico" style="width: 80px; text-align: center">	
+			    		<h:outputText value="#{meta.tecnico.nome}" />
+		    		</p:column>
+		    		
+		    		</p:dataTable>
+		    		
+		   	</p:dialog>
+			
+</ui:composition>

@@ -1,0 +1,137 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+	<p:outputPanel id="BeneficioPanel" rendered="#{cfBean.pessoaReferenciaSelecionada}">
+	
+		<h2> Benefícios Eventuais </h2> 
+	
+		<p:toolbar id="toolbarbe">
+			<f:facet name="left">
+				<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"
+					actionListener="#{cfBean.beneficioBean.salvar}"
+					update="beneficioEventualGrid beneficiosTable BeneficioPanel"
+					process="@this beneficioEventualGrid">
+				</p:commandButton>					
+			</f:facet>
+		</p:toolbar>
+			
+		
+		
+		<p:panelGrid id="beneficioEventualGrid" columns="2" style="margin-top: 10px">
+	
+			<p:outputLabel value="Código" for="codigo" rendered="false" />
+			<p:inputText id="codigo" size="20" maxlength="20"
+				value="#{cfBean.beneficioBean.beneficioEventual.codigo}"
+				readonly="true" rendered="false" />
+	
+			<p:outputLabel value="Data" for="databe" size="30" />
+			<p:calendar id="databe"
+				value="#{cfBean.beneficioBean.beneficioEventual.data}"
+				pattern="dd/MM/yyyy" mask="99/99/9999" 
+				required="true"
+				showOn="button" 
+				validatorMessage="A hora é obrigatória." />
+	
+			<p:outputLabel value="Tipo do Benefício" for="beneficio" />
+			<p:selectOneMenu id="beneficio" 
+				required="true"
+				validatorMessage="O tipo é obrigatório."
+				value="#{cfBean.beneficioBean.beneficioEventual.beneficio}">
+				<p:ajax event="valueChange" process="@this"
+					update="af20 af21 an20 an21"
+					listener="#{cfBean.beneficioBean.verificaAuxilio}" />
+				<f:selectItem itemLabel="Selecione o tipo" />
+				<f:selectItems
+					value="#{cfBean.beneficioBean.beneficios}"
+					var="beneficio" itemLabel="#{beneficio}"
+					itemValue="#{beneficio}" />
+			</p:selectOneMenu>
+	
+			<p:outputLabel id="af20" value="CPF do falecido" for="af21"
+				disabled="#{not cfBean.beneficioBean.auxilioFuneral}" />
+			<p:inputMask id="af21" size="18" maxlength="14"
+				disabled="#{not cfBean.beneficioBean.auxilioFuneral}"
+				value="#{cfBean.beneficioBean.beneficioEventual.cpfFalecido}"
+				required="true" mask="999.999.999-99"
+				validatorMessage="O cpf do falecido é obrigatório." />
+	
+			<p:outputLabel id="an20" value="Registro de Nascimento" for="an21"
+				disabled="#{not cfBean.beneficioBean.auxilioNatalidade}" />
+			<p:inputText id="an21" size="18" maxlength="20"
+				disabled="#{not cfBean.beneficioBean.auxilioNatalidade}" 
+				value="#{cfBean.beneficioBean.beneficioEventual.registroNascimento}"
+				validatorMessage="O registro de nascimento é obrigatório." />
+	
+			<p:outputLabel value="Relato" for="relbe" />
+			<h:panelGroup>
+				<p:inputTextarea id="relbe" size="1000" rows="4" cols="100"
+					style="height: 100px; overflow:auto;" maxlength="1000"
+					value="#{cfBean.beneficioBean.beneficioEventual.relato}"
+					counter="display" counterTemplate="{0} caracteres restantes" />
+				<h:outputText id="display" />
+				<p:watermark for="relbe" value="Relate." />
+			</h:panelGroup>			
+			
+		</p:panelGrid>
+	    		
+	 	<p:dataTable id="beneficiosTable" value="#{cfBean.beneficioBean.beneficiosEventuais}" var="beneficioEventual"
+	   		style="margin-top: 5px" emptyMessage="Nenhum beneficio encontrado." rows="5"
+	    	paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+	   		rendered="#{cfBean.pessoaReferenciaSelecionada}">
+	
+	
+			<f:facet name="header">
+	           Benefícios Eventuais
+	        </f:facet>
+	
+		    <p:column headerText="Código"
+				style="width: 10px; text-align: center">
+				<h:outputText value="#{beneficioEventual.codigo}" />
+			</p:column> 
+	
+			<p:column headerText="Benefício"
+				style="width: 70px; text-align: center">
+				<h:outputText value="#{beneficioEventual.beneficio}" />
+			</p:column>
+			
+			<p:column headerText="Cpf Falecido"
+				style="width: 40px; text-align: center">
+				<h:outputText value="#{beneficioEventual.cpfFalecido}" />
+			</p:column>
+			
+			<p:column headerText="Registro Nascimento"
+				style="width: 40px; text-align: center">
+				<h:outputText value="#{beneficioEventual.registroNascimento}" />
+			</p:column>
+	
+			<p:column headerText="Data"
+				style="width: 25px; text-align: center" sortBy="#{beneficioEventual.data}">
+				<h:outputText value="#{beneficioEventual.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Data Modificação"
+				style="width: 25px; text-align: center">
+				<h:outputText value="#{beneficioEventual.dataModificacao}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Relato"
+				style="width: 150px; text-align: center">
+				<h:outputText value="#{beneficioEventual.relato}" />
+			</p:column>
+			
+			<p:column headerText="Técnico"
+				style="width: 60px; text-align: center">
+				<h:outputText value="#{beneficioEventual.tecnico.nome}" />
+			</p:column>
+		</p:dataTable>
+	</p:outputPanel>
+
+</ui:composition>

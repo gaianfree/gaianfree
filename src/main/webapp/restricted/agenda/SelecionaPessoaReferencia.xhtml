@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<meta charset="UTF-8"/>
+		<h:outputStylesheet library="css" name="sistema.css" />	
+		<title>Seleção de Pessoa de Referência</title>
+	</h:head>
+    
+    <h:body>
+     	
+    	<h:form id="frmSeleciona" >
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages> 	
+			
+	    	<p:toolbar style="margin-top: 10px">
+	    	  <f:facet name="left">
+	    		
+	    		<!--  selectOneRadio -->					
+					
+				<h:panelGrid columns="4" style="margin-bottom:5px" cellpadding="5">
+			        <p:outputLabel for="parametro" value="Pesquisar por: "/>
+			        <p:selectOneRadio id="parametro" value="#{selecionaPessoaReferenciaBean.parametro}" unselectable="true">
+			            <f:selectItem itemLabel="Nome" itemValue="nome" />
+			            <f:selectItem itemLabel="Prontuário" itemValue="prontuario" />
+			            <f:selectItem itemLabel="Nome social" itemValue="nomeSocial" />
+			            <f:selectItem itemLabel="Endereço" itemValue="endereco" />
+			        </p:selectOneRadio>
+			        
+			        <p:inputText id="termoPesquisa" placeholder="Digite o termo correspondente para a pesquisa." 
+						size="40" value="#{selecionaPessoaReferenciaBean.termoPesquisa}"/>
+										
+					<p:commandButton value="Pesquisar" icon="pi pi-search"
+						actionListener="#{selecionaPessoaReferenciaBean.pesquisar}" update="pessoaReferenciaDataTable"
+						process="@this parametro termoPesquisa"/>	
+    			</h:panelGrid>
+	    		
+	    	  </f:facet>
+	    	</p:toolbar>	    	 
+		    
+		    <p:dataTable id="pessoaReferenciaDataTable" 
+		    	value="#{selecionaPessoaReferenciaBean.listaPessoasReferencia}" 
+		    	var="pessoaRef" style="margin-top: 20px" 
+		    	emptyMessage="Nenhuma pessoa de referência encontrada." 
+		    	paginator="true" rows="10" paginatorPosition="bottom"
+		    	paginatorAlwaysVisible="true" scrollable="true" resizeMode="true"
+		    	rowStyleClass="#{pessoaRef.statusProntuario eq 'INATIVO' or pessoaRef.statusPessoa eq 'INATIVO'? 'inativo' : null}">
+		    	
+				<p:column headerText="Código Prontuário" style="width: 40px; text-align: center">
+					<h:outputText value="#{pessoaRef.codigoProntuario}" />
+				</p:column>
+				
+				<p:column headerText="Prontuário Físico" style="width: 40px; text-align: center">
+					<h:outputText value="#{pessoaRef.prontuarioFisico}" />
+				</p:column>				
+				
+    			<p:column headerText="Nome/Nome Social" style="width: 160px; text-align: center">
+					<h:outputText value="#{pessoaRef.nome} / #{pessoa.nomeSocial}" />
+				</p:column>
+				
+				<p:column headerText="Nome da Mãe" style="width: 120px; text-align: center">
+					<h:outputText value="#{pessoaRef.nomeMae}" />
+				</p:column>
+				
+				<p:column headerText="Data de Nascimento" style="width: 50px; text-align: center">
+	    			<h:outputText value="#{pessoaRef.dataNascimento}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>
+				
+				<p:column headerText="Unidade" style="width: 70px; text-align: center">
+					<h:outputText value="#{pessoaRef.unidade}" />
+				</p:column>
+				
+				<p:column headerText="Selecionar"
+					style="width: 60px; text-align: left">
+		    		<p:commandButton value="Selecionar" icon="pi pi-check"
+		    		 action="#{selecionaPessoaReferenciaBean.selecionarPessoaReferencia(pessoaRef)}" 
+		    		 process="@this"/>
+		    	</p:column>			
+		    		
+
+			</p:dataTable>	    	
+    	</h:form>
+    	
+    </h:body>
+    
+</html>

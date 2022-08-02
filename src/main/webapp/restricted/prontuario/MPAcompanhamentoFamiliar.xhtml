@@ -1,0 +1,119 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    		
+		    <!-- Panel Plano de Acompanhamento --> 
+    		
+    		
+		    <p:outputPanel id="planoPanel" rendered="#{manterProntuarioBean.mpAcompanhamentoBean.pessoaReferenciaSelecionada}">
+		    	
+	    		
+		    	<p:dataTable id="planosTable" value="#{manterProntuarioBean.mpAcompanhamentoBean.planos}" var="plano"
+		    		style="margin-top: 5px" emptyMessage="Nenhum plano encontrado." rows="3"
+		    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+		    		selectionMode="single" selection="#{manterProntuarioBean.mpAcompanhamentoBean.plano}" rowKey="#{plano.codigo}">
+			    		
+		    		<p:ajax event="rowSelect" update="frmProntuario:tab1:tabViewFamiliar:avaliacoesTable" process="@this" 
+		    			listener="#{manterProntuarioBean.mpAcompanhamentoBean.buscarAvaliacoes}"/>
+					<p:ajax event="rowUnselect"/> 
+			    		
+			    	<f:facet name="header">
+			            Lista de Planos de Acompanhamento
+			        </f:facet>	
+			    	
+			    	<p:column headerText="Código" style="width: 8px; text-align: center">
+						<h:outputText value="#{plano.codigo}" />
+					</p:column>
+					
+					<p:column headerText="Data Ingresso" style="width: 18px; text-align: center"
+						sortBy="#{plano.dataIngresso}" >					
+		    			<h:outputText value="#{plano.dataIngresso}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>
+					
+		    		<p:column headerText="Data Desligamento" style="width: 20px; text-align: center"
+		    			sortBy="#{plano.dataDesligamento}">
+		    			<h:outputText value="#{plano.dataDesligamento}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+		    		</p:column>
+		    			    		
+		    		<p:column headerText="Objetivos" style="width: 200px; text-align: center">
+		    			<h:outputText value="#{plano.objetivos}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Responsável" style="width: 60px; text-align: center"
+		    			filterBy="#{plano.tecnico.nome}"
+		    			footerText="contains" filterMatchMode="contains">
+		    			<h:outputText value="#{plano.tecnico.nome}" />
+		    		</p:column>
+		    			
+		    		
+			   	</p:dataTable>
+		    </p:outputPanel> 
+		    
+		        	
+	    	
+	    	<!-- Panel das Avaliações do plano selecionado -->
+	    	
+	    	
+		    
+			<p:outputPanel id="avalPanel" rendered="#{manterProntuarioBean.mpAcompanhamentoBean.pessoaReferenciaSelecionada}">
+					
+						    	
+		    	<p:dataTable id="avaliacoesTable"
+		    		value="#{manterProntuarioBean.mpAcompanhamentoBean.avaliacoes}" var="avaliacao"
+		    		style="margin-top: 5px" emptyMessage="Nenhuma avaliacao encontrada."
+		    		selectionMode="single" selection="#{manterProntuarioBean.mpAcompanhamentoBean.avaliacao}" 
+		    		rowKey="#{avaliacao.codigo}"> 
+			    		
+		    		<p:ajax event="rowSelect" />				
+					<p:ajax event="rowUnselect" />				
+							
+					<f:facet name="header">
+			            Lista de Metas
+			        </f:facet>
+			    		
+			    	<p:column headerText="Código" style="width: 10px; text-align: center">
+						<h:outputText value="#{avaliacao.codigo}" />
+					</p:column>	
+		    		
+		    		<p:column headerText="Data" style="width: 20px; text-align: center"
+		    			sortBy="#{avaliacao.data}" >
+						<h:outputText value="#{avaliacao.data}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>					
+						    		
+		    		<p:column headerText="Meta" style="width: 200px; text-align: center">
+		    			<h:outputText value="#{avaliacao.resumo}" />
+		    		</p:column>
+			    	
+			    	<p:column headerText="Resultado" style="width: 30px; text-align: center">	
+			    		<h:outputText value="#{avaliacao.atendimentoEfetivo}" />
+		    		</p:column>
+		    		
+		    		<p:column headerText="Data Avaliação" style="width: 20px; text-align: center"
+		    			sortBy="#{avaliacao.dataModificacao}" >
+						<h:outputText value="#{avaliacao.dataModificacao}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+					</p:column>	
+		    		
+		    		<p:column headerText="Técnico" style="width: 80px; text-align: center">	
+			    		<h:outputText value="#{avaliacao.tecnico.nome}" />
+		    		</p:column>   
+			    			    	
+			   	</p:dataTable>
+    	
+			</p:outputPanel>
+			
+	    	
+	    	
+
+</ui:composition>

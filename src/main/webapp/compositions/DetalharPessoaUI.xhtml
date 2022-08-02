@@ -1,0 +1,71 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">		
+			
+	<p:spacer height="5px" />	
+	
+	<p:dialog id="detalhePessoaDialog" header="Detalhe da Pessoa" 
+  		showEffect="fade" modal="true" resizable="false" closeOnEscape="true"
+  		widgetVar="detalheWidgetDialog">	
+  		
+       <p:outputPanel id="detalhePanel">
+           <p:panelGrid id="detalheGrid" columns="4" columnClasses="label,value">
+               
+               	<p:outputLabel for="codp" value="Código Pessoa: "/>
+               	<h:outputText id="codp" value="#{pessoa.codigo}" style="font-weight:bold"/>
+               
+               	<p:outputLabel for="nomep" value="Nome: "/>
+               	<h:outputText id="nomep" value="#{pessoa.nome}" style="font-weight:bold"/>
+               
+               	<p:outputLabel for="nsocp" value="NomeSocial: "/>
+               	<h:outputText id="nsocp" value="#{pessoa.nomeSocial}" style="font-weight:bold"/>
+               
+               	<p:outputLabel for="dnp" value="Data de Nascimento: "/>
+               	<h:outputText id="dnp" value="#{pessoa.dataNascimento}" style="font-weight:bold">
+  					<f:convertDateTime pattern="dd/MM/yyyy" />
+  			   	</h:outputText>
+  			   	
+  			   	<p:outputLabel value="Nome da Mãe: " for="mae"/>
+                <h:outputText id="mae" value="#{pessoa.nomeMae}" style="font-weight:bold" />
+                
+                <p:outputLabel value="País de Origem: " for="pais"/>
+                <h:outputText id="pais" value="#{pessoa.paisOrigem.pais}" style="font-weight:bold" />
+                
+                <p:outputLabel value="Telefone " for="te"/>
+	            <h:outputText id="te" value="#{pessoa.telefone}" style="font-weight:bold" />
+	            
+	            <p:outputLabel value="E-Mail " for="email"/>
+	            <h:outputText id="email" value="#{pessoa.email}" style="font-weight:bold" />
+  				
+  			   	<p:outputLabel for="nisp" value="NIS: "/>
+               	<h:outputText id="nisp" value="#{pessoa.nis}" style="font-weight:bold"/>
+               
+               	<p:outputLabel for="cpfp" value="CPF: "/>
+              	<h:outputText id="cpfp" value="#{pessoa.cpf}" style="font-weight:bold"/>              	
+  				               	    				
+  				<p:outputLabel for="prontp" value="Código Prontuário"/>
+  				<h:outputText id="prontp" value="#{pessoa.familia.prontuario.codigo}" style="font-weight:bold"/>				
+  				
+               	<p:outputLabel for="unidp" value="Unidade"/>
+  				<h:outputText id="unidp" value="#{pessoa.familia.prontuario.unidade.nome}" style="font-weight:bold"/>
+  				
+               	<p:outputLabel for="parentp" value="Parentesco: "/>
+               	<h:outputText id="parentp" value="#{pessoa.parentescoPessoaReferencia}" style="font-weight:bold"/>
+               
+               	<p:outputLabel for="endp" value="Endereço: "/>
+               	<h:outputText id="endp" value="#{pessoa.familia.endereco.endereco }, #{pessoa.familia.endereco.numero }" style="font-weight:bold"/>
+               
+               	<p:outputLabel for="bairrop" value="Bairro: "/>
+               	<h:outputText id="bairrop" value="#{pessoa.familia.endereco.bairro}" style="font-weight:bold"/>
+               	
+               	<p:outputLabel for="cepp" value="Cep: "/>
+               	<h:outputText id="cepp" value="#{pessoa.familia.endereco.cep}" style="font-weight:bold"/>  				
+           
+               
+           </p:panelGrid>
+       </p:outputPanel>
+ 	</p:dialog>
+</ui:composition>

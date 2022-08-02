@@ -1,0 +1,291 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Registro Mensal de Atendimentos</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>RMA CRAS</h2>
+     	
+    	<h:form id="frmPesquisa">    	
+    		
+    		<p:growl id="growl" showDetail="true"> 
+    			<p:autoUpdate />
+    		</p:growl>
+			
+			<p:toolbar id="toolbar" rendered="#{!relatorioRMABean.gestor}">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					<p:outputLabel value="Mês : " for="mesConsultar"/>	 
+					
+					<p:spacer width="10px" />
+					
+					<p:selectOneMenu id="mesConsultar" required="true" 
+			    			value="#{relatorioRMABean.mes}"
+			    			validatorMessage="O mês é obrigatório para a consulta">
+			    			<f:selectItems value="#{relatorioRMABean.mesesFechar}" var="mes" 
+								itemLabel="#{mes}" itemValue="#{mes}"/>
+			    		</p:selectOneMenu>
+		    		
+					<p:spacer width="10px" />
+						
+					<p:commandButton title="RMA" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioRMABean.gerarRMA}"
+		            	process="@this mesConsultar"
+		            	update="frmPesquisa toolbar">		            		            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="20px" />
+	            	
+	            	<p:commandButton title="Fechar RMA" value="Fechar RMA" icon="pi pi-search"		            	
+		            	oncomplete="PF('fecharWidgetDialog').show()"
+		            	disabled="#{!relatorioRMABean.coordenador}"
+		            	update="fecharDialog toolbarGestor toolbar"
+		            	process="@this">
+		            	<p:resetInput target="fecharDialog" />
+	            	</p:commandButton>	            	
+	            	            	
+				</f:facet>
+			</p:toolbar>			
+			
+			
+			<p:spacer height="5px" />
+			
+			
+			<p:toolbar id="toolbarGestor">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="RMA Fechado: "/>
+					<p:spacer width="10px" />	 
+					<p:outputLabel value="Unidade: " for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioRMABean.unidade}">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioRMABean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+							
+						<p:ajax listener="#{relatorioRMABean.buscarRmasFechados}" 
+							update="mesAnoRef2 growl" process="unidade"/>
+	    			</p:selectOneMenu>	
+		    		
+					<p:spacer width="10px" />
+				
+					<p:outputLabel value="Mês/Ano" for="mesAnoRef2"/>	 
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="mesAnoRef2" value="#{relatorioRMABean.mesAnoRef}">
+		    			<f:selectItem itemLabel="Selecione o mês/ano de referência" />
+		    			<f:selectItems value="#{relatorioRMABean.rmasFechados}" var="ref"
+							itemLabel="#{ref}" itemValue="#{ref}"/>
+		    		</p:selectOneMenu>
+		    		
+					<p:spacer width="10px" />
+						
+					<p:commandButton title="Consultar RMA fechado" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioRMABean.buscarRmaFechado}"
+		            	process="@this mesAnoRef2 unidade"
+		            	update="frmPesquisa toolbarGestor">		            		            	
+	            	</p:commandButton>
+	            	
+				</f:facet>
+			</p:toolbar>
+			
+			<p:spacer height="15px" />
+			
+			<!--  Cabecalho RMA-->			
+			<p:panel id="basic" style="margin-bottom:20px" 
+				header="#{relatorioRMABean.rma.unidade.nome}   ---->  #{relatorioRMABean.rma.mesAnoReferencia}">
+			</p:panel>		
+			
+			<!--  Bloco A e B -->
+			
+			<p:panel id="basic1" 
+				header="Bloco I - Famílias em acompanhamento pelo PAIF"
+				footer="ATENÇÃO! Os itens B1 a B6 identificam apenas alguns perfis de famílias. É normal que algumas famílias 
+			 			contadas no item A2 não se enquadrem em nenhuma das condições acima, enquanto outras podem se enquadrar 
+						simultaneamente em mais de uma condição. Portanto, a soma de B1 a B6 não terá, necessariamente, o mesmo valor 
+			 			relatado em A2." >
+				
+				<p:panelGrid id="bloco1A" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="A - Volume de famílias em acompanhamento pelo PAIF" />
+				    </f:facet>
+				     
+				    <h:outputText value="A.1. Total de famílias em acompanhamento pelo PAIF" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.a1}" />
+				    
+				    <h:outputText value="A.2. Novas famílias inseridas no acompanhamento do PAIF durante o mês de referência" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.a2}" />
+				</p:panelGrid>
+				<p:panelGrid id="bloco1B" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="B - Perfil das novas famílias inseridas no acompanhamento do PAIF durante o mês de referência" />
+				    </f:facet>
+				    
+				    <h:outputText value="B.1. Famílias em situação de extrema pobreza" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b1}" />
+				    
+				    <h:outputText value="B.2. Famílias beneficiárias do bolsa família" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b2}" />
+				    
+				    <h:outputText value="B.3. Famílias beneficiárias do bolsa família, em descumprimento de condicionalidades" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b3}" />
+				    
+				    <h:outputText value="B.4. Famílias com membros beneficiários do BPC" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b4}" />
+				    
+				    <h:outputText value="B.5. Famílias crianças ou adolescentes em situação de trabalho infantil" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b5}" />
+				    
+				    <h:outputText value="B.6. Famílias crianças ou adolescentes em serviço de acolhimento" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b6}" />
+				    
+				    <h:outputText value="B.7. Outros" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b7}" />
+				    
+				    <h:outputText value="B.8. Atende criterios dos PTR mas nao foi contemplada" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b8}" />
+				    
+				    <h:outputText value="B.9. Em situacao de vulnerabilidade" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b9}" />
+				    
+				    <h:outputText value="B.10. Com deficientes ou idosos" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco1.b10}" />
+				</p:panelGrid>
+			</p:panel>
+			
+			<!--  Bloco C -->
+			
+			<p:panel id="basic2" style="margin-bottom:20px"
+				header="Bloco II - Atendimentos particularizados realizados no CRAS"
+				footer="ATENÇÃO! Os campos C1 a C9 devem ser contabilizadas todas as famílias/indivíduos, independente de estarem, ou não, 
+						em acompanhamento sistemático do PAIF. Considere os benefícios eventuais concedidos e entregues no CRAS, 
+						assim como os benefícios eventuais concedidos em outro local, mas que foram entregues aos beneficiários 
+						no espaço do CRAS." >
+			
+				<p:panelGrid id="bloco2" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="C - Volume de atendimentos particularizados realizados no CRAS no mês de referência" />
+				    </f:facet>
+				     
+				    <h:outputText value="C.1. Total de atendimentos particularizados, no mês" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c1}" />
+				    
+				    <h:outputText value="C.2. Famílias encaminhadas para inclusão no Cadastro Único" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c2}" />
+				    
+				    <h:outputText value="C.3. Famílias encaminhadas para atualização cadastral no Cadastro Único" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c3}" />
+				    
+				    <h:outputText value="C.4. Indivíduos encaminhados para acesso ao BPC" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c4}" />
+				    
+				    <h:outputText value="C.5. Famílias encaminhadas para o CREAS" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c5}" />
+				    
+				    <h:outputText value="C.6. Visitas domiciliares realizadas" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c6}" />
+				    
+				    <h:outputText value="C.7. Total de auxílios-natalidade concedidos/entregues durante o mês de referência" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c7}" />
+				    
+				    <h:outputText value="C.8. Total de auxílios-funeral concedidos/entregues durante o mês de referência" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c8}" />
+				    
+				    <h:outputText value="C.9. Outros benefícios eventuais concedidos/entregues durante o mês de referência" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco2.c9}" />
+				</p:panelGrid>
+			</p:panel>
+			
+			<!--  Bloco D -->
+			
+			<p:panel id="basic3" style="margin-bottom:20px"
+				header="Bloco III - Atendimentos coletivos realizados no CRAS" 
+				footer="ATENÇÃO! Apesar dos serviços de convivência e fortalecimento de vínculos não estarem mais vinculados a faixas 
+						etárias, para facilidade de registro, os usuários devem ser contabilizados, de acordo com a sua idade, 
+						independente de estarem, ou não no mesmo grupo." >			
+			
+				<p:panelGrid id="bloco3" columns="2" style="width: 100%">
+				    <f:facet name="header">
+				        <h:outputText value="D - Volume dos Serviços de Convivência e Fortalecimento de Vínculos, no mês de referência" />
+				    </f:facet>
+				     
+				    <h:outputText value="D.1. Famílias participando regularmente de grupos no âmbito PAIF" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d1}" />
+				    
+				    <h:outputText value="D.2. Crianças de 0 a 6 anos em Serviço de Convivência Familiar e Fortalecimento de Vínculos" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d2}" />
+				    
+				    <h:outputText value="D.3. Crianças/adolescentes de 7 a 14 anos em Serviço de Convivência Familiar e Fortalecimento de Vínculos" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d3}" />
+				    
+				    <h:outputText value="D.4. Adolescentes de 15 a 17 anos em Serviço de Convivência Familiar e Fortalecimento de Vínculos" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d4}" />
+				    
+				    <h:outputText value="D.5. Adultos de 18 a 59 anos em Serviço de Convivência Familiar e Fortalecimento de Vínculos" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d5}" />
+				    
+				    <h:outputText value="D.6. Idosos em Serviço de Convivência Familiar e Fortalecimento de Vínculos" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d6}" />
+				    
+				    <h:outputText value="D.7. Pessoas que participam de palestras, oficinas e outras atividades coletivas de carater não continuado" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d7}" />
+				    
+				    <h:outputText value="D.8. Pessoas com deficiência, participando dos Serviços de Convivência ou dos grupos do PAIF" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d8}" />
+				    
+				    <h:outputText value="D.9. Pessoas participando dos grupos do PAIF" />
+				    <h:outputText value="#{relatorioRMABean.rma.bloco3.d9}" />
+				</p:panelGrid>
+			</p:panel>
+			
+			
+			<p:dialog id="fecharDialog" header="Fechamento de RMA" widgetVar="fecharWidgetDialog"
+				modal="true" resizable="true" closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				position="center top">	
+				
+				<div class="card">
+	    			<h2>Atenção!</h2>
+									
+					
+					<p:panelGrid id="panelGrid" columns="1" style="width: 100%" 
+						columnClasses="rotulo, campo">
+						
+						<f:facet name="header">
+				        	<h:outputText value="O RMA uma vez fechado não pode ser mais alterado!" />
+				    	</f:facet>
+											
+		    			<p:selectOneMenu id="mesfechar" required="true" 
+			    			value="#{relatorioRMABean.mesFechar}"
+			    			validatorMessage="O mês é obrigatório para o fechamento.">
+			    			<f:selectItem itemLabel="Selecione o mês a ser fechado" />
+			    			<f:selectItems value="#{relatorioRMABean.mesesFechar}" var="mes" 
+								itemLabel="#{mes}" itemValue="#{mes}"/>
+			    		</p:selectOneMenu>    		
+				
+				
+						<p:commandButton icon="pi pi-save" id="botaoFechar" value="Fechar RMA"  
+							title="Fechar o RMA do mês"
+							actionListener="#{relatorioRMABean.fecharRma}"
+							oncomplete="if (!args.validationFailed) PF('fecharWidgetDialog').hide()"
+							update="toolbarGestor toolbar"
+							process="fecharDialog">
+						</p:commandButton>	
+						
+					</p:panelGrid>
+				</div>   	
+			</p:dialog>	
+				
+	    
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

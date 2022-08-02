@@ -1,0 +1,197 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">oficioEmitido</ui:define>
+    
+    <ui:define name="corpo">
+    	<h2>Relatório de Ofícios Emitidos</h2>
+
+    	<h:form id="frmoficioEmitido">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 
+	    				value="#{relatorioOficioEmitidoBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioOficioEmitidoBean.unidades}" var="unidade" 
+							itemLabel="#{unidade.nome}" itemValue="#{unidade}"/>
+	    			</p:selectOneMenu>	
+	    			
+	    			<p:spacer width="20px" />
+
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioOficioEmitidoBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioOficioEmitidoBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="oficioEmitido" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioOficioEmitidoBean.consultarOficiosEmitidos}"
+		            	update="oficioEmitidoTable qde toolbar">		            		            	
+	            	</p:commandButton>			
+					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>			
+					
+	            	
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" value="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="oficioEmitidoTable" fileName="Relatorio_oficio_emitido" />
+		            </p:commandButton>
+		            
+		            <p:spacer width="5px" />
+	            	
+	            	<p:commandButton id="bar" title="Obter Gráfico de Ofícios Emitidos" value="Gráfico de Ofícios Emitidos" icon="pi pi-chart-bar"
+	            		actionListener="#{relatorioOficioEmitidoBean.initGraficoBarras}"
+		            	oncomplete="PF('ofDialogWidgetVar').show()"
+		            	update="ofDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="ofDialog" />		            	
+	            	</p:commandButton>	
+					
+				</f:facet>
+			</p:toolbar>
+	    	
+	    	<p:dataTable id="oficioEmitidoTable" value="#{relatorioOficioEmitidoBean.listaOficiosEmitidos}" var="oficioEmitido"
+	    		style="margin-top: 20px" emptyMessage="Nenhum ofício recebido." rows="10"
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" rowsPerPageTemplate="10,15"	    		
+		    	rowKey="#{oficioEmitido.codigo}"
+		    	rowStyleClass="#{oficioEmitido.excluido eq true ? 'inativo' : null}"> 
+			    		
+	    		<p:ajax event="rowSelect"/>				
+				<p:ajax event="rowUnselect"/>	
+				
+				<p:column headerText="Nr. Ofício" 
+	    			sortBy="#{oficioEmitido.nrOficioEmitido}" style="width: 20px; text-align: center">
+	    			<h:outputText value="#{oficioEmitido.nrOficioEmitido}" />
+	    		</p:column>	    
+						
+	    		<p:column headerText="Data Emissão" style="width: 30px; text-align: center"
+		    		sortBy="#{oficioEmitido.dataEmissao}" >		    		
+		    		<h:outputText value="#{oficioEmitido.dataEmissao}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column> 		
+	    			            
+	     		
+	    		<p:column headerText="Cod. Encaminhamento" style="width: 80px; text-align: center">
+	    			<h:outputText value="#{oficioEmitido.codigoEncaminhamento}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Tecnico" style="width: 80px; text-align: left"
+	    			filterBy="#{oficioEmitido.tecnico.nome}" >
+	    			<h:outputText value="#{oficioEmitido.tecnico.nome}" />
+	    		</p:column>
+	    	
+	    		
+	    		<p:column headerText="Prontuário" style="width: 20px; text-align: center">
+	    			<h:outputText value="#{oficioEmitido.pessoa.familia.prontuario.codigo}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Pessoa" style="width: 90px; text-align: left"
+	    			filterBy="#{oficioEmitido.pessoa.codigo} - #{oficioEmitido.pessoa.nome}" >
+	    			<h:outputText value="#{oficioEmitido.pessoa.codigo} - #{oficioEmitido.pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Pessoa Não Registrada" style="width: 90px; text-align: left"
+	    			filterBy="#{oficioEmitido.nome}" >
+	    			<h:outputText value="#{oficioEmitido.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Orgão" style="width: 45px; text-align: center">	    			
+	    			<h:outputText value="#{oficioEmitido.nomeOrgao}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Detalhes" style="width: 15px; text-align: center">	    		
+	    				    	
+			    	<p:commandButton 
+			    		update="frmoficioEmitido:detalheGrid" 
+  						onclick="PF('detalheWidget').show()" 
+  						title="Ver detalhe" 
+  						icon="pi pi-info"
+  						process="@this">
+  						<f:setPropertyActionListener target="#{relatorioOficioEmitidoBean.oficioEmitido}" 
+							value="#{oficioEmitido}" />		                
+	            	</p:commandButton>
+	            </p:column>
+	    		
+    		</p:dataTable> 
+    		
+    		<p:spacer width="10px" />
+    		<h4>
+    			<h:outputText id = "qde" 
+    				value="Quantidade de oficios emitidos [#{relatorioOficioEmitidoBean.unidade.nome}] = #{relatorioOficioEmitidoBean.qdeTotal}"/>
+    		</h4>	
+	    
+		    
+		    
+		    <p:dialog id="detalheDialog" header="Mostrar Detalhes" 
+		   		widgetVar="detalheWidget" 
+		   		modal="true" 
+		   		responsive="true"
+		   		resizable="true"
+		   		closeOnEscape="true" 
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:auto"
+				position="left top">
+		   		
+	            <p:panelGrid id="detalheGrid" columns="2" columnClasses="label,value">
+	                
+	                <h:outputLabel value="Assunto: " style="font-weight:bold"/>
+	                <h:outputText value="#{relatorioOficioEmitidoBean.oficioEmitido.assunto}" />
+	                
+	                <h:outputLabel value="Orgão: " style="font-weight:bold"/>
+	                <h:outputText value="#{relatorioOficioEmitidoBean.oficioEmitido.nomeOrgao}" />
+	                
+	                <h:outputLabel value="Endereço do Orgão: " style="font-weight:bold"/>
+	                <h:outputText value="#{relatorioOficioEmitidoBean.oficioEmitido.endereco}" />		              
+	                
+	            </p:panelGrid>
+    		</p:dialog> 
+    		
+    		<p:dialog id="ofDialog" header="Ofícios Emitidos" widgetVar="ofDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="bar" model="#{relatorioOficioEmitidoBean.barModel}"
+				style="width:600px;height:400px" />
+				
+			</p:dialog>		
+	    		
+    	</h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,333 @@
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.softarum</groupId>
+	<artifactId>svsafree</artifactId>
+	<version>5.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<description>Sistema de Vigilância SocioAssistencial</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<itext.version>7.1.12</itext.version>
+		<poi.version>5.0.0</poi.version> <!--  4.1.2 -->
+		<hibernate.version>5.6.8.Final</hibernate.version>
+	</properties>
+	
+
+	<build>
+		<finalName>svsafree</finalName>
+		<plugins>
+			<plugin>
+				<!-- para compilar o codigo java -->
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>				
+				<configuration>
+					<!-- versão do java -->
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>			
+			<plugin>
+				<!-- para rodar os testes unitarios java -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+	
+		<!-- Servlet https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api anterior = 3.1.0 -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>4.0.1</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		
+				
+		<!-- Weld (implementação do CDI) -->
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet</artifactId>
+			<version>2.4.8.Final</version>
+		</dependency>
+				
+		<!-- Mojarra JSF implementation -->
+		<dependency>
+		    <groupId>org.glassfish</groupId>
+		    <artifactId>javax.faces</artifactId>
+		    <version>2.3.5</version>
+		</dependency>
+		
+		<!-- OmniFaces (utilitários para JSF) 1.8.1-->
+		<dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>3.6.1</version>
+		</dependency>	
+
+		<!-- PrimeFaces (Biblioteca de componentes) -->
+		<!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
+		<dependency>
+		    <groupId>org.primefaces</groupId>
+		    <artifactId>primefaces</artifactId>
+		    <version>11.0.0</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.el/javax.el-api -->
+		<dependency>
+		    <groupId>javax.el</groupId>
+		    <artifactId>javax.el-api</artifactId>
+		    <version>3.0.0</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.primefaces.themes/cupertino - themes -->
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>cupertino</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>afternoon</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>casablanca</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		
+		
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.22</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+			
+		<!--  HIBERNATE e Pool de Conexões -->
+				
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0 -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-c3p0</artifactId>
+		    <version>${hibernate.version}</version>
+		</dependency>		
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-envers -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-envers</artifactId>
+		    <version>${hibernate.version}</version>
+		</dependency>		
+		<!-- Metamodel -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<!-- Implementacao do Validation -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+		<dependency>
+		    <groupId>org.hibernate.validator</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>6.2.0.Final</version>
+		</dependency>
+		
+
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java 8.0.11 -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.29</version>
+		</dependency>
+		
+	
+				
+				
+		<!-- GOOGLE -->
+				
+		<!-- https://mvnrepository.com/artifact/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer -->
+		<dependency>
+		    <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+		    <artifactId>owasp-java-html-sanitizer</artifactId>
+		    <version>20200713.1</version>
+		</dependency>
+		<!-- webservice cep -->
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.0</version>
+		</dependency>
+		
+		
+		<!-- AWS -->		
+		
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+		<dependency>
+		    <groupId>com.amazonaws</groupId>
+		    <artifactId>aws-java-sdk-s3</artifactId>
+		    <version>1.12.52</version>
+		</dependency>
+		
+		<!-- Scheduler -->
+		
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz-jobs -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz-jobs</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
+
+
+		
+		<!-- encriptação de senha -->
+		
+		
+		<!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
+		<dependency>
+		    <groupId>org.mindrot</groupId>
+		    <artifactId>jbcrypt</artifactId>
+		    <version>0.3m</version>
+		</dependency>
+		
+		
+		<!-- 		
+			APACHE para Upload e Download de PDF	
+		 -->
+		 
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-email</artifactId>
+		    <version>1.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-text</artifactId>
+		    <version>1.9</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.4</version>
+		</dependency>
+		
+		
+		<!--  POI Para geração de arquivos  Excel-->
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+	        <version>${poi.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>${poi.version}</version>
+		</dependency>
+		
+						
+		<!-- TESTES -->
+
+		<!-- JUnit -->
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.8.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		
+	<!-- Logging SLF4J com Log4J  -->
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-log4j12</artifactId>
+		    <version>1.7.28</version>
+		</dependency>
+		
+		
+		
+		
+		<!--  Para geração de arquivos PDF -->
+		
+		<!-- iText para geração de PDFs -->			    
+	      <dependency>         
+	         <groupId>com.itextpdf</groupId>         
+	         <artifactId>kernel</artifactId>         
+	         <version>${itext.version}</version>
+	      </dependency>
+	      <dependency>         
+	         <groupId>com.itextpdf</groupId>         
+	         <artifactId>io</artifactId>         
+	         <version>${itext.version}</version>
+	      </dependency>
+	      <dependency>         
+	         <groupId>com.itextpdf</groupId>         
+	         <artifactId>layout</artifactId>         
+	         <version>${itext.version}</version>
+	      </dependency>
+	  
+	   	
+	</dependencies>
+	
+	
+
+	<!-- Repositorio PrimeFaces atzualizado -->
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>https://repository.primefaces.org/org/primefaces/themes/</url>
+			<layout>default</layout>
+		</repository>
+
+	</repositories>
+
+	<organization>
+		<name>Gaian</name>
+	</organization>
+
+	
+</project>

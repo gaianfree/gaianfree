@@ -1,0 +1,177 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">    
+            
+    <!-- Panel Convivencia Familiar -->
+
+		<p:outputPanel id="convivenciaFamiliarPanel" rendered="#{cfBean.pessoaReferenciaSelecionada}">
+			
+			<h2> Convivência Familiar </h2>    
+			
+			<p:toolbar id="toolbarCf">
+				<f:facet name="left">
+					<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"
+						actionListener="#{cfBean.convivenciaBean.salvar}"
+						update="convivenciaFamiliarGrid"
+						process="@this convivenciaFamiliarGrid convivenciaFamiliarPanel">
+					</p:commandButton>	
+							
+					<p:spacer width="20px" />
+					
+					<p:outputLabel value="Data da última atualização:  "/><p:spacer width="20px" />
+					<h:outputText value="#{cfBean.convivenciaBean.convivenciaFamiliar.dataModificacao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</f:facet>
+			</p:toolbar>			
+			
+			<p:panelGrid id="convivenciaFamiliarGrid" columns="4" style="margin-top: 10px">
+				
+				<p:outputLabel value="Há quantos meses a família mora neste estado: " for="tempoEstado"/>
+				<p:inputText id="tempoEstado" size="25" maxlenght="2"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.tempoEstado}"
+					placeholder="Apenas números(1,2,3...)"/>
+				
+				<p:outputLabel value="Há quantos meses a família mora no município: " for="tempoMunicipio"/>
+				<p:inputText id="tempoMunicipio" size="25" maxlenght="2"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.tempoMunicipio}"
+					placeholder="Apenas números(1,2,3...)"/>
+					
+				<p:outputLabel value="Há quantos meses a família mora no bairro atual: " for="tempoBairro"/>
+				<p:inputText id="tempoBairro" size="25" maxlenght="2"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.tempoBairro}"
+					placeholder="Apenas números(1,2,3...)"/>
+					
+				<p:outputLabel value="A família sempre morou no mesmo estado" for="sempreMorouEstado"/>
+				<h:selectOneRadio id="sempreMorouEstado"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.sempreMorouEstado}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="A família sempre morou no mesmo município" for="sempreMorouMunicipio"/>
+				<h:selectOneRadio id="sempreMorouMunicipio"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.sempreMorouMunicipio}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="A família sempre morou no mesmo bairro" for="sempreMorouBairro"/>
+				<h:selectOneRadio id="sempreMorouBairro"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.sempreMorouBairro}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+	
+				<p:outputLabel value="A família, ou algum de seus membros, é vítima de ameaças ou de discriminição 
+					na comunidade onde reside?" for="ameacaComunidade" />
+				<h:selectOneRadio id="ameacaComunidade"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.ameacaComunidade}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="A família possui parentes que residam próximo ao seu local de moradia e que 
+					constituam rede de apoio e solidariedade?" for="possuiParenteProximo" />
+				<h:selectOneRadio id="possuiParenteProximo"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.possuiParenteProximo}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="A família possui vizinhos que constituam rede de apoio e solidariedade?" 
+					for="possuiVizinhoSolidario" />
+				<h:selectOneRadio id="possuiVizinhoSolidario"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.possuiVizinhoSolidario}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="A família, ou algum de seus membros, participa de grupos religiosos, 
+					comunitários ou outros grupos/instituições que consituam rede de apoio e solidariedade?" 
+				for="participaGrupoReligioso" />
+				<h:selectOneRadio id="participaGrupoReligioso"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.participaGrupoReligioso}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="A família, ou algum de seus membros, pariticipa de movimentos sociais, sindicatos, 
+					organizaçãoes comunitárias, Conselhos ou quaisquer outras ações ou instituições voltadas para 
+					organização política e defesa de interesses coletivos?" 
+				for="participaOrganizacaoComunitaria" />
+				<h:selectOneRadio id="participaOrganizacaoComunitaria"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.participaOrganizacaoComunitaria}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="Existe alguma criança ou adolescente do grupo familiar que NÃO tem acesso a 
+					ativades de lazer, recreação e convívio social?" for="criancaSemAcessoLazer"/>
+				<h:selectOneRadio id="criancaSemAcessoLazer"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.criancaSemAcessoLazer}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="Existe algum idoso no grupo familiar que NÃO tem acesso a atividades de lazer, 
+					recreação e convívio social?" for="idosoSemAcessoLazer" />
+				<h:selectOneRadio id="idosoSemAcessoLazer"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.idosoSemAcessoLazer}">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+				<p:outputLabel value="Há pessoas dependentes(crianças, idosos dependentes ou pessoas com deficiência) 
+					que permanecem períodos do dia em casa sem a companhia de um adulto?" for="dpteSemCompanhiaDia" />
+				<h:selectOneRadio id="dpteSemCompanhiaDia"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.dpteSemCompanhiaDia}"
+					required="true"
+					validatorMessage="dependente sem acompanhia dia é obrigatório.">
+					<f:selectItem itemValue="true" itemLabel="SIM" />
+					<f:selectItem itemValue="false" itemLabel="NÃO" />
+				</h:selectOneRadio>
+				
+	
+				<p:outputLabel value="Percepção/Avaliação do técnico sobre as RELAÇÕES CONJUGAIS na família, se for o caso"	
+					for="relacaoConjugal" />
+				<p:selectOneMenu id="relacaoConjugal"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.relacaoConjugal}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems value="#{cfBean.convivenciaBean.tiposConvivencia}"
+						var="relacaoConjugal" 
+						itemLabel="#{relacaoConjugal}"
+						itemValue="#{relacaoConjugal}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Percepção/Avaliação do técnico sobre as RELAÇÕES ENTRE PAIS/REPONSÁVEIS E OS FILHOS 
+					inclusive entre o padrasto ou madrasta com o(s) enteados(as), se for o caso"	
+					for="relacaoPaisFilhos" />
+				<p:selectOneMenu id="relacaoPaisFilhos"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.relacaoPaisFilhos}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems value="#{cfBean.convivenciaBean.tiposConvivencia}"
+						var="relacaoPaisFilhos" 
+						itemLabel="#{relacaoPaisFilhos}"
+						itemValue="#{relacaoPaisFilhos}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Percepção/Avaliação do técnico sobre as RELAÇÕES ENTRE OS IRMÃOS, se for o caso"	
+					for="relacaoEntreIrmaos" />
+				<p:selectOneMenu id="relacaoEntreIrmaos"
+					value="#{cfBean.convivenciaBean.convivenciaFamiliar.relacaoEntreIrmaos}">
+					<f:selectItem itemLabel="" />
+					<f:selectItems value="#{cfBean.convivenciaBean.tiposConvivencia}"
+						var="relacaoEntreIrmaos" 
+						itemLabel="#{relacaoEntreIrmaos}"
+						itemValue="#{relacaoEntreIrmaos}" />
+				</p:selectOneMenu>				
+				
+						
+			</p:panelGrid>	
+		</p:outputPanel>
+
+</ui:composition>

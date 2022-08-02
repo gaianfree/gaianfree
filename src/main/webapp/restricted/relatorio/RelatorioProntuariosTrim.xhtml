@@ -1,0 +1,67 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Prontuários por Trimetre</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Relatório de Prontuários Criados, Excluídos e Inativos</h1>
+     	
+    	<h:form id="frmPesquisa"> 
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+					
+					<p:outputLabel value="Unidade" for="unidade" />
+					<p:spacer width="5px" />
+	    			<p:selectOneMenu id="unidade" 	    				
+	    				value="#{relatorioProntuariosTrimBean.unidade}" 
+	    				required="true" 
+			    		validatorMessage="A unidade é obrigatória.">
+	    				<f:selectItem itemLabel="Selecione uma unidade" />
+	     				<f:selectItems value="#{relatorioProntuariosTrimBean.unidades}" var="unid" 
+							itemLabel="#{unid.nome}" itemValue="#{unid}"/>
+	    			</p:selectOneMenu>
+				
+					<p:spacer width="10px" />				
+						
+					<p:outputLabel value="Ano" for="a"/>	 
+					<p:spacer width="5px" />   		
+		    		<p:selectOneMenu id="a" value="#{relatorioProntuariosTrimBean.ano}">
+		    			<f:selectItem itemLabel="Selecione o ano de referência" />
+		    			<f:selectItems value="#{relatorioProntuariosTrimBean.anos}" var="ano"
+							itemLabel="#{ano}" itemValue="#{ano}"/>
+		    		</p:selectOneMenu>	
+					
+					<p:spacer width="10px" />
+			
+	            	<p:commandButton title="Mostrar gráfico" icon="pi pi-chart-line"	value="Mostrar Gráfico"          		
+		            	actionListener="#{relatorioProntuariosTrimBean.criarGrafico}"		            	
+		            	update="grafico toolbar" 
+		            	process="@this unidade a">	            	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="5px" />
+
+				</f:facet>
+			</p:toolbar>
+			
+			<div align="center" >
+				<p:chart id="grafico" type="line" 
+					model="#{relatorioProntuariosTrimBean.lineModel}" 
+					style="width:800px;height:400px"/>
+			</div>
+		    
+		 </h:form>
+		   
+    	
+    </ui:define>
+</ui:composition>

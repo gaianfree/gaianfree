@@ -1,0 +1,108 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Relatório de Pessoas</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Relatório de Pessoas</h1>
+     	
+    	<h:form id="frmPesquisa"> 
+    	
+    		<p:spacer height="5px" /> 
+			
+			<p:toolbar id="toolbar">
+				<f:facet name="left">	
+				
+					<p:spacer width="5px" />
+				
+					<p:outputLabel value="Data Início" for="datai" />
+					<p:spacer width="5px" />
+					<p:calendar id="datai" size="12"
+						value="#{relatorioPessoasRedeBean.dataInicio}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+					
+					<p:spacer width="10px" />
+					
+					<p:outputLabel value="Data Fim" for="dataf" />
+					<p:spacer width="5px" />
+					<p:calendar id="dataf" size="12"
+						value="#{relatorioPessoasRedeBean.dataFim}"
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"/>	
+						
+					<p:spacer width="5px" />
+						
+					<p:commandButton title="Pessoas" value="Consultar" icon="pi pi-search"	            		
+		            	actionListener="#{relatorioPessoasRedeBean.consultarPeriodo}"
+		            	update="listaDataTable toolbar, qtdPessoas">		            		            	
+	            	</p:commandButton>	
+	            	
+	            	<p:spacer width="5px" />					
+					<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>
+	            	<p:spacer width="5px" />
+	            	
+	            	<p:commandButton title="Exportar para Excel" icon="pi pi-file-excel"
+		            	ajax="false">
+		            	<p:dataExporter type="xls" target="listaDataTable" fileName="Relatorio_pessoas" />
+		            </p:commandButton>	
+
+				</f:facet>
+			</p:toolbar>
+			
+		    <!--  Lista de itens de prontuarios novos-->
+		    
+			<p:dataTable id="listaDataTable"  value="#{relatorioPessoasRedeBean.historicos}" 
+				var="historico"
+	    		style="margin-top: 20px" emptyMessage="Nenhum prontuario." 
+	    		rowsPerPageTemplate="10,15,20" rows="10"	    		
+	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom">	
+	    		
+	    		
+	    		<p:column headerText="Código Prontuário" style="width: 30px; text-align: left">
+	    			<h:outputText value="#{historico.pessoa.familia.prontuario.codigo}" />
+	    		</p:column>	
+	    		
+	    		<p:column headerText="Código pessoa" style="width: 30px; text-align: left">
+	    			<h:outputText value="#{historico.pessoa.codigo}" />
+	    		</p:column>	    		
+	    		
+	    		<p:column headerText="Nome" style="width: 100px; text-align: left"
+	    			filterBy="#{historico.pessoa.nome}" >
+	    			<h:outputText value="#{historico.pessoa.nome}" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Data da Criação" style="width: 30px; text-align: left"
+	    			sortBy="#{historico.pessoa.dataCriacao}" >
+	    			<h:outputText value="#{historico.pessoa.dataCriacao}">
+	    				  <f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Data da Última Modificação" style="width: 30px; text-align: left"
+	    			sortBy="#{historico.pessoa.dataModificacao}" >
+	    			<h:outputText value="#{historico.pessoa.dataModificacao}">
+	    				  <f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+	    		</p:column>
+	    		
+		   	</p:dataTable>
+		   	
+		   	<h:panelGrid columns="2">
+			   <p:outputLabel value="Quantidade de Pessoas =  " for="qtdPessoas"/>
+			   <h:outputText id="qtdPessoas"  value="#{relatorioPessoasRedeBean.qdePessoas}" />
+			</h:panelGrid>			
+			
+    	</h:form>
+    	
+    </ui:define>
+</ui:composition>

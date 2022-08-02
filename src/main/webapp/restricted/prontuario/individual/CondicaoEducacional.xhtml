@@ -1,0 +1,81 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+	<p:outputPanel id="condicaoEducacionalPanel" rendered="#{ciBean.pessoaSelecionada}">
+
+		<h2> Condição Educacional </h2> 
+
+		<p:toolbar id="toolbarce">
+			<f:facet name="left">
+				<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"
+					actionListener="#{ciBean.educacionalBean.salvar}"
+					update="condicaoEducacionalPanel toolbarce"
+					process="@this condicaoEducacionalGrid" >
+				</p:commandButton>
+				
+				<p:spacer width="20px" />
+			
+				<p:outputLabel value="Data da última atualização: "/>
+				<h:outputText id="datace" value="#{ciBean.educacionalBean.condicaoEducacional.dataModificacao}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</f:facet>
+		</p:toolbar>
+
+		<p:panelGrid id="condicaoEducacionalGrid" columns="2" style="margin-top: 10px">
+			<f:facet name="header">
+	            Condições Educacionais
+	        </f:facet>
+
+			<p:outputLabel value="Código" for="codigoed" rendered="false" />
+			<p:inputText id="codigoed" size="20" maxlength="20"
+				value="#{ciBean.educacionalBean.condicaoEducacional.codigo}"
+				readonly="true" rendered="false" />
+
+			<p:outputLabel value="Sabe ler" for="sabeLer" />
+			<h:selectOneRadio id="sabeLer"
+				value="#{ciBean.educacionalBean.condicaoEducacional.sabeLer}"
+				required="true"
+				validatorMessage="Obrigatório.">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="Frequenta escola" for="frequentaEscola" />
+			<h:selectOneRadio id="frequentaEscola"
+				value="#{ciBean.educacionalBean.condicaoEducacional.frequentaEscola}"
+				required="true"
+				validatorMessage="Obrigatório.">
+				<f:selectItem itemValue="true" itemLabel="SIM" />
+				<f:selectItem itemValue="false" itemLabel="NÃO"/>
+			</h:selectOneRadio>
+			
+			<p:outputLabel value="Escolaridade" for="escolaridade" />
+			<p:selectOneMenu id="escolaridade"
+				value="#{ciBean.educacionalBean.condicaoEducacional.escolaridade}">
+				<f:selectItem itemLabel="" />
+				<f:selectItems value="#{ciBean.educacionalBean.escolaridades}"
+					var="escolaridade" itemLabel="#{escolaridade}"
+					itemValue="#{escolaridade}"/>
+			</p:selectOneMenu>
+			
+			<p:outputLabel value="Relato" for="relatoed" />
+			<h:panelGroup>
+				<p:inputTextarea id="relatoed" size="1000" rows="5" cols="100"
+					style="height: 100px; overflow:auto;" maxlength="100"
+					value="#{ciBean.educacionalBean.condicaoEducacional.relato}"
+					counter="displayed" counterTemplate="{0} caracteres restantes" />
+				<h:outputText id="displayed" />
+				<p:watermark for="relatoed" value="Descreva a condição atual educacional da pessoa." />
+			</h:panelGroup>
+			
+			
+		</p:panelGrid>
+		
+	</p:outputPanel>
+
+</ui:composition>

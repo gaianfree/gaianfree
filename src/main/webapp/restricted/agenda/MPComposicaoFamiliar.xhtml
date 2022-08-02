@@ -1,0 +1,823 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">	
+				    
+			<p:toolbar id="toolbar">
+				<f:facet name="left">			
+		            
+		            <p:commandButton title="Incluir novo membro" icon="pi pi-user-plus"
+		            	value="Criar Membro" 
+		            	disabled="#{not manterProntuarioBean.mpComposicaoBean.pessoaReferenciaSelecionada}"
+		            	rendered="#{manterProntuarioBean.mpComposicaoBean.unidadeDoUsuario
+		            		or manterProntuarioBean.mpComposicaoBean.tipoSCFV}"
+		            	actionListener="#{manterProntuarioBean.mpComposicaoBean.limpar}"
+		            	oncomplete="PF('pessoaDialogWidgetVar').show()"
+		            	update="toolbar pessoaDialog"
+		            	immediate="true"
+		            	process="@this">
+		            	<p:resetInput target="pessoaDialog" />	
+	            	</p:commandButton>
+	            		            	
+	            	<span class="ui-separator">
+		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+		            </span>	            
+	            	<p:outputLabel value="Sobre a Família:  " />
+	            	
+	            	<p:commandButton title="Registrar Observação da Família" icon="pi pi-comment"
+	            		value="Registrar Obs."
+	            		disabled="#{not manterProntuarioBean.mpComposicaoBean.pessoaReferenciaSelecionada}"
+	            		rendered="#{not manterProntuarioBean.mpComposicaoBean.administrativo and manterProntuarioBean.mpComposicaoBean.unidadeDoUsuario}"
+		            	actionListener="#{manterProntuarioBean.mpComposicaoBean.limparObservacao}"
+		            	oncomplete="PF('regObsDialogWidgetVar').show()"
+		            	update="regObsDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="regObsDialog" />	
+	            	</p:commandButton>
+	            	
+	            	<p:commandButton title="Ver Observações da Família" icon="pi pi-comments"
+	            		value="Ver Obs."
+		            	disabled="#{not manterProntuarioBean.mpComposicaoBean.pessoaReferenciaSelecionada}"
+		            	rendered="#{not manterProntuarioBean.mpComposicaoBean.administrativo}"
+		            	actionListener="#{manterProntuarioBean.mpComposicaoBean.pesquisarObsercacoes}" 
+		            	oncomplete="PF('verObsDialogWidgetVar').show()"
+		            	update="verObsDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="verObsDialog" />	
+	            	</p:commandButton> 
+	            	
+	            	<p:commandButton title="Perfil etário do grupo familiar" icon="pi pi-chart-bar"
+	            		value="Perfil Etário"
+	            		disabled="#{not manterProntuarioBean.mpComposicaoBean.pessoaReferenciaSelecionada}"
+		            	actionListener="#{manterProntuarioBean.mpComposicaoBean.initGraficoPerfil}"
+		            	oncomplete="PF('perfilDialogWidgetVar').show()"
+		            	update="perfilDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="perfilDialog" />	
+	            	</p:commandButton>	
+	            	
+	            	<p:commandButton title="Histórico de Transferências" icon="pi pi-angle-double-right"
+	            	 	value="Transferências"
+	            	 	rendered="#{manterProntuarioBean.mpComposicaoBean.pessoaSelecionada}"		            	
+		            	actionListener="#{manterProntuarioBean.mpComposicaoBean.consultaTransferencias}"
+		            	oncomplete="PF('transfDialogWidgetVar').show()"
+		            	update="transfDialog toolbar" 
+		            	process="@this">
+		            	<p:resetInput target="transfDialog" />	
+	            	</p:commandButton>	             	
+	            	
+				</f:facet>
+			</p:toolbar>
+				    
+		    <p:spacer height="5px" />
+		  
+			<p:dataTable id="membrosDataTable"  value="#{manterProntuarioBean.mpComposicaoBean.pessoas}" 
+	    		var="pessoa" emptyMessage="Nenhum membro encontrado." 
+	    		paginator="true" rows="10" paginatorPosition="bottom" paginatorAlwaysVisible="true"
+	    		rowStyleClass="#{pessoa.status eq 'INATIVO' ? 'inativo' : null}"
+	    		selectionMode="single" selection="#{manterProntuarioBean.mpComposicaoBean.pessoa}" rowKey="#{pessoa.codigo}"> 
+			    		
+		    		<p:ajax event="rowSelect" process="membrosDataTable" update="membrosDataTable"/>
+					<p:ajax event="rowUnselect" process="membrosDataTable" update="membrosDataTable"/>/>
+	    		
+	    													    			    				    		
+	    		<p:column headerText="Código" style="width: 10px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.codigo}" />
+	    		</p:column>
+	    		<p:column style="width: 3px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.mse}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome" style="width: 65px; text-align: center">	    		
+	    			<h:outputText value="#{pessoa.nome}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Nome Social" style="width: 55px; text-align: center">
+	    			<h:outputText value="#{pessoa.nomeSocial}" />
+	    		</p:column>
+	    		
+	    		<p:column headerText="Ref" style="width: 5px; text-align: center">
+	    			<h:outputText value="*" 
+	    				rendered="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"/>
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Parentesco" style="width: 30px; text-align: center">
+	    			<h:outputText value="#{pessoa.parentescoPessoaReferencia}" />
+	    		</p:column>  
+	    		
+	    		<p:column headerText="Idade" style="width: 8px; text-align: center">
+	    			<h:outputText value="#{pessoa.idade}" />
+	    		</p:column>	    		
+	    		
+	    		<p:column headerText="Programa Social" style="width: 25px; text-align: center">
+	    			<h:outputText value="#{pessoa.formaIngresso.programaSocial}" />
+	    		</p:column>
+	    		
+	    		<p:column id="coluna_Op" headerText="Operações" style="width: 70px; text-align: center">	    					    		
+		    							
+					<p:commandButton id="bt_2" title="Editar" icon="pi pi-pencil" 
+		            	rendered="#{(pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoa.codigo 
+		    						and manterProntuarioBean.mpComposicaoBean.unidadeDoUsuario)
+		    						or (pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoa.codigo 
+		    						and manterProntuarioBean.mpComposicaoBean.tipoSCFV)}"
+		            	oncomplete="PF('pessoaDialogWidgetVar').show()"
+		            	update=":frmProntuario:tab1:pessoaDialog" 
+		            	process="@this">
+		            	<p:resetInput target=":frmProntuario:tab1:pessoaDialog" />	
+	            	</p:commandButton>
+	            	
+	            	<p:spacer width="2px" /> 
+	            	<p:commandButton id="bt_7" icon="pi pi-trash" title="Excluir membro desta familia"	
+		    			rendered="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoa.codigo 
+		    						and manterProntuarioBean.mpComposicaoBean.unidadeDoUsuario}"
+		    			disabled="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"	    			
+	    				onclick="PF('confirmaExclusao').show();"
+						process="@this">
+						<f:setPropertyActionListener target="#{manterProntuarioBean.mpComposicaoBean.pessoa}" 
+							value="#{pessoa}" />
+					</p:commandButton>
+					
+	            	
+	            	<p:spacer width="2px" /> 
+	            	<p:commandButton id="bt_3" icon="pi pi-user-minus" title="Criar prontuário novo para este membro"	
+		    			rendered="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoa.codigo 
+		    						and manterProntuarioBean.mpComposicaoBean.unidadeDoUsuario}"
+		    			disabled="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"	    			
+	    				onclick="PF('criaNovoProntuario').show();"
+						process="@this">
+						<f:setPropertyActionListener target="#{manterProntuarioBean.mpComposicaoBean.pessoa}" 
+							value="#{pessoa}" />
+					</p:commandButton>
+					
+					<p:spacer width="2px" /> 
+					<p:commandButton id="bt_6" title="Transferir membro para outra família" icon="pi pi-directions" 
+		            	rendered="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoa.codigo 
+		    						and manterProntuarioBean.mpComposicaoBean.unidadeDoUsuario}"
+		    			disabled="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+		            	oncomplete="PF('transferenciaWidgetVar').show()"
+		            	update=":frmProntuario:tab1:transferenciaDialog" 
+		            	process="@this">
+		            	<p:resetInput target=":frmProntuario:tab1:transferenciaDialog" />	
+	            	</p:commandButton>				
+					
+					
+					<p:spacer width="2px" /> 
+	            	<p:commandButton id="bt_1" icon="pi pi-star" title="Alterar Pessoa de Referência"	
+		    			rendered="#{manterProntuarioBean.mpComposicaoBean.unidadeDoUsuario and pessoa.status eq 'ATIVO'}"
+		    			disabled="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"	    			
+	    				onclick="PF('confirmaTroca').show();"
+						process="@this"
+						immediate="true">
+						<f:setPropertyActionListener target="#{manterProntuarioBean.mpComposicaoBean.novaPessoaReferencia}" 
+							value="#{pessoa}" />
+					</p:commandButton>		
+	            		            	
+	            	<p:spacer width="2px" /> 
+	            	<p:commandButton id="bt_4" title="Evolução" icon="pi pi-history"
+		            	disabled="#{manterProntuarioBean.mpComposicaoBean.administrativo}"
+		            	rendered="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoa.codigo}"
+		            	oncomplete="PF('consultaDialogWidgetVar').show()"
+		            	update=":frmProntuario:tab1:consultaDialog" 
+		            	process="@this">
+  						<f:setPropertyActionListener target="#{evolucaoUIBean.pessoa}"
+							value="#{pessoa}" /> 
+	            	</p:commandButton>	
+	            	
+	            	<p:spacer width="2px" /> 
+	            	<p:commandButton id="bt_5" title="Histórico de Faltas" icon="pi pi-thumbs-down"
+	            		rendered="#{pessoa.codigo eq manterProntuarioBean.mpComposicaoBean.pessoa.codigo}"
+		            	actionListener="#{manterProntuarioBean.mpComposicaoBean.consultaFaltas}"
+		            	oncomplete="PF('faltasDialogWidgetVar').show()"
+		            	update=":frmProntuario:tab1:faltasDialog" 
+		            	process="@this">
+		            	<p:resetInput target=":frmProntuario:tab1:faltasDialog" />	
+	            	</p:commandButton>            	
+	            				
+					
+	    		</p:column>
+	 	    		
+		   	</p:dataTable>
+		   	
+		   	<p:confirmDialog id="confirmaTrocaDialog" 
+	   			widgetVar="confirmaTroca"
+        		message="Confirma troca de Pessoa de Referência? Será necessário ALTERAR o parentesco."  
+                header="Alteração de Pessoa de Referência" severity="alert"
+                showEffect="explode" hideEffect="explode">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmaTroca').hide(); return false;" />
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		process="@this"
+	        		immediate="true"
+	        		update="membrosDataTable"
+	        		onclick="PF('confirmaTroca').hide();"
+	        		action="#{manterProntuarioBean.mpComposicaoBean.trocarPessoaReferencia}" />
+	    	</p:confirmDialog>
+	    	
+	    	<p:confirmDialog id="criaNovoProntuarioDialog" 
+	   			widgetVar="criaNovoProntuario"
+        		message="Confirma a criação de um prontuário novo para esta pessoa? Todas as evoluções serão mantidas."  
+                header="Excluir membro e criar novo prontuário" severity="alert"
+                showEffect="explode" hideEffect="explode">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('criaNovoProntuario').hide(); return false;" />
+        		<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		update="membrosDataTable"
+	        		process="@this"
+	        		onclick="PF('criaNovoProntuario').hide();"
+	        		action="#{manterProntuarioBean.mpComposicaoBean.criarProntuario}"/>	        	
+	    	</p:confirmDialog>   	
+	    	
+	    	<p:confirmDialog id="confirmaExclusaoDialog" 
+	   			widgetVar="confirmaExclusao"
+        		message="Confirma a exclusão deste membro para esta familia?"  
+                header="Excluir membro da familia" severity="alert"
+                showEffect="explode" hideEffect="explode">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmaExclusao').hide(); return false;" />
+        		<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		update="membrosDataTable"
+	        		process="@this"
+	        		onclick="PF('confirmaExclusao').hide();"
+	        		action="#{manterProntuarioBean.mpComposicaoBean.excluirMembro}"/>	        	
+	    	</p:confirmDialog> 
+	    	
+		   	
+		   	<p:dialog id="transferenciaDialog" header="Transferência de pessoa para outra família" 
+		   		widgetVar="transferenciaWidgetVar" 
+				modal="true" resizable="false" closeOnEscape="true" 
+				style="max-height:600px;overflow:auto" >        			
+				
+				<p:panelGrid id="transgrid" columns="2" style="width: 100%" 
+					columnClasses="rotulo, campo" 
+					rendered="#{manterProntuarioBean.mpComposicaoBean.pessoa ne null}">
+										
+					<p:outputLabel value="Membro a ser transferido: "/>
+					<h:outputLabel value="#{manterProntuarioBean.mpComposicaoBean.pessoa.nome}"
+						style="font-weight:bold"/>					
+					
+					<p:outputLabel value="Prontuário Destino: " for="prontuario"/>		    		
+	   				<p:inputText id="prontuario" size="10" maxlength="12" alt="Prontuário destino"
+		    			value="#{manterProntuarioBean.mpComposicaoBean.prontuarioDestino}"
+		    			update="nomePr"
+	    				process="@this prontuario"
+	    				imadiate="true">
+		    			<p:ajax event="keyup" listener="#{manterProntuarioBean.mpComposicaoBean.buscarNomePessoa}" 
+		    				update="nomePr" />		    			
+		    		</p:inputText>
+		    		    		
+		    		<p:outputLabel value="Pessoa de Referência: " for="nomePr"/>
+		    		<h:outputText id="nomePr" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.nomePessoaRef}"
+		    			style="font-weight:bold"/>				
+		
+					<p:commandButton value="Confirmar Transferência"
+	    				action="#{manterProntuarioBean.mpComposicaoBean.transferirMembro}" 
+	    				onclick="PF('transferenciaWidgetVar').hide();"
+	    				update="nomePr membrosDataTable"
+	    				process="@this prontuario "
+	    				imadiate="true"/>
+				</p:panelGrid>
+			</p:dialog>
+			
+			<p:dialog id="pessoaDialog" header="Novo membro" widgetVar="pessoaDialogWidgetVar"
+		   		modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				width="100%" position="center top" maximizable="true"
+				height="70%" fitViewport="true" responsive="true">
+				
+					
+        		<p:messages id="pessoaMessages" showDetail="false" closable="true"/>
+    			<p:growl id="pessoaGrowl" showDetail="true" />    			
+				
+				
+				<p:panelGrid columns="2" id="pessoaPanelGrid" style="width: 100%" 
+					columnClasses="rotulo, campo" 
+					rendered="#{manterProntuarioBean.mpComposicaoBean.pessoa ne null}">
+					
+					
+					<p:outputLabel value="Ativo" for="status"
+						disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo eq 
+									manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"/>
+		    		<p:selectOneMenu id="status" required="true" 
+		    			disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo eq 
+									manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.status}"
+		    		    validatorMessage="O Status é obrigatório.">
+		    			<f:selectItem itemLabel="Selecione o status" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.status}" var="status"
+							itemLabel="#{status}" itemValue="#{status}"/>
+		    		</p:selectOneMenu>
+	    			
+		    		<p:outputLabel value="Nome" for="nomeMembro"/>
+		    		<p:inputText id="nomeMembro" size="50" maxlength="80" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.nome}"
+		    			required="true" 
+				    	validatorMessage="O nome é obrigatório."/>
+				    	
+			    	<p:outputLabel value="Parentesco (vínculo)" for="parentesco"/>	
+        			<p:selectOneMenu id="parentesco" required="true"        				
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.parentescoPessoaReferencia}"
+		    		    validatorMessage="O parentesco é obrigatório.">
+		    			<f:selectItem itemLabel="Selecione o vínculo familiar" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.parentescos}" var="parentesco"
+							itemLabel="#{parentesco}" itemValue="#{parentesco}"/>
+		    		</p:selectOneMenu>
+		    						    	   		
+		    		<p:outputLabel value="Nome Social" for="nomesocial"/>
+		    		<p:inputText id="nomesocial" size="50" maxlength="80" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.nomeSocial}"/>
+		    			
+		    		<p:outputLabel value="Nome da mãe" for="nomemae"/>
+	    			<p:inputText id="nomemae" size="60" maxlength="80" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.nomeMae}"
+		    			required="true" 
+				    	validatorMessage="O nome da mãe é obrigatório."/> 		
+				    	
+				  	<p:outputLabel value="País de Origem" for="pais"/>	    		
+		    		<p:selectOneMenu id="pais" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.paisOrigem}"
+		    			required="true"
+				    	validatorMessage="O país de origem é obrigatório.">
+		    			<f:selectItem itemLabel="Selecione o país" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.paises}" var="pais"
+							itemLabel="#{pais.pais}" itemValue="#{pais}"/>
+		    		</p:selectOneMenu>	  
+						    			
+		    		<p:outputLabel value="Data de Nascimento" for="dataNascimento" />
+					<p:calendar id="dataNascimento" size="10"  
+						value="#{manterProntuarioBean.mpComposicaoBean.pessoa.dataNascimento}"
+						required="true" 
+						showOn="button" 
+						pattern="dd/MM/yyyy" 
+						mask="99/99/9999"
+						validatorMessage="A data de nascimento é obrigatória."/>
+						
+						
+					<p:outputLabel value="Município Nascimento"/>	
+				    <h:panelGroup>
+				    	<p:inputText id="municipioNasc"
+				    		value="#{manterProntuarioBean.mpComposicaoBean.pessoa.municipioNascimento}" />
+				    		
+				    	<p:spacer width="10px" />
+				    	
+				    	<p:selectOneMenu id="ufNasc" value="#{manterProntuarioBean.mpComposicaoBean.pessoa.ufNascimento}">
+			    			<f:selectItem itemLabel="Selecione a UF" />
+			    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.ufs}" var="uf" 
+								itemLabel="#{uf}" itemValue="#{uf}"/>
+			    		</p:selectOneMenu>				    	
+				    </h:panelGroup>	
+					
+					
+					
+								
+					<p:outputLabel value="Telefone" for="phone"/>
+		    		<p:inputText id="phone" size="20" maxlength="20"
+		    			required="true" 
+		    			validatorMessage="O telefone de contato é obrigatório." 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.telefone}"/>
+		    			
+		    		<p:outputLabel value="E-Mail" for="mail"/>
+					<h:panelGroup>
+					    <p:inputText id="mail" size="60" maxlength="80" 					    		
+					        	value="#{manterProntuarioBean.mpComposicaoBean.pessoa.email}">					       
+						</p:inputText>
+						<p:watermark for="mail" value="E-mail" />
+					</h:panelGroup>
+					
+		    		<p:outputLabel value="Identidade"/>
+		    		<p:panelGrid >				    		
+					    <p:row>
+					        <p:column>
+					        	<p:outputLabel value="RG" for="rg"/>
+					        </p:column>
+					        <p:column >
+					        	<p:inputMask id="rg" size="15" maxlength="15" 
+					    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.rg}"/>
+					    	</p:column>
+					    	<p:column>
+					        	<p:outputLabel value="Órgão Emissor" for="orgao"/>
+					        </p:column>
+					        <p:column >
+					        	<p:inputText id="orgao" size="3" maxlength="3" 
+						    		value="#{manterProntuarioBean.mpComposicaoBean.pessoa.orgaoEmissor}"/>
+					    	</p:column>
+					    </p:row>
+					    <p:row>				        
+					        <p:column>
+					        	<p:outputLabel value="Data da Emissão" for="dataEmissao" />
+					        </p:column>
+					        <p:column>
+					        	<p:calendar id="dataEmissao" size="10"
+									value="#{manterProntuarioBean.mpComposicaoBean.pessoa.dataEmissao}"
+									pattern="dd/MM/yyyy" 
+									showOn="button" 
+									mask="99/99/9999"/>		
+					        </p:column>
+					        <p:column>
+					        	<p:outputLabel value="UF Emissão" for="ufEmissao"/>
+					        </p:column>
+					        <p:column>
+					        	<p:selectOneMenu id="ufEmissao" value="#{manterProntuarioBean.mpComposicaoBean.pessoa.ufEmissao}">
+					    			<f:selectItem itemLabel="Selecione a UF" />
+					    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.ufs}" 
+					    				var="ufEmissao" 
+										itemLabel="#{ufEmissao}" itemValue="#{ufEmissao}"/>
+			    				</p:selectOneMenu>			    				
+					        </p:column>
+					    </p:row>
+			    	</p:panelGrid>	    			
+										
+		        	<p:outputLabel value="CPF" for="cpf"/>					       
+		        	<p:inputMask id="cpf" size="18" maxlength="18" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.cpf}"
+		    			mask="999.999.999-99"/>	 
+		    	
+		        	<p:outputLabel value="NIS" for="nis"/>
+		        	<p:inputText id="nis" size="15" maxlength="15" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.nis}" />	 
+		    			
+		    		<p:outputLabel value="Possui alguma deficiência?" for="pcd"/>	    		
+	    			<p:selectOneMenu id="pcd" 
+	    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.tipoPcD}"
+	    			required="true"
+			    	validatorMessage="A resposta é obrigatória.">
+	    		
+	    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.tiposPcD}" var="pcd" 
+						itemLabel="#{pcd}" itemValue="#{pcd}"/>
+	    		</p:selectOneMenu>	 
+			    		
+		        	<p:outputLabel value="Sexo Biológico" for="sexo"/>		       
+		        	<p:selectOneMenu id="sexo" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.sexo}"
+		    			required="true" 
+				    	validatorMessage="O sexo é obrigatório.">
+		    			<f:selectItem itemLabel="Selecione o sexo" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.sexos}" var="sexo" 
+							itemLabel="#{sexo}" itemValue="#{sexo}"/>
+   					</p:selectOneMenu>
+		    	
+		        	<p:outputLabel value="Identidade de Gênero" for="identidadeGenero"/>		        
+		        	<p:selectOneMenu id="identidadeGenero" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.identidadeGenero}"
+		    			required="true" 
+				    	validatorMessage="A identidade de gênero é obrigatória.">
+		    			<f:selectItem itemLabel="Selecione a identidade de gênero" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.generos}" var="identidadeGenero" 
+							itemLabel="#{identidadeGenero}" itemValue="#{identidadeGenero}"/>
+   					</p:selectOneMenu>					    	
+		    			    		
+		    		<p:outputLabel value="Cor/Raça" for="cor"/>
+		    		<p:selectOneMenu id="cor" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.corRaca}"
+		    			required="true" 
+				    	validatorMessage="A cor/raça é obrigatória.">
+		    			<f:selectItem itemLabel="Selecione a cor/raça" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.corRacas}" var="raca"
+							itemLabel="#{raca}" itemValue="#{raca}"/>
+		    		</p:selectOneMenu>
+		    				    		
+		    		
+		    		<p:outputLabel value="Observação" for="observacao"/>
+		    		<h:panelGroup>
+			    		<p:inputTextarea id="observacao" size="500" rows="2" cols="50" style="height: 100px; overflow:auto;"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.observacao}" 
+			    			counter="display"
+							maxlength="200" 
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="display" />
+			    		<p:watermark for="observacao" value="Máximo 200 caracteres." />
+		    		</h:panelGroup>	
+		    		
+		    		
+		    		<p:outputLabel value="Documentos a providenciar"/>
+		    		<h:panelGroup>
+			    		<p:outputLabel value="CN" for="cnt"/> <p:spacer height="5px" />
+			    		<p:selectBooleanCheckbox id="cnt" 
+			    			title="Certidão de nascimento"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.tipoDocumento.cn}" />
+			    		<p:spacer height="5px" />
+			    		<p:outputLabel value="RG" for="rgt"/> <p:spacer height="5px" />
+			    		<p:selectBooleanCheckbox id="rgt" 
+			    			title="Carteira de Identidade"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.tipoDocumento.rg}" />
+		    			<p:spacer height="5px" />
+			    		<p:outputLabel value="CTPS" for="ctpst"/> <p:spacer height="5px" />
+			    		<p:selectBooleanCheckbox id="ctpst" 
+			    			title="Carteira de Trabalho"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.tipoDocumento.ctps}" />
+			    		<p:spacer height="5px" />
+			    		<p:outputLabel value="CPF" for="cpft"/> <p:spacer height="5px" />
+			    		<p:selectBooleanCheckbox id="cpft" 
+			    			title="CPF"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.tipoDocumento.cpf}" />
+		    			<p:spacer height="5px" />
+			    		<p:outputLabel value="TE" for="tet"/> <p:spacer height="5px" />
+			    		<p:selectBooleanCheckbox id="tet" 
+			    			title="Título de Eleitor"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.tipoDocumento.te}" />			    		
+		    		</h:panelGroup>
+		    		
+		    		
+		    		<p:outputLabel value="Endereço" />
+		    		<h:panelGroup id="endere">
+		    			<p:panelGrid columns="2" id="gridEndere">
+		    			
+			    		<p:outputLabel for="cep" value="CEP"  />
+				    	<h:panelGroup>
+		                   	<p:inputMask id="cep" mask="99999-999" size="9" 
+		                   		disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+		                   		value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.cep}" 
+		                   		required="true"                   		                   		
+					    		validatorMessage="O cep é obrigatório."/>
+					    					    		
+				    		<p:spacer width="10px" />
+					    	
+					    	<p:commandButton value="Pesquisar"
+					    		disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+			    				action="#{manterProntuarioBean.mpComposicaoBean.buscaEnderecoPorCEP}" 
+			    				update="cep endereco numero complemento bairro uf municipio"
+			    				process="@this cep"
+			    				imadiate="true"/>
+			    		
+				    	</h:panelGroup>
+							    	
+					    <p:outputLabel value="Endereço" for="endereco"/>
+			    		<p:inputText id="endereco" size="50" maxlength="80" 
+			    			disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.endereco}"
+			    			required="true" 
+					    	validatorMessage="O endereço é obrigatório."/>
+					    	
+					    <p:outputLabel value="Número" for="numero"/>
+			    		<p:inputText id="numero" size="20" maxlength="20"
+			    			disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+							value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.numero}"
+			    			required="true" 
+			    			validatorMessage="O número é obrigatório." /> 
+			    			
+			    			
+			    		<p:outputLabel value="Complemento" for="complemento"/>
+			    		<p:inputText id="complemento" size="50" maxlength="80" 
+			    			disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.complemento}"/> 
+			    			
+			    		<p:outputLabel value="Bairro" for="bairro"/>
+			    		<p:inputText id="bairro" size="50" maxlength="80"
+			    			disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}" 
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.bairro}"
+			    			required="true" 
+					    	validatorMessage="O bairro é obrigatório."/> 
+					    	
+					    	
+					    	
+					    	
+					    <p:outputLabel value="Município Atual"/>	
+					    <h:panelGroup>
+					    	<p:inputText id="municipio"
+					    		disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+					    		required="true"
+					    		value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.municipio}" />
+					    	<p:inputText id="uf"
+					    		disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+					    		required="true"
+					    		value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.uf}" />
+					    </h:panelGroup>
+					    	
+					    		    	
+					   
+					    	    		
+			    		<p:outputLabel value="Referência" for="referencia"/>
+			    		<p:inputText id="referencia" size="50" maxlength="80" 
+			    			disabled="#{manterProntuarioBean.mpComposicaoBean.pessoa.codigo ne 
+										manterProntuarioBean.mpComposicaoBean.pessoaReferencia.codigo}"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.familia.endereco.referencia}"/>
+			    		</p:panelGrid>
+		    		</h:panelGroup>
+		    		
+		    		
+
+					<p:outputLabel value="ACOLHIDA: De que forma acessou a unidade no primeiro atendimento?" 
+						for="formasAcesso"/>	    		
+		    		<p:selectOneMenu id="formasAcesso" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.formaIngresso.formaAcesso}"
+		    			required="true" 
+				    	validatorMessage="A forma de acesso é obrigatória.">
+		    			<f:selectItem itemLabel="Selecione a forma de acesso" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.formasAcesso}" var="formaAcesso" 
+							itemLabel="#{formaAcesso.descricao}" itemValue="#{formaAcesso}"/>
+		    		</p:selectOneMenu>	
+					
+					
+					<p:outputLabel value="Contato do Orgão/Unidade que encaminhou a pessoa" for="contato"/>
+		    		<h:panelGroup>
+			    		<p:inputTextarea id="contato" size="500" rows="5" cols="50" style="height: 100px; overflow:auto;"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.formaIngresso.contatoOrgao}" 
+			    			counter="display1"
+							maxlength="200" 
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="display1" />
+			    		<p:watermark for="contato" value="Identifique detalhadamente o nome e contato do órgão/unidade que encaminhou a pessoa." />
+		    		</h:panelGroup>	
+		    		
+		    		<p:outputLabel value="Razões que motivaram o primeiro atendimento" for="razao"/>
+		    		<h:panelGroup>
+			    		<p:inputTextarea id="razao" size="500" rows="5" cols="50" style="height: 100px; overflow:auto;"
+			    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.formaIngresso.motivacaoAtendimento}" 
+			    			counter="display2"
+							maxlength="200" 
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="display2" />
+			    		<p:watermark for="razao" value="Descreva as razões. demandas ou necessidades que motivaram o primeiro atendimento." />
+		    		</h:panelGroup>					
+					
+					
+					<p:outputLabel value="Qual programa ou benefício?" 
+						for="programasSociais"/>	    		
+		    		<p:selectOneMenu id="programasSociais" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.pessoa.formaIngresso.programaSocial}">
+		    			<f:selectItem itemLabel="Selecione o programa caso seja beneficiário" />
+		    			<f:selectItems value="#{manterProntuarioBean.mpComposicaoBean.programasSociais}" var="programaSocial" 
+							itemLabel="#{programaSocial}" itemValue="#{programaSocial}"/>
+		    		</p:selectOneMenu>
+
+					
+					<p:outputLabel/>
+					<p:commandButton icon="pi pi-save" id="salvarCommandButton" value="Salvar" 
+						actionListener="#{manterProntuarioBean.mpComposicaoBean.salvarMembro}"
+						update="pessoaPanelGrid membrosDataTable pessoaMessages pessoaGrowl"
+						oncomplete="if (!args.validationFailed) PF('pessoaDialogWidgetVar').hide()" 
+						process="pessoaDialog"/>
+						
+				</p:panelGrid>
+			</p:dialog>	
+			
+				
+			<p:dialog id="verObsDialog" header="Observações" widgetVar="verObsDialogWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll"
+				position="center top">	
+				
+				<p:dataTable id="observacoesDataTable"  value="#{manterProntuarioBean.mpComposicaoBean.observacoes}"
+		    		var="obsComposicao" emptyMessage="Nenhuma observação encontrada." >
+		    				
+		    		<p:column headerText="Data">
+		    			<h:outputText value="#{obsComposicao.dataCriacao}"> 
+		    				<f:convertDateTime pattern="dd/MM/yyyy" />
+		    			</h:outputText>
+		    		</p:column>
+		    		<p:column headerText="Servidor">
+		    			<h:outputText value="#{obsComposicao.usuario.nome}" />
+		    		</p:column>	
+		    		<p:column headerText="Função">
+		    			<h:outputText value="#{obsComposicao.usuario.role}" />
+		    		</p:column>	    			    				    		
+		    		<p:column headerText="Observação">
+		    			<h:outputText value="#{obsComposicao.observacao}" />
+		    		</p:column>
+		   		</p:dataTable>
+		   	
+			</p:dialog>
+			
+			
+			<p:dialog id="regObsDialog" header="Registrar Observação" widgetVar="regObsDialogWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll"
+				position="center top">	
+        		
+    			<p:growl id="regGrowl" showDetail="true" />   
+				
+				<p:panelGrid columns="2" id="obsPanelGrid" style="width: 100%" 
+					columnClasses="rotulo, campo"
+					rendered="#{manterProntuarioBean.mpComposicaoBean.obsComposicaoFamiliar ne null}">
+					
+					
+		    		<p:outputLabel value="Observação" for="obsComposicao"/>
+		    		<p:inputTextarea id="obsComposicao" size="500" rows="5" cols="50" style="height: 100px; overflow:auto;"
+		    			maxlength="400" 
+		    			value="#{manterProntuarioBean.mpComposicaoBean.obsComposicaoFamiliar.observacao}"
+		    			required="true"
+		    			placeholder="Até 400 caracteres."
+				    	validatorMessage="A observação é obrigatória."/>	
+			
+					<h:outputLabel />
+					<p:commandButton icon="pi pi-save" id="salvarButton" value="Salvar" 
+						actionListener="#{manterProntuarioBean.mpComposicaoBean.salvarObservacao}"
+						update="obsPanelGrid regGrowl"
+						oncomplete="if (!args.validationFailed) PF('regObsDialogWidgetVar').hide()" process="regObsDialog"/>
+					
+				</p:panelGrid>
+			</p:dialog>
+			
+			<p:dialog id="perfilDialog" header="Perfil Etário do Grupo Familiar" widgetVar="perfilDialogWidgetVar"
+				modal="true" resizable="false" closeOnEscape="true">			
+        										
+				<p:chart type="pie" model="#{manterProntuarioBean.mpComposicaoBean.graficoPerfil}" style="width:400px;height:300px" />	
+				
+				<p:outputLabel value="Quantidade de pessoas na família =  " for="qde"/>
+				<h:outputText id="qde" value="#{manterProntuarioBean.mpComposicaoBean.perfilEtarioTO.qdePessoas}"/>			
+			</p:dialog>	
+			
+			
+			
+			
+			<p:dialog id="faltasDialog" header="Faltas" widgetVar="faltasDialogWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll"
+				position="center top">	
+			
+				<p:dataTable id="listaFaltas"  value="#{manterProntuarioBean.mpComposicaoBean.listaFaltas}" var="item"
+					allowUnsorting="true" sortMode="single"
+		    		style="margin-top: 20px" emptyMessage="Nenhuma falta apontada para a pessoa.">
+		    		
+		    		<f:facet name="header">
+			            Lista de Ausências
+			        </f:facet>
+		    					    		
+			    	<p:column headerText="Data" style="width: 60px; text-align: center"
+			    		sortBy="#{item.dataAgendamento}" >		    		
+			    		<h:outputText value="#{item.dataAgendamento}">
+		    				<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+		    			</h:outputText>	    		
+		    		</p:column>	
+		    		
+		    		<p:column headerText="Codigo Pessoa" style="width: 30px; text-align: center">
+		    			<h:outputText value="#{item.pessoa.codigo}" />
+		    		</p:column> 
+		    		 				    		
+		    		<p:column headerText="Nome Pessoa" style="width: 100px; text-align: center">
+		    			<h:outputText value="#{item.pessoa.nome}" />
+		    		</p:column> 
+		    		
+		    		
+		    		<p:column headerText="Motivo" style="width: 100px; text-align: center">
+		    			<p:textEditor  			    			
+			    			value="#{item.resumoAtendimento}" 			    					    			
+			    			readonly="true">
+			    			<f:facet name="toolbar"> 
+			    				<span class="ql-formats"> </span>						            
+			    			</f:facet>
+					    </p:textEditor>
+		    		</p:column>		
+		    		  		
+		    		<p:column headerText="Unidade atendimento" style="width: 50px; text-align: center">
+		    			<h:outputText value="#{item.unidade.nome}" />
+		    		</p:column> 
+	    		
+			   	</p:dataTable>
+		   	
+			</p:dialog>	
+			
+			<p:dialog id="transfDialog" header="Transferencias" widgetVar="transfDialogWidgetVar"
+				modal="true" resizable="true" closeOnEscape="true"
+				showEffect="explode" hideEffect="explode" 
+				style="max-height:600px;overflow:scroll"
+				position="center top">	
+			
+				<p:dataTable id="listaTransferencias"  value="#{manterProntuarioBean.mpComposicaoBean.listaTransferencias}"
+					allowUnsorting="true" sortMode="single"
+					var="historico"
+		    		style="margin-top: 20px" emptyMessage="Nenhuma transferência realizada.">
+		    		
+		    		<f:facet name="header">
+			            Histórico de Transferências
+			        </f:facet>
+		    					    		
+			    	<p:column headerText="Data da Transferência" sortBy="#{historico.nome}" style="width: 30px; text-align: left">
+					<h:outputText value="#{historico.dataTransferencia}">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+    				</h:outputText>	 
+					</p:column>				
+					<p:column headerText="Motivo da Transferência" style="width: 100px; text-align: left">
+						<h:outputText value="#{historico.motivo}" />
+					</p:column>
+					<p:column headerText="Unidade Anterior" style="width: 50px; text-align: center">
+						<h:outputText value="#{historico.unidade.nome}" />
+					</p:column>
+					<p:column headerText="Responsável pela Transferência" style="width: 50px; text-align: center">
+						<h:outputText value="#{historico.usuario.nome}" />
+					</p:column>	
+		    		
+			   	</p:dataTable>
+		   	
+			</p:dialog>		
+			
+			
+			<!-- Reuso de componente -->
+			<ui:include src="/compositions/EvolucaoUI.xhtml">
+                <ui:param name="pessoa" value="#{evolucaoUIBean.pessoa}" />                
+            </ui:include>
+			
+</ui:composition>

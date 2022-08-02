@@ -1,0 +1,296 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Encaminhamento Externo</ui:define>
+
+	<ui:define name="corpo">
+
+		<h2>Encaminhamento Externo</h2>
+
+		<h:form id="frmEncaminhamento" enctype="multipart/form-data"
+			target="_blank">
+
+			<p:growl id="growl" showDetail="true">
+				<p:autoUpdate />
+			</p:growl>
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<p:commandButton value="Pesquisar Pessoa" icon="pi pi-search"
+						title="Pesquisar Pessoa"
+						actionListener="#{encaminhamentoExternoBean.abrirDialogo}"
+						process="@this" update="@none">
+						<p:ajax event="dialogReturn"
+							listener="#{encaminhamentoExternoBean.selecionarPessoa}"
+							update="frmEncaminhamento" process="@this" />
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+
+
+			<!-- Pessoa -->
+			<!-- Reuso de componente  -->
+			<ui:include src="/compositions/PessoaUI.xhtml">
+				<ui:param name="pessoa"
+					value="#{encaminhamentoExternoBean.pessoa}" />
+				<ui:param name="pessoaSelecionada"
+					value="#{encaminhamentoExternoBean.pessoaSelecionada}" />
+			</ui:include>
+
+
+
+			<p:toolbar id="toolbar1" style="margin-top: 1px"
+				rendered="#{encaminhamentoExternoBean.pessoaSelecionada}">
+				<f:facet name="left">
+					<p:commandButton title="Novo Encaminhamento" icon="pi pi-user-plus"
+						value="Novo Encaminhamento"
+						rendered="#{encaminhamentoExternoBean.pessoaSelecionada}"
+						actionListener="#{encaminhamentoExternoBean.limpar}"
+						oncomplete="PF('encaminhamentoDialogWidgetVar').show()"
+						update="encaminhamentoDialog" process="@this">
+						<p:resetInput target="encaminhamentoDialog" />
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataTable id="encaminhamentosTable"
+				value="#{encaminhamentoExternoBean.listaEncaminhamentos}"
+				var="encaminhamento" style="margin-top: 5px"
+				emptyMessage="Nenhum encaminhamento encontrado." rows="5"
+				paginator="true" paginatorAlwaysVisible="true"
+				paginatorPosition="bottom" selectionMode="single"
+				selection="#{encaminhamentoExternoBean.encaminhamento}"
+				rowKey="#{encaminhamento.codigo}"
+				rendered="#{encaminhamentoExternoBean.pessoaSelecionada}">
+
+				<p:ajax event="rowSelect" update="encaminhamentosTable show download" />
+				<p:ajax event="rowUnselect" update="encaminhamentosTable show download" />
+
+				<f:facet name="header">
+		            Lista de Encaminhamentos
+		        </f:facet>
+
+				<p:column headerText="Código"
+					style="width: 12px; text-align: center">
+					<h:outputText value="#{encaminhamento.codigo}" />
+				</p:column>
+
+				<p:column headerText="Data" style="width: 20px; text-align: center"
+					sortBy="#{encaminhamento.data}">
+					<h:outputText value="#{encaminhamento.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Codigo Encaminhamento"
+					style="width: 80px; text-align: center">
+					<h:outputText value="#{encaminhamento.codigoEncaminhamento}" />
+				</p:column>
+
+				<p:column headerText="Orgão unidade destino"
+					style="width: 60px; text-align: center"
+					filterBy="#{encaminhamento.orgaoUnidadeDestino}" >
+					<h:outputText value="#{encaminhamento.orgaoUnidadeDestino}" />
+				</p:column>
+
+				<p:column headerText="Motivo"
+					style="width: 120px; text-align: center">
+					<h:outputText value="#{encaminhamento.motivo}" />
+				</p:column>
+
+				<p:column headerText="Técnico"
+					style="width: 70px; text-align: center"
+					filterBy="#{encaminhamento.tecnico.nome}" >
+					<h:outputText value="#{encaminhamento.tecnico.nome}" />
+				</p:column>
+
+				<p:column headerText="Operações"
+					style="width: 40px; text-align: center">
+					<p:commandButton icon="pi pi-pencil" title="Editar"
+						oncomplete="PF('encaminhamentoDialogWidgetVar').show();"
+						update="encaminhamentosTable :frmEncaminhamento:encaminhamentoGrid"
+						process="@this">
+						<f:setPropertyActionListener
+							target="#{encaminhamentoExternoBean.encaminhamento}"
+							value="#{encaminhamento}" />
+					</p:commandButton>
+
+					<p:commandButton icon="pi pi-trash" title="Excluir"
+						onclick="PF('confirmacaoExclusao').show();" process="@this">
+						<f:setPropertyActionListener
+							target="#{encaminhamentoExternoBean.encaminhamento}"
+							value="#{encaminhamento}" />
+					</p:commandButton>
+					
+					<p:commandButton id="show" icon="pi pi-print" title="Imprimir PDF"
+						disabled="#{not encaminhamentoExternoBean.encaminhamentoSelecionado}"
+						action="#{encaminhamentoExternoBean.showPDF(encaminhamento)}"
+						process="show" immediate="true" ajax="false"
+						update="frmEncaminhamento:growl">						
+					</p:commandButton>
+					
+					<p:commandButton id="download" icon="pi pi-file-o" title="Download PDF"					
+						disabled="#{not encaminhamentoExternoBean.encaminhamentoSelecionado}"          			
+            			action="#{encaminhamentoExternoBean.downloadPDF(encaminhamento)}" 
+            			process="download" immediate="true" ajax="false"
+            			update="frmEncaminhamento:growl">
+            			
+            		</p:commandButton>
+						
+				</p:column>
+
+			</p:dataTable>
+
+
+
+			<p:dialog id="encaminhamentoDialog" header="Encaminhamento"
+				widgetVar="encaminhamentoDialogWidgetVar" modal="true"
+				resizable="true" closeOnEscape="true" responsive="true"
+				showEffect="explode" hideEffect="explode"
+				style="max-height:600px;overflow:scroll" position="center top">
+
+				<p:panelGrid id="encaminhamentoGrid" columns="2"
+					rendered="#{encaminhamentoExternoBean.pessoaSelecionada}"
+					columnClasses="rotulo, campo">
+
+					<p:outputLabel value="Código" for="codigo" />
+					<p:inputText id="codigo" size="20" maxlength="20"
+						value="#{encaminhamentoExternoBean.encaminhamento.codigo}"
+						readonly="true" />
+						
+					<p:outputLabel value="Data" for="data" size="30" />
+					<p:calendar id="data"
+						value="#{encaminhamentoExternoBean.encaminhamento.data}"
+						pattern="dd/MM/yyyy" mask="99/99/9999" required="true"
+						showOn="button" 
+						validatorMessage="A data é obrigatória." />
+
+					<p:outputLabel value="Imprimir nome social?" for="nomeSocial" />
+					<h:selectOneRadio id="nomeSocial"
+						value="#{encaminhamentoExternoBean.encaminhamento.nomeSocial}" disabled="false">
+						<f:selectItem itemValue="true" itemLabel="SIM" />
+						<f:selectItem itemValue="false" itemLabel="NÃO" />
+						<p:ajax listener="#{encaminhamentoExternoBean.verificaNomeSocial}"
+							update="growl nomeSocial" process="nomeSocial"/>
+					</h:selectOneRadio>
+
+					<p:outputLabel value="Código Encaminhamento"
+						for="codigoEncaminhamento" />
+					<p:selectOneMenu id="codigoEncaminhamento"
+						value="#{encaminhamentoExternoBean.encaminhamento.codigoEncaminhamento}"
+						required="true"
+						validatorMessage="O codigo de encaminhamento é obrigatório.">
+						<f:selectItem itemLabel="Selecione o codigo" />
+						<f:selectItems
+							value="#{encaminhamentoExternoBean.codigosEncaminhamento}"
+							var="codigoEncaminhamento" itemLabel="#{codigoEncaminhamento}"
+							itemValue="#{codigoEncaminhamento}" />
+
+						<p:ajax listener="#{encaminhamentoExternoBean.carregarOrgaos}"
+							update="orgaos" process="codigoEncaminhamento" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Orgão Externo" for="orgaos" />
+					<p:selectOneMenu id="orgaos"
+						disabled="#{encaminhamentoExternoBean.orgaos eq null}"
+						value="#{encaminhamentoExternoBean.orgao}">
+						<f:selectItem itemLabel="Selecione o orgão" />
+						<f:selectItems value="#{encaminhamentoExternoBean.orgaos}"
+							var="orgaos" itemLabel="#{orgaos.nome}" itemValue="#{orgaos}" />
+
+						<p:ajax listener="#{encaminhamentoExternoBean.selecionarOrgao}"
+							update="orgaoUnidadeDestino enderecoUnidadeDestino"
+							process="orgaos" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Orgao ou Unidade Destino"
+						for="orgaoUnidadeDestino" />
+					<h:panelGroup>
+
+						<p:inputTextarea id="orgaoUnidadeDestino" size="250" rows="2"
+							cols="70" style="height: 100px; overflow:auto;" maxlength="250"
+							value="#{encaminhamentoExternoBean.encaminhamento.orgaoUnidadeDestino}"
+							required="true"
+							validatorMessage="O órgão/unidade destino é obrigatório."
+							counter="displayOrgaoUnidadeDestino"
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="displayOrgaoUnidadeDestino" />
+						<p:watermark for="orgaoUnidadeDestino"
+							value="Orgao ou Unidade Destino." />
+					</h:panelGroup>
+
+					<p:outputLabel value="Endereco Unidade Destino"
+						for="enderecoUnidadeDestino" />
+					<h:panelGroup>
+						<p:inputTextarea id="enderecoUnidadeDestino" size="250" rows="2"
+							cols="70" style="height: 100px; overflow:auto;" maxlength="250"
+							value="#{encaminhamentoExternoBean.encaminhamento.enderecoUnidadeDestino}"
+							required="true"
+							validatorMessage="O endereço do destino é obrigatório."
+							counter="displayEnderecoUnidadeDestino"
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="displayEnderecoUnidadeDestino" />
+						<p:watermark for="enderecoUnidadeDestino"
+							value="Endereco do orgao ou unidade de destino." />
+					</h:panelGroup>
+
+					<p:outputLabel value="Motivo" for="motivo" />
+					<h:panelGroup>
+						<p:inputTextarea id="motivo" size="1000" rows="5" cols="80"
+							style="height: 100px; overflow:auto;" maxlength="1000"
+							value="#{encaminhamentoExternoBean.encaminhamento.motivo}"
+							required="true"
+							validatorMessage="O motivo do encaminhamento é obrigatório."
+							counter="displayMotivo"
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="displayMotivo" />
+						<p:watermark for="motivo" value="Motivo do encaminhamento." />
+					</h:panelGroup>
+
+					<p:outputLabel value="Anotacao Complementar"
+						for="anotacaoComplementar" />
+					<h:panelGroup>
+						<p:inputTextarea id="anotacaoComplementar" size="1000" rows="5"
+							cols="80" style="height: 100px; overflow:auto;" maxlength="1000"
+							value="#{encaminhamentoExternoBean.encaminhamento.anotacaoComplementar}"
+							counter="displayAnotacaoComplementar"
+							counterTemplate="{0} caracteres restantes" />
+						<h:outputText id="displayAnotacaoComplementar" />
+						<p:watermark for="anotacaoComplementar"
+							value="Anotacao Complementar." />
+					</h:panelGroup>
+
+					<p:outputLabel value="" />
+					<p:commandButton title="Salvar" value="Salvar" icon="pi pi-save"
+						actionListener="#{encaminhamentoExternoBean.salvar}"
+						oncomplete="if (!args.validationFailed) PF('encaminhamentoDialogWidgetVar').hide()"
+						update="encaminhamentosTable toolbar1"
+						process="@this encaminhamentoGrid">
+					</p:commandButton>
+
+				</p:panelGrid>
+			</p:dialog>
+
+
+			<p:confirmDialog id="confirmacaoExclusaoDialog"
+				widgetVar="confirmacaoExclusao"
+				message="Tem certeza que deseja o encaminhamento? Não há como recuperar."
+				header="Exclusão de encaminhamento" severity="alert">
+				<p:button icon="pi pi-thumbs-down" value="Não"
+					onclick="PF('confirmacaoExclusao').hide(); return false;" />
+
+				<p:commandButton icon="pi pi-thumbs-up" value="Sim"
+					process="@this" update="encaminhamentosTable"
+					onclick="PF('confirmacaoExclusao').hide();"
+					action="#{encaminhamentoExternoBean.excluir}" />
+			</p:confirmDialog>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
