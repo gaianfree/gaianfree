@@ -8,51 +8,23 @@
 
 		<properties> 		
 		
-			<!--################ PRODUÇÃO ###################-->
+			<!--################ PRODUÇÃO ###################-->			
 			
-			<!--  AWS  SVSA PRODUÇÃO 
-			<property name="hibernate.connection.url" value="jdbc:mysql://db-teste.cvxszcahokwn.us-east-1.rds.amazonaws.com/svsa?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="hibernate.connection.username" value="admin"/>
-			<property name="hibernate.connection.password" value="Murakami1Teste "/>
-			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-			-->			
-			<!--  AWS  GAIAN-FREE 
+			<!--  AWS  GAIAN-FREE -->
 			<property name="hibernate.connection.url" value="jdbc:mysql://database-1.csmrh3howepe.us-east-1.rds.amazonaws.com/svsafree?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
 			<property name="hibernate.connection.username" value="gaianfree"/>
 			<property name="hibernate.connection.password" value="GaianFree;.22**"/>
 			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-			-->
-			<!-- ITAPETININGA na prefeitura 
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svsa_itp?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.password" value="3M@v4PW7!cmb"/>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>		
-			-->
 			
-			<!-- ################ TESTE ###################-->
-			
-			<!--  AWS  SVSA PRODUÇÃO 
-			<property name="hibernate.connection.url" value="jdbc:mysql://db-teste.cvxszcahokwn.us-east-1.rds.amazonaws.com/svsa?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="hibernate.connection.username" value="admin"/>
-			<property name="hibernate.connection.password" value="Murakami1Teste"/>
-			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-			-->
-			
-			<!-- IFSP 
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://web-svsa.ifsp.edu.br:3306/svsa_itp?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="javax.persistence.jdbc.user" value="svsa_itp"/>
-			<property name="javax.persistence.jdbc.password" value="!lPV^B@J6F$OrXM"/>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-			-->	
-						
+								
 			<!-- ################ DESENVOLVIMENTO  ###################-->
 							
-			<!-- SALTO 	-->
+			<!-- SALTO 	
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svsa?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="ifsp"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-			
+			-->
 			
 			<!--################### TODOS ###################-->	
 						
