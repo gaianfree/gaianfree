@@ -12,8 +12,8 @@
 			
 			<!--  AWS  GAIAN-FREE -->
 			<property name="hibernate.connection.url" value="jdbc:mysql://database-1.csmrh3howepe.us-east-1.rds.amazonaws.com/svsafree?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="hibernate.connection.username" value="gaianfree"/>
-			<property name="hibernate.connection.password" value="GaianFree;.22**"/>
+			<property name="hibernate.connection.username" value="xxxxxx"/>
+			<property name="hibernate.connection.password" value="xxxxxx"/>
 			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
 			
 								
@@ -21,8 +21,8 @@
 							
 			<!-- SALTO 	
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svsa?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.password" value="ifsp"/>
+			<property name="javax.persistence.jdbc.user" value="xxxx"/>
+			<property name="javax.persistence.jdbc.password" value="xxxx"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 			-->
 			
