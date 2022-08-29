@@ -44,7 +44,14 @@
 	</build>
 
 	<dependencies>
-	
+
+		<!-- Email dependency -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
 		<!-- Servlet https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api anterior = 3.1.0 -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
@@ -319,7 +326,7 @@
 		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
-			<url>https://repository.primefaces.org/org/primefaces/themes/</url>
+			<url>https://repository.primefaces.org</url>
 			<layout>default</layout>
 		</repository>
 
