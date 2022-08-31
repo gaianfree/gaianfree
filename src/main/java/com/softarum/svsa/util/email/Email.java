@@ -1,17 +1,18 @@
 package com.softarum.svsa.util.email;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 public class Email {
-    private final static String REMETENTE = "gaianfree.teste@gmail.com";
+    private final static String REMETENTE = "svsadesk@gmail.com";
 
     private static Properties configurarPropriedades() {
         Properties properties = System.getProperties();
