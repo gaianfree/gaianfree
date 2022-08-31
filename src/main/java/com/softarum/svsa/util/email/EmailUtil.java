@@ -2,6 +2,7 @@ package com.softarum.svsa.util.email;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -61,6 +62,40 @@ public class EmailUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void sendEmails(String authenticator, List<String> destinatarios, String subject, String body) {				
+		
+		try {
+			MimeMessage msg = new MimeMessage(getSession(authenticator));
+			// set message headers
+			msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+			msg.addHeader("format", "flowed");
+			msg.addHeader("Content-Transfer-Encoding", "8bit");
+
+			msg.setFrom(new InternetAddress("no_reply@gaian.com.br", "NoReply-JD"));
+
+			msg.setReplyTo(InternetAddress.parse("no_reply@gaian.com.br", false));
+
+			msg.setSubject(subject, "UTF-8");
+
+			msg.setText(body, "UTF-8");
+
+			msg.setSentDate(new Date());
+
+            for (String destinatario: destinatarios) {
+                msg.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
+            }
+
+			//msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+			log.info("Message is ready");
+			Transport.send(msg);
+
+			log.info("EMails Sent Successfully!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	/**
 	 * Utility method to send email with attachment

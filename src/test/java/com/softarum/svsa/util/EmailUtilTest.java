@@ -1,5 +1,7 @@
 package com.softarum.svsa.util;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import com.softarum.svsa.util.email.EmailUtil;
@@ -14,6 +16,14 @@ class EmailUtilTest {
 
 		EmailUtil.sendEmail("TLS", "murakami.edson@gmail.com", "TLSEmail Testing Subject", "TLSEmail Testing Body");
 	}
+	
+	@Test
+		void TLSEmailstest() {	
+			ArrayList<String> destinatarios = new ArrayList<>();
+			destinatarios.add("murakami.edson@gaian.com.br");
+			destinatarios.add("murakami.edson@gmail.com");
+			EmailUtil.sendEmails("TLS", destinatarios, "TLSEmails Testing Subject", "TLSEmails Testing Body");
+		}
 
 	//@Test
 	void SSLEmailtest() {
@@ -22,7 +32,7 @@ class EmailUtilTest {
 
 	}
 	
-	@Test
+	//@Test
 	void AttachmentEmailImagetest() {
 		
 		
