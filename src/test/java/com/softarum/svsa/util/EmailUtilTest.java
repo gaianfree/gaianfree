@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import com.softarum.svsa.util.email.EmailUtil;
-
+import gaian.mail.EmailUtil;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -22,7 +21,7 @@ class EmailUtilTest {
 			ArrayList<String> destinatarios = new ArrayList<>();
 			destinatarios.add("murakami.edson@gaian.com.br");
 			destinatarios.add("murakami.edson@gmail.com");
-			EmailUtil.sendEmails("TLS", destinatarios, "TLSEmails Testing Subject", "TLSEmails Testing Body");
+			EmailUtil.sendEmail("TLS", destinatarios, "TLSEmails Testing Subject", "TLSEmails Testing Body");
 		}
 
 	//@Test
