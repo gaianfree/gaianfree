@@ -8,78 +8,60 @@
 	
 	<body>
 		<ui:composition>
+			<div class="containerHeader">
+				<nav class="navRegisterUnitCity">
+					<ul>
+						<li>
+							<a href="#">
+								Cadastro de Municipio
+							</a>
+						</li>
+						<li>
+							<span class="divider"></span>
+						</li>
+						<li>
+							<a href="#">Auto Cadastro</a>
+						</li>
+					</ul>
+				</nav>						
+				<div class="containerImg">
+					<h:graphicImage library="imagens" name="svsa_t.png"/>
+				</div>
+				<nav class="navHomePage">
+				<ul>
+					<li>
+						<a href="#">Sobre</a>
+					</li>
+					<li>
+							<span class="divider"></span>
+						</li>
+					<li>
+						<a href="#">Planos</a>
+					</li>
+					<li>
+							<span class="divider"></span>
+						</li>
+					<li>
+						<a href="#" onclick="openModal()">
+						<i class="pi pi-user"></i>
+						Login
+						</a>
+					</li>
+				</ul>
+			</nav>
+			</div>
 			
-			<header>						
-				<div class="card">
-					<h:form>											
-						<p:menubar styleClass="menubar"
-							model="#{menuBean.menu}">							
-							<f:facet name="options" >
-				               	<h:link outcome="/restricted/home/SvsaHome.xhtml">
-									<h:graphicImage width="80" height="26" library="imagens" name="svsa_t.png" title="Voltar para Home"/>
-								</h:link>									
-
-								<p:outputLabel value="v6.2.1" onmouseover="PF('dlg').show();" style="font-size: 0.625rem"/>
-
-           					</f:facet>							
-						</p:menubar>
-					
-					</h:form>					
-				</div>	
-				
-				<p:ajaxStatus styleClass="ajax-status">
-					<f:facet name="start">
-						<h:graphicImage library="imagens" name="carregando.gif" />
-					</f:facet>
-					<f:facet name="complete">
-						<h:outputText value="" />
-					</f:facet>
-				</p:ajaxStatus>
-				
-				<div style="clear: both"></div>
-			</header>
+			<div class="modal-container">
+				<div class="modal">
+					<h2>Funcionou</h2>
+					<div class="btns">
+						<button class="btnOK" onclick="closeModal()">OK</button>
+						<button class="btnClose" onclick="closeModal()">Close</button>
+					</div>
+				</div>
+			</div>
 			
-			<p:dialog header="Notas da Versão"
-				modal="true" 
-				resizable="true" 
-	       		widgetVar="dlg" 
-	       		dynamic="true" 
-	       		closeOnEscape="true"
-	       		position="center"
-	       		width="600" height="400"
-	       		hideEffect="explode">   		
-				<br/>
-				
-				<b><h:outputText value="Versão 6.2.1"/></b> <br/>
-				<h:outputText value="RMA Pop." /> <br/>
-				<b><h:outputText value="Versão 6.2.0"/></b> <br/>
-				<h:outputText value="Geração de lista de presença de SCFV sem os inscritos cancelados." /> <br/>
-				<h:outputText value="Encerramento da situação de violência (data de encerramento)." /> <br/>
-				<h:outputText value="Criação do Registro de Abordagem Social (POP/CREAS)." /> <br/>
-				<h:outputText value="Criação do Relatório de Abordagem Social (POP/CREAS)." /> <br/>
-				<h:outputText value="Integrada a resposta de ofício ao receber ofício." /> <br/>
-				<h:outputText value="Criação de relatórios de Prontuários criados pelo CCI." /> <br/>
-				<h:outputText value="Criação de relatórios de Pessoas criadas pelo CCI." /> <br/>
-				<h:outputText value="Criação de Unidade Vinculada para unidades tipo CREAS (CCI)." /> <br/>
-				<b><h:outputText value="Versão 6.1.0"/></b> <br/>
-				<h:outputText value="Ajustes na criação do RMA do CREAS." /> <br/>
-				<h:outputText value="Registro do técnico que criou o prontuário." /> <br/>
-				<h:outputText value="Criação de unidades da rede que atendem SCFV (CCI)." /> <br/>
-				<h:outputText value="Registro da unidade executora no servico criado pelo CCI." /> <br/>
-				<h:outputText value="Registro da unidade criadora no prontuario criado pelo CCI." /> <br/>
-				<h:outputText value="Consulta de prontuários criados pela dataEntrada não mais pela dataCricação." /> <br/>			
-				
-								
-		   		<center>
-		   			<p:spacer height="20px" />  
-		   			<p:button value="Ok" 
-		        		onclick="PF('dlg').hide(); return false;" />
-	       		</center>
-	       		
-	        </p:dialog>	
-		
+			
 		</ui:composition>
-		
 	</body>
-
 </html>

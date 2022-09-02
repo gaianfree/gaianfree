@@ -10,19 +10,21 @@
 		<link rel="shortcut icon" type="image/x-icon" href="#{resource['imagens/favicon.ico']}"  title="Svsa"/>
 		<title>SVSA - Gaian.com.br</title>
 		<h:outputStylesheet library="css" name="global.css" />
+		<h:outputStylesheet library="css" name="templates/header.css" />
 		<!-- Esse link de css deve ficar comentado, até que as refatorações sejam realizadas
 		<h:outputStylesheet library="css" name="sistema.css" /> 
 		--> 
 	</h:head>	
 	<body>
-		<div class="card" id="header">
+		<header class="header" id="header">
 			<ui:include src="Header.xhtml" />
-		</div>
+		</header>
 	    <div class="card" id="conteudo">			
 			<ui:insert name="corpo" />
 		</div>
 		<div class="card" id="footer">
 			<ui:include src="Footer.xhtml" />
 	 	</div>
+	 	<h:outputScript library="js" name="initModal.js"></h:outputScript>
 	</body>	
 </html>

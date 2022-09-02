@@ -1,0 +1,107 @@
+.containerHeader{
+	width: 100%;
+	height: 15vh;
+	padding: 1rem 1.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	background-color: #a6a6a6;
+}
+
+.navRegisterUnitCity ul{
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.navRegisterUnitCity ul a{
+	color: #f9f9f9;
+	font-size: 1.125rem;
+}
+
+.divider{
+	border-left: 2px solid #f9f9f9;
+	height: 5px;
+}
+
+.containerImg img{
+	width: 100%;
+}
+
+.navHomePage ul{
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.navHomePage ul a{
+	color: #f9f9f9;
+	font-size: 1.125rem;
+}
+
+/*Modal*/
+
+.modal-container {
+  width: 100vw;
+  position: fixed;
+  top: 30px;
+  display: none;
+  z-index: 999;
+  justify-content: center;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  width: 50%;
+}
+
+.active {
+  display: flex;
+}
+
+.active .modal {
+  animation: modal .4s;
+}
+
+@keyframes modal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -60px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+span {
+  margin: 10px auto;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btns button {
+  font-size: medium;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.btnOK {
+ background-color: blue!important;
+}
+
+.btnClose {
+  background-color: brown!important;
+ }
