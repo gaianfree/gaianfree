@@ -1,35 +1,35 @@
 @charset "utf-8";
 
-*{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-	font-size: 1rem;
-	font-family: Gill Sans Extrabold, Trebuchet MS, sans-serif;	
-	font-weight: 400;
+  font-size: 1rem;
+  font-family: Gill Sans Extrabold, Trebuchet MS, sans-serif;
+  font-weight: 400;
 }
 
 h1 {
-	font-size: 1.5rem;
-	font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 h3 {
-	font-size: 0.875rem;
-	font-weight: 300;
+  font-size: 0.875rem;
+  font-weight: 300;
 }
 
-li{
-	list-style: none;
+li {
+  list-style: none;
 }
 
-a{
-	text-decoration: none;
+a {
+  text-decoration: none;
 }
 
-img{
-	display: block;
-	width: 100%;
+img {
+  display: block;
+  width: 100%;
 }

@@ -1,67 +1,64 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml"
- 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui">
-	
-	<body>
-		<ui:composition>
-			<div class="containerHeader">
-				<nav class="navRegisterUnitCity">
-					<ul>
-						<li>
-							<a href="#">
-								Cadastro de Municipio
-							</a>
-						</li>
-						<li>
-							<span class="divider"></span>
-						</li>
-						<li>
-							<a href="#">Auto Cadastro</a>
-						</li>
-					</ul>
-				</nav>						
-				<div class="containerImg">
-					<h:graphicImage library="imagens" name="svsa_t.png"/>
-				</div>
-				<nav class="navHomePage">
-				<ul>
-					<li>
-						<a href="#">Sobre</a>
-					</li>
-					<li>
-							<span class="divider"></span>
-						</li>
-					<li>
-						<a href="#">Planos</a>
-					</li>
-					<li>
-							<span class="divider"></span>
-						</li>
-					<li>
-						<a href="#" onclick="openModal()">
-						<i class="pi pi-user"></i>
-						Login
-						</a>
-					</li>
-				</ul>
-			</nav>
-			</div>
-			
-			<div class="modal-container">
-				<div class="modal">
-					<h2>Funcionou</h2>
-					<div class="btns">
-						<button class="btnOK" onclick="closeModal()">OK</button>
-						<button class="btnClose" onclick="closeModal()">Close</button>
-					</div>
-				</div>
-			</div>
-			
-			
-		</ui:composition>
-	</body>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <body>
+    <ui:composition>
+      <div class="containerHeader">
+        <nav class="navRegisterUnitCity">
+          <ul>
+            <li>
+              <a href="#"> Cadastro de Município </a>
+            </li>
+            <li>
+              <span class="divider"></span>
+            </li>
+            <li>
+              <a href="#">Auto Cadastro</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="containerImg">
+          <h:graphicImage library="imagens" name="svsa_t.png" />
+        </div>
+        <nav class="navHomePage">
+          <ul>
+            <li>
+              <a href="#">Sobre</a>
+            </li>
+            <li>
+              <span class="divider"></span>
+            </li>
+            <li>
+              <a href="#">Planos</a>
+            </li>
+            <li>
+              <span class="divider"></span>
+            </li>
+            <li>
+              <a href="#" onclick="openModal()">
+                <i class="pi pi-user"></i>
+                Login
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="modal-container">
+        <div class="modal">
+          <h2>Funcionou</h2>
+          <div class="btns">
+            <button class="btnOK" onclick="closeModal()">OK</button>
+            <button class="btnClose" onclick="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </ui:composition>
+  </body>
 </html>

@@ -1,93 +1,124 @@
-<ui:composition 
-    xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">		
-			
-	
-	<!--  Bloco IV (K e L) -->
-	
-	
-	<p:panel id="basic4" style="margin-bottom:20px"
-		header="Bloco IV - Serviço Especializado em Abordagem Social" >			
-	
-		<p:panelGrid id="blocoK" columns="2" style="width: 100%">
-		    <f:facet name="header">
-		        <h:outputText value="K. Quantidade e perfil de pessoas abordadas pela equipe do Serviço de Abordagem, no mês de referência" />
-		    </f:facet>
-		    
-		    <h:outputText value="K.1. Pessoas abordadas pelo Serviço de Abordagem Social, durante o mês de referência" />
-		    <h:outputText value="" />
-		
-			<p:dataTable value=""
-				var="vitima">								
-				<p:column headerText="Sexo" style="width: 40px; text-align: left">
-					<h:outputText value="" />
-				</p:column>
-				<p:column headerText="0 a 12 anos" style="width: 40px; text-align: center">
-					<h:outputText value="" />
-				</p:column>
-				<p:column headerText="13 a 17 anos" style="width: 40px; text-align: center">
-					<h:outputText value="" />
-				</p:column>
-				<p:column headerText="18 a 59 anos" style="width: 40px; text-align: center">
-					<h:outputText value="" />
-				</p:column>
-				<p:column headerText="60 anos ou mais" style="width: 40px; text-align: center">
-					<h:outputText value="" />
-				</p:column>			
-			</p:dataTable>
-			    
-			<h:outputText value="" />				  				    
-		</p:panelGrid>
-		
-		<br/>
-		<h:outputText value="Atenção! Em K1, cada pessoa deve ser contada uma única vez a cada mês, mesmo que tenha 
-								sido abordada várias vezes nesse mesmo mês." />
-		<br/><br/>
-		
-		<p:panelGrid id="blocoKa" columns="2" style="width: 100%">
-		    <f:facet name="header">
-		        <h:outputText value="Situações identificadas pelo Serviço Especializado em Abordagem Social, no mês de referência" />
-		    </f:facet>
-		    
-		    <h:outputText value="K.2. Crianças ou adolescentes em situação de trabalho infantil (até 15 anos)" />
-		    <h:outputText value="" />
-		    
-		    <h:outputText value="K.3. Crianças ou adolescentes em situação de exploração sexual" />
-		    <h:outputText value="" />
-		    
-		    <h:outputText value="K.4. Crianças ou adolescentes usuárias de crack ou outras drogas" />
-		    <h:outputText value="" />
-		    
-		    <h:outputText value="K.5. Pessoas adultas usuárias de crack ou outras drogas ilícitas" />
-		    <h:outputText value="" />
-		    
-		    <h:outputText value="K.6. Migrantes" />
-		    <h:outputText value="" />
-		</p:panelGrid>
-		
-		<br/>				
-		<h:outputText value="Atenção! Os itens K2 a K6 buscam identificar apenas alguns perfis das pessoas abordadas. É normal que algumas pessoas
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <!--  Bloco IV (K e L) -->
+
+  <p:panel
+    id="basic4"
+    style="margin-bottom: 20px"
+    header="Bloco IV - Serviço Especializado em Abordagem Social"
+  >
+    <p:panelGrid id="blocoK" columns="2" style="width: 100%">
+      <f:facet name="header">
+        <h:outputText
+          value="K. Quantidade e perfil de pessoas abordadas pela equipe do Serviço de Abordagem, no mês de referência"
+        />
+      </f:facet>
+
+      <h:outputText
+        value="K.1. Pessoas abordadas pelo Serviço de Abordagem Social, durante o mês de referência"
+      />
+      <h:outputText value="" />
+
+      <p:dataTable value="" var="vitima">
+        <p:column headerText="Sexo" style="width: 40px; text-align: left">
+          <h:outputText value="" />
+        </p:column>
+        <p:column
+          headerText="0 a 12 anos"
+          style="width: 40px; text-align: center"
+        >
+          <h:outputText value="" />
+        </p:column>
+        <p:column
+          headerText="13 a 17 anos"
+          style="width: 40px; text-align: center"
+        >
+          <h:outputText value="" />
+        </p:column>
+        <p:column
+          headerText="18 a 59 anos"
+          style="width: 40px; text-align: center"
+        >
+          <h:outputText value="" />
+        </p:column>
+        <p:column
+          headerText="60 anos ou mais"
+          style="width: 40px; text-align: center"
+        >
+          <h:outputText value="" />
+        </p:column>
+      </p:dataTable>
+
+      <h:outputText value="" />
+    </p:panelGrid>
+
+    <br />
+    <h:outputText
+      value="Atenção! Em K1, cada pessoa deve ser contada uma única vez a cada mês, mesmo que tenha 
+								sido abordada várias vezes nesse mesmo mês."
+    />
+    <br /><br />
+
+    <p:panelGrid id="blocoKa" columns="2" style="width: 100%">
+      <f:facet name="header">
+        <h:outputText
+          value="Situações identificadas pelo Serviço Especializado em Abordagem Social, no mês de referência"
+        />
+      </f:facet>
+
+      <h:outputText
+        value="K.2. Crianças ou adolescentes em situação de trabalho infantil (até 15 anos)"
+      />
+      <h:outputText value="" />
+
+      <h:outputText
+        value="K.3. Crianças ou adolescentes em situação de exploração sexual"
+      />
+      <h:outputText value="" />
+
+      <h:outputText
+        value="K.4. Crianças ou adolescentes usuárias de crack ou outras drogas"
+      />
+      <h:outputText value="" />
+
+      <h:outputText
+        value="K.5. Pessoas adultas usuárias de crack ou outras drogas ilícitas"
+      />
+      <h:outputText value="" />
+
+      <h:outputText value="K.6. Migrantes" />
+      <h:outputText value="" />
+    </p:panelGrid>
+
+    <br />
+    <h:outputText
+      value="Atenção! Os itens K2 a K6 buscam identificar apenas alguns perfis das pessoas abordadas. É normal que algumas pessoas
 							contadas no item K1 não se enquadrem em nenhuma das condições descritas acima, enquanto outras pessoas podem se enquadrar
-							simultaneamente em mais de uma. Portanto, a soma de K2 a K6 não terá, necessariamente, o mesmo valor relatado no total de K1." />
-		<br/><br/>
-							
-		<p:panelGrid id="blocoL" columns="2" style="width: 100%">
-		    <f:facet name="header">
-		        <h:outputText value="L. Volume de abordagens realizadas" />
-		    </f:facet>
-		    
-		    <h:outputText value="L.1. Quantidade total de abordagens realizadas (compreendida como número de pessoas
-								abordadas, multiplicado pelo número de vezes em que foram abordadas durante o mês) " />
-		    <h:outputText value="" />
-		</p:panelGrid>
-		
-		<br/>
-		<h:outputText value="Atenção! Quando a abordagem é feita a um grupo, cada pessoa do grupo é contada como uma abordagem." />					
-		<br/>					
-	</p:panel>
-			
-			
+							simultaneamente em mais de uma. Portanto, a soma de K2 a K6 não terá, necessariamente, o mesmo valor relatado no total de K1."
+    />
+    <br /><br />
+
+    <p:panelGrid id="blocoL" columns="2" style="width: 100%">
+      <f:facet name="header">
+        <h:outputText value="L. Volume de abordagens realizadas" />
+      </f:facet>
+
+      <h:outputText
+        value="L.1. Quantidade total de abordagens realizadas (compreendida como número de pessoas
+								abordadas, multiplicado pelo número de vezes em que foram abordadas durante o mês) "
+      />
+      <h:outputText value="" />
+    </p:panelGrid>
+
+    <br />
+    <h:outputText
+      value="Atenção! Quando a abordagem é feita a um grupo, cada pessoa do grupo é contada como uma abordagem."
+    />
+    <br />
+  </p:panel>
 </ui:composition>

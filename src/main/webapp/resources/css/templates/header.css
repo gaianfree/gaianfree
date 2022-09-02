@@ -1,43 +1,43 @@
-.containerHeader{
-	width: 100%;
-	height: 15vh;
-	padding: 1rem 1.25rem;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	
-	background-color: #a6a6a6;
+.containerHeader {
+  width: 100%;
+  height: 15vh;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #a6a6a6;
 }
 
-.navRegisterUnitCity ul{
-	display: flex;
-	align-items: center;
-	gap: 1rem;
+.navRegisterUnitCity ul {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.navRegisterUnitCity ul a{
-	color: #f9f9f9;
-	font-size: 1.125rem;
+.navRegisterUnitCity ul a {
+  color: #f9f9f9;
+  font-size: 1.125rem;
 }
 
-.divider{
-	border-left: 2px solid #f9f9f9;
-	height: 5px;
+.divider {
+  border-left: 2px solid #f9f9f9;
+  height: 5px;
 }
 
-.containerImg img{
-	width: 100%;
+.containerImg img {
+  width: 100%;
 }
 
-.navHomePage ul{
-	display: flex;
-	align-items: center;
-	gap: 1rem;
+.navHomePage ul {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.navHomePage ul a{
-	color: #f9f9f9;
-	font-size: 1.125rem;
+.navHomePage ul a {
+  color: #f9f9f9;
+  font-size: 1.125rem;
 }
 
 /*Modal*/
@@ -65,7 +65,7 @@
 }
 
 .active .modal {
-  animation: modal .4s;
+  animation: modal 0.4s;
 }
 
 @keyframes modal {
@@ -99,9 +99,9 @@ span {
 }
 
 .btnOK {
- background-color: blue!important;
+  background-color: blue !important;
 }
 
 .btnClose {
-  background-color: brown!important;
- }
+  background-color: brown !important;
+}

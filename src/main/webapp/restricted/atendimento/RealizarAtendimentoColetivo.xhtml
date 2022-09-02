@@ -1,215 +1,279 @@
-<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
- 	xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:o="http://omnifaces.org/ui">
+<ui:composition
+  template="/WEB-INF/template/LayoutPadrao.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:o="http://omnifaces.org/ui"
+>
+  <ui:define name="titulo">Realizar Atendimento Coletivo</ui:define>
 
-    <ui:define name="titulo">Realizar Atendimento Coletivo</ui:define>
-    
-    <ui:define name="corpo">
-    	<h2>Realizar Atendimento Coletivo</h2>
-    	
-    	<h:form id="frmPesquisa">
-    	    	
-    		<p:growl id="growl" showDetail="false"> 
-    			<p:autoUpdate />
-    		</p:growl> 
-    		<p:messages id="message" showDetail="false" closable="true"/>
-			
-			<p:spacer height="5px" /> 
-			
-			
-			<p:toolbar id="toolbar">
-				<f:facet name="left">	
-				
-	            	<p:commandButton icon="pi pi-user" value="Atender" title="Realizar o atendimento"
-		            	disabled="#{not realizarAtendColetivoBean.itemSelecionado}"
-		            	action="#{realizarAtendColetivoBean.startPoll}"
-		            	oncomplete="PF('atendDialogWidgetVar').show()"
-		            	update="atendDialog toolbar idPoll"
-		            	process="@this">
-		            	<p:resetInput target="atendDialog" />	
-	            	</p:commandButton>
-	            	
-				</f:facet>
-			</p:toolbar>
-				    
-	    
-		    <!--  Lista de itens de atendimento -->
-			<p:dataTable id="listaDataTable"  value="#{realizarAtendColetivoBean.listaAtendimentos}" var="item"
-	    		style="margin-top: 20px" emptyMessage="Nenhum atendimento agendado." rows="10" 
-	    		rowsPerPageTemplate="10,15,20"
-	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
-	    		selectionMode="single" selection="#{realizarAtendColetivoBean.item}" rowKey="#{item.codigo}">
-	    		
-	    		<p:ajax event="rowSelect" update="frmPesquisa:toolbar" />			
-				<p:ajax event="rowUnselect" update="frmPesquisa:toolbar" />
-		    		
-		    	<p:column headerText="Agendado" style="width: 60px; text-align: center"
-		    		sortBy="#{item.dataAgendamento}" >
-	    			<h:outputText value="#{item.dataAgendamento}">
-	    				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-	    			</h:outputText>
-	    		</p:column>
-		    		   
-		    		    		
-	    		<p:column headerText="Pessoas [Telefone]" style="width: 100px; text-align: center"	>			    		
-	    			<p:dataList id="pessoas1" value="#{item.pessoas}" var="p" type="ordered">
-				       		#{p.nome}  [ #{p.telefone} ]
-				    </p:dataList>			
-    			</p:column>
-	    		
-	    		
-	    		
-	    		<p:column headerText="Técnico" style="width: 100px; text-align: center"
-	    			filterBy="#{item.tecnico.nome}"
-	    			footerText="contains" filterMatchMode="contains">
-	    			<h:outputText value="#{item.tecnico.nome}" />
-	    		</p:column>    		
-    		
-    			<p:column headerText="Perfil" style="width: 40px; text-align: center">
-	    			<h:outputText value="#{item.role}" />
-	    		</p:column> 
-    		
-		   	</p:dataTable>
-		   	
-			
-			<p:dialog id="atendDialog" header="Atendimento" widgetVar="atendDialogWidgetVar"
-				modal="true" resizable="true" closeOnEscape="true"
-				showEffect="explode" hideEffect="explode" 
-				width="100%" position="center top" maximizable="true"
-				height="70%" fitViewport="true" responsive="true">	
-				
-				<p:ajax event="close" listener="#{realizarAtendColetivoBean.stopPoll}" />					
-				       
-    			<p:growl id="atendGrowl" showDetail="true" />      			
-								
-						
-				<!--  Atendimento -->
-				<p:panelGrid columns="1" id="resumoPanelGrid" 					
-					layout="grid" styleClass="showcase-text-align-center">		
-				
-	    			
-					<p:outputLabel value="PESSOAS: " for="nomesAtendidos"/>  		
-	    			<p:dataList id="nomesAtendidos" value="#{realizarAtendColetivoBean.item.pessoas}" var="p" type="ordered">
-				       		#{p.nome}
-				    </p:dataList>
-				    
-				    <p:outputLabel value="FALTAS: " for="nomesFaltosos"/>
-				    <p:dataList id="nomesFaltosos" value="#{realizarAtendColetivoBean.item.pessoasFaltosas}" var="pf" type="ordered">
-				       		#{pf.nome}
-				    </p:dataList>
-				    
-				    <p:spacer height="3px" />	
-					
-					<p:outputLabel value="CÓDIGO AUXILIAR DE ATENDIMENTO: " for="aux"/>
-		    		<p:selectOneMenu id="aux" required="true" 
-		    			value="#{realizarAtendColetivoBean.item.codigoAuxiliar}"
-		    		    validatorMessage="O código auxiliar de atendimento é obrigatório.">
-		    			<f:selectItem itemLabel="Selecione o código auxiliar" />
-		    			<f:selectItems value="#{realizarAtendColetivoBean.codigosAuxiliares}" var="codAux" 
-							itemLabel="#{codAux}" itemValue="#{codAux}"/>
-		    		</p:selectOneMenu>	
-		    		
-		    		<p:spacer height="3px" />					
-		    		
-		    		<p:outputLabel value="DATA DE ATENDIMENTO: " for="dataAtendimento" /> 
-					<p:calendar id="dataAtendimento" size="30"	
-						required="true"											
-						value="#{realizarAtendColetivoBean.item.dataAtendimento}"
-						showOn="button"
-						pattern="dd/MM/yyyy HH:mm"
-						mask="99/99/9999 99:99"/> 
-						
-					<p:spacer height="3px" />	
-										
-					<p:outputLabel value="TÉCNICOS ADICIONAIS: " for="pickList"/>
-	    			<p:pickList id="pickList"
-	    				responsive="true"	    				
-	    				converter="pickListTecConverter"
-	    				value="#{realizarAtendColetivoBean.tecnicos}"
-	    				var="tecnico" 
-	    				itemValue="#{tecnico}" itemLabel="#{tecnico.nome}">
-	    				
-	    				<f:facet name="sourceCaption">Disponíveis</f:facet>
-        				<f:facet name="targetCaption">Selecionados</f:facet>
-			        </p:pickList> 
-										
-					<p:spacer height="3px" />	
-					
-		    		<p:outputLabel value="RELATO DO ATENDIMENTO: " for="editor"/>
-		    		<h:panelGroup>
-			    		<p:textEditor 
-			    			id="editor"  
-			    			widgetVar="editor" 
-			    			required="true" 
-			    			value="#{realizarAtendColetivoBean.item.resumoAtendimento}" 
-			    			height="300" 			    			
-			    			style="margin-bottom:10px"
-			    			placeholder="Descreva o resumo do atendimento. (Auto gravação a cada 2 minutos)">			    			
-					        <f:facet name="toolbar">
-					             <span class="ql-formats">
-					                <button class="ql-bold"></button>
-					                <button class="ql-italic"></button>
-					                <button class="ql-underline"></button>
-					                <button class="ql-strike"></button>
-					            </span>
-					            <span class="ql-formats">
-						            <button class="ql-clean" />
-						        </span>
-					            <span class="ql-formats">
-					                <select class="ql-font"></select>
-					                <select class="ql-size"></select>
-					            </span>
-					            <span class="ql-formats">
-						            <button class="ql-script" value="sub" />
-						            <button class="ql-script" value="super" />
-						        </span>						        
-						        <span class="ql-formats">
-						            <button class="ql-list" value="ordered" />
-						            <button class="ql-list" value="bullet" />
-						            <button class="ql-indent" value="-1" />
-						            <button class="ql-indent" value="+1" />
-						        </span>
-						        <span class="ql-formats">
-						            <button class="ql-direction" value="rtl" />
-						            <select class="ql-align" />
-						        </span>						        
-					        </f:facet>					           
-					    </p:textEditor>
-		    			<p:poll id="idPoll" interval="120" listener="#{realizarAtendColetivoBean.autoSave}" 
-		    				stop="#{realizarAtendColetivoBean.statusPoll}"
-		    				update="resumoPanelGrid :frmPesquisa:atendGrowl idPoll" 
-		    				process="atendDialog"/>
-		    		</h:panelGroup>	
-    				
-		    		<h:outputLabel />		    		
-		    		
-		    		<h:panelGroup>
-						<p:commandButton icon="pi pi-save" id="salvarResumoButton" value="Encerrar atendimento"  
-							title="Grava o resumo do atendimento" 
-							actionListener="#{realizarAtendColetivoBean.salvarAtendimento}"
-							action="#{realizarAtendColetivoBean.stopPoll}"
-							oncomplete="if (!args.validationFailed) PF('atendDialogWidgetVar').hide()" 
-							update="resumoPanelGrid idPoll :frmPesquisa:listaDataTable message growl"						
-							process="resumoPanelGrid"/>		
-							
-						<p:spacer width="10px" />
-							
-						<p:commandButton icon="pi pi-thumbs-up" value="Sair" 
-						    update=":frmPesquisa:listaDataTable idPoll"
-							onclick="PF('atendDialogWidgetVar').hide();"
-							action="#{realizarAtendColetivoBean.stopPoll}"
-							actionListener="#{realizarAtendColetivoBean.atualizarDataTable}"
-							process="@this"/>		
-					</h:panelGroup>	
-				</p:panelGrid>
-				
-			</p:dialog>		
-			
-			
-    	</h:form>
-    </ui:define>
+  <ui:define name="corpo">
+    <h2>Realizar Atendimento Coletivo</h2>
+
+    <h:form id="frmPesquisa">
+      <p:growl id="growl" showDetail="false">
+        <p:autoUpdate />
+      </p:growl>
+      <p:messages id="message" showDetail="false" closable="true" />
+
+      <p:spacer height="5px" />
+
+      <p:toolbar id="toolbar">
+        <f:facet name="left">
+          <p:commandButton
+            icon="pi pi-user"
+            value="Atender"
+            title="Realizar o atendimento"
+            disabled="#{not realizarAtendColetivoBean.itemSelecionado}"
+            action="#{realizarAtendColetivoBean.startPoll}"
+            oncomplete="PF('atendDialogWidgetVar').show()"
+            update="atendDialog toolbar idPoll"
+            process="@this"
+          >
+            <p:resetInput target="atendDialog" />
+          </p:commandButton>
+        </f:facet>
+      </p:toolbar>
+
+      <!--  Lista de itens de atendimento -->
+      <p:dataTable
+        id="listaDataTable"
+        value="#{realizarAtendColetivoBean.listaAtendimentos}"
+        var="item"
+        style="margin-top: 20px"
+        emptyMessage="Nenhum atendimento agendado."
+        rows="10"
+        rowsPerPageTemplate="10,15,20"
+        paginator="true"
+        paginatorAlwaysVisible="true"
+        paginatorPosition="bottom"
+        selectionMode="single"
+        selection="#{realizarAtendColetivoBean.item}"
+        rowKey="#{item.codigo}"
+      >
+        <p:ajax event="rowSelect" update="frmPesquisa:toolbar" />
+        <p:ajax event="rowUnselect" update="frmPesquisa:toolbar" />
+
+        <p:column
+          headerText="Agendado"
+          style="width: 60px; text-align: center"
+          sortBy="#{item.dataAgendamento}"
+        >
+          <h:outputText value="#{item.dataAgendamento}">
+            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+          </h:outputText>
+        </p:column>
+
+        <p:column
+          headerText="Pessoas [Telefone]"
+          style="width: 100px; text-align: center"
+        >
+          <p:dataList
+            id="pessoas1"
+            value="#{item.pessoas}"
+            var="p"
+            type="ordered"
+          >
+            #{p.nome} [ #{p.telefone} ]
+          </p:dataList>
+        </p:column>
+
+        <p:column
+          headerText="Técnico"
+          style="width: 100px; text-align: center"
+          filterBy="#{item.tecnico.nome}"
+          footerText="contains"
+          filterMatchMode="contains"
+        >
+          <h:outputText value="#{item.tecnico.nome}" />
+        </p:column>
+
+        <p:column headerText="Perfil" style="width: 40px; text-align: center">
+          <h:outputText value="#{item.role}" />
+        </p:column>
+      </p:dataTable>
+
+      <p:dialog
+        id="atendDialog"
+        header="Atendimento"
+        widgetVar="atendDialogWidgetVar"
+        modal="true"
+        resizable="true"
+        closeOnEscape="true"
+        showEffect="explode"
+        hideEffect="explode"
+        width="100%"
+        position="center top"
+        maximizable="true"
+        height="70%"
+        fitViewport="true"
+        responsive="true"
+      >
+        <p:ajax
+          event="close"
+          listener="#{realizarAtendColetivoBean.stopPoll}"
+        />
+
+        <p:growl id="atendGrowl" showDetail="true" />
+
+        <!--  Atendimento -->
+        <p:panelGrid
+          columns="1"
+          id="resumoPanelGrid"
+          layout="grid"
+          styleClass="showcase-text-align-center"
+        >
+          <p:outputLabel value="PESSOAS: " for="nomesAtendidos" />
+          <p:dataList
+            id="nomesAtendidos"
+            value="#{realizarAtendColetivoBean.item.pessoas}"
+            var="p"
+            type="ordered"
+          >
+            #{p.nome}
+          </p:dataList>
+
+          <p:outputLabel value="FALTAS: " for="nomesFaltosos" />
+          <p:dataList
+            id="nomesFaltosos"
+            value="#{realizarAtendColetivoBean.item.pessoasFaltosas}"
+            var="pf"
+            type="ordered"
+          >
+            #{pf.nome}
+          </p:dataList>
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel value="CÓDIGO AUXILIAR DE ATENDIMENTO: " for="aux" />
+          <p:selectOneMenu
+            id="aux"
+            required="true"
+            value="#{realizarAtendColetivoBean.item.codigoAuxiliar}"
+            validatorMessage="O código auxiliar de atendimento é obrigatório."
+          >
+            <f:selectItem itemLabel="Selecione o código auxiliar" />
+            <f:selectItems
+              value="#{realizarAtendColetivoBean.codigosAuxiliares}"
+              var="codAux"
+              itemLabel="#{codAux}"
+              itemValue="#{codAux}"
+            />
+          </p:selectOneMenu>
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel value="DATA DE ATENDIMENTO: " for="dataAtendimento" />
+          <p:calendar
+            id="dataAtendimento"
+            size="30"
+            required="true"
+            value="#{realizarAtendColetivoBean.item.dataAtendimento}"
+            showOn="button"
+            pattern="dd/MM/yyyy HH:mm"
+            mask="99/99/9999 99:99"
+          />
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel value="TÉCNICOS ADICIONAIS: " for="pickList" />
+          <p:pickList
+            id="pickList"
+            responsive="true"
+            converter="pickListTecConverter"
+            value="#{realizarAtendColetivoBean.tecnicos}"
+            var="tecnico"
+            itemValue="#{tecnico}"
+            itemLabel="#{tecnico.nome}"
+          >
+            <f:facet name="sourceCaption">Disponíveis</f:facet>
+            <f:facet name="targetCaption">Selecionados</f:facet>
+          </p:pickList>
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel value="RELATO DO ATENDIMENTO: " for="editor" />
+          <h:panelGroup>
+            <p:textEditor
+              id="editor"
+              widgetVar="editor"
+              required="true"
+              value="#{realizarAtendColetivoBean.item.resumoAtendimento}"
+              height="300"
+              style="margin-bottom: 10px"
+              placeholder="Descreva o resumo do atendimento. (Auto gravação a cada 2 minutos)"
+            >
+              <f:facet name="toolbar">
+                <span class="ql-formats">
+                  <button class="ql-bold"></button>
+                  <button class="ql-italic"></button>
+                  <button class="ql-underline"></button>
+                  <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-clean" />
+                </span>
+                <span class="ql-formats">
+                  <select class="ql-font"></select>
+                  <select class="ql-size"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-script" value="sub" />
+                  <button class="ql-script" value="super" />
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered" />
+                  <button class="ql-list" value="bullet" />
+                  <button class="ql-indent" value="-1" />
+                  <button class="ql-indent" value="+1" />
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-direction" value="rtl" />
+                  <select class="ql-align" />
+                </span>
+              </f:facet>
+            </p:textEditor>
+            <p:poll
+              id="idPoll"
+              interval="120"
+              listener="#{realizarAtendColetivoBean.autoSave}"
+              stop="#{realizarAtendColetivoBean.statusPoll}"
+              update="resumoPanelGrid :frmPesquisa:atendGrowl idPoll"
+              process="atendDialog"
+            />
+          </h:panelGroup>
+
+          <h:outputLabel />
+
+          <h:panelGroup>
+            <p:commandButton
+              icon="pi pi-save"
+              id="salvarResumoButton"
+              value="Encerrar atendimento"
+              title="Grava o resumo do atendimento"
+              actionListener="#{realizarAtendColetivoBean.salvarAtendimento}"
+              action="#{realizarAtendColetivoBean.stopPoll}"
+              oncomplete="if (!args.validationFailed) PF('atendDialogWidgetVar').hide()"
+              update="resumoPanelGrid idPoll :frmPesquisa:listaDataTable message growl"
+              process="resumoPanelGrid"
+            />
+
+            <p:spacer width="10px" />
+
+            <p:commandButton
+              icon="pi pi-thumbs-up"
+              value="Sair"
+              update=":frmPesquisa:listaDataTable idPoll"
+              onclick="PF('atendDialogWidgetVar').hide();"
+              action="#{realizarAtendColetivoBean.stopPoll}"
+              actionListener="#{realizarAtendColetivoBean.atualizarDataTable}"
+              process="@this"
+            />
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:dialog>
+    </h:form>
+  </ui:define>
 </ui:composition>

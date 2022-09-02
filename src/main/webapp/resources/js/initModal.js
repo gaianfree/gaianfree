@@ -1,9 +1,9 @@
-const modal = document.querySelector('.modal-container')
+const modal = document.querySelector('.modal-container');
 
 function openModal() {
-  modal.classList.add('active')
+  modal.classList.add('active');
 }
 
 function closeModal() {
-  modal.classList.remove('active')
+  modal.classList.remove('active');
 }
