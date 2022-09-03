@@ -6,7 +6,9 @@
   align-items: center;
   justify-content: space-between;
 
-  background-color: #a6a6a6;
+  background-color: var(--bgHeader);
+  
+  border-bottom: 1px solid black;
 }
 
 .navRegisterUnitCity ul {
@@ -16,12 +18,12 @@
 }
 
 .navRegisterUnitCity ul a {
-  color: #f9f9f9;
+  color: var(--colorItemsMenu);
   font-size: 1.125rem;
 }
 
 .divider {
-  border-left: 2px solid #f9f9f9;
+  border-left: 2px solid var(--colorItemsMenu);
   height: 5px;
 }
 
@@ -36,8 +38,12 @@
 }
 
 .navHomePage ul a {
-  color: #f9f9f9;
+  color: var(--colorItemsMenu);
   font-size: 1.125rem;
+}
+
+.navHomePage ul a.btnLogin{
+	color: var(--colorItemsMenuLogin);
 }
 
 /*Modal*/

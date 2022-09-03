@@ -6,6 +6,12 @@
   box-sizing: border-box;
 }
 
+:root{
+	--bgHeader: #ffffff;
+	--colorItemsMenu: #fad267;
+	--colorItemsMenuLogin: #00bce1;
+}
+
 body {
   font-size: 1rem;
   font-family: Gill Sans Extrabold, Trebuchet MS, sans-serif;
