@@ -8,50 +8,61 @@
 >
   <body>
     <ui:composition>
-      <form>
-        <!--  Tratamento de Erros de sistema -->
-        <p:panel>
-          <p:ajaxExceptionHandler
-            type="javax.faces.application.ViewExpiredException"
-            update="exceptionDialog"
-            onexception="PF('exceptionDialog').show();"
-          />
+      <div class="containerFooter">
+	        <div class="col-1">
+	          <h2>SVSA</h2>
+	          <p>
+	            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+	            Exercitationem fuga iure dignissimos qui, culpa consequatur fugiat
+	            maiores dolorem? Non facilis eaque eius commodi deserunt nam
+	            voluptatibus dolorem, hic asperiores corrupti?
+	          </p>
+	        </div>
+	        <div class="col-2">
+	          <h2>Link</h2>
+	          <nav class="navFooter">
+	            <ul class="listItensFooter">
+	              <li><a href="/">Cadastro de Município</a></li>
+	              <li><a href="/">Auto Cadastro</a></li>
+	              <li><a href="#sectionSobre">Sobre</a></li>
+	              <li><a href="#plans">Planos</a></li>
+	              <li><a href="/">Como usar o SVSA</a></li>
+	            </ul>
+	          </nav>
+	        </div>
+	        <div class="col-3">
+	          <h2>Contato</h2>
+	          <p>
+	            Dúvidas e esclarecimentos? Clique no botão abaixo para enviar um
+	            email para a gente
+	          </p>
+	          <a href="mailto:atendimento@gaian.com.br">Enviar email</a>
+	        </div>
+	      </div>
+	  <hr />
+	  <div class="containerCopyright">
+	        <div class="copyright">
+	          <h3>Copyright - Gaian</h3>
+	        </div>
+	        <div class="containerSocialNetwork">
+	          <ul>
+	            <li>
+	              <a href="" class="iconFacebook"
+	                ><i class="pi pi-facebook"></i
+	              ></a>
+	            </li>
+	            <li>
+	              <a href="" class="iconInstagram"
+	                ><i class="pi pi-instagram"></i
+	              ></a>
+	            </li>
+	            <li>
+	              <a href="" class="iconYoutube"><i class="pi pi-youtube"></i></a>
+	            </li>
+	          </ul>
+	        </div>
+	      </div>
 
-          <p:ajaxExceptionHandler
-            type="java.lang.Throwable"
-            update="exceptionDialog"
-            onexception="PF('exceptionDialog').show();"
-          />
-
-          <p:ajaxExceptionHandler
-            type="javax.faces.FacesException"
-            update="exceptionDialog"
-            onexception="PF('exceptionDialog').show();"
-          />
-
-          <p:dialog
-            id="exceptionDialog"
-            header="Exception: #{pfExceptionHandler.type} occured!"
-            modal="true"
-            resizable="true"
-            closeOnEscape="true"
-            widgetVar="exceptionDialog"
-            height="200px"
-          >
-            Message: #{pfExceptionHandler.message} <br /><br />
-          </p:dialog>
-        </p:panel>
-
-        <footer>
-          <div align="center" style="float: center">
-            <h:graphicImage library="imagens" name="prefeitura_salto.png" />
-            <p:spacer width="20px" />
-            <h:graphicImage library="imagens" name="ifsp2.png" />
-            <p:spacer width="10px" />
-            <h:graphicImage library="imagens" name="logo_gaian.png" />
-          </div>
-        </footer>
-      </form>
     </ui:composition>
   </body>
 </html>

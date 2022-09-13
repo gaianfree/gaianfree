@@ -1,5 +1,13 @@
 @charset "utf-8";
 
+html {
+  scroll-behavior: smooth;
+}
+
+:target {
+  scroll-margin-top: .8em;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +18,26 @@
 	--bgHeader: #ffffff;
 	--colorItemsMenu: #fad267;
 	--colorItemsMenuLogin: #00bce1;
+	--bgSobreSection: #dfe6ed;
+	--bgPorqueSection: #dfe6ed;
+	--bgPlanosSection: #96c3ec;
+	--bgTreinamentoSection: #fbe192;
+	--bgParceirosSection: #ffffff;
+	--bgPlanosTabela: #ffffff9d;
+	--borderPlanosTabela: #c3cfd9;
+	--bgPlanosButton: #f55d48;
+	--colorPlanosButton: #ffffff;
+	--borderPlanosButton: #be3a2b;
+	--bgTreinamentoButton: #ffffff;
+	--colorTreinamentoButton: #2e89d9;
+	--borderTreinamentoButton: #b0c1ab;
+	--bgFooter: #c4bdaf;
+	--bgContactButton: #e8833a;
+	--colorContactButton: #ffffff;
+	--colorInfoLinks: #7165ec;
+	--colorFacebookIcon: #1778f2;
+	--colorInstagramIcon: #f00075;
+	--colorYoutubeIcon: #ff0000;
 }
 
 body {

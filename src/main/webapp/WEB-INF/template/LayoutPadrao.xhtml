@@ -21,6 +21,8 @@
     <title>SVSA - Gaian.com.br</title>
     <h:outputStylesheet library="css" name="global.css" />
     <h:outputStylesheet library="css" name="templates/header.css" />
+    <h:outputStylesheet library="css" name="home.css" />
+    <h:outputStylesheet library="css" name="templates/footer.css" />
     <!-- Esse link de css deve ficar comentado, até que as refatorações sejam realizadas
 		<h:outputStylesheet library="css" name="sistema.css" /> 
 		-->
@@ -32,9 +34,10 @@
     <main class="card" id="conteudo">
       <ui:insert name="corpo" />
     </main>
-    <div class="card" id="footer">
+    <footer class="footer" id="footer">
       <ui:include src="Footer.xhtml" />
-    </div>
+    </footer>
     <h:outputScript library="js" name="initModal.js"></h:outputScript>
+    <h:outputScript library="js" name="initCarousel.js"></h:outputScript>
   </body>
 </html>

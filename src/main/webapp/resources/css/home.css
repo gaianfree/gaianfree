@@ -1,0 +1,240 @@
+/* Carousel's Section */
+.containerCarousel {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel {
+  width: 100vw;
+  height: 85vh;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.slides {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  width: 100%;
+  transition: 1s ease-in-out all;
+}
+
+.slides .slide {
+  min-width: 100%;
+  min-height: 100vh;
+  height: auto;
+}
+
+/**/
+.sectionSobre {
+  background: url("#{resource['imagens/imgSection.png']}");  
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerTitleAbout h2 {
+  margin-top: 3rem;
+  font-size: 2.25rem;
+  font-weight: 500;
+}
+
+.sobreContent {
+  width: 90%;
+  height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5625rem;
+}
+
+.sobreContentImagem img {
+  width: 40vw;
+}
+
+.sobreContentTexto p {
+  margin-bottom: 0.875rem;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/**/
+.sectionMotivation {
+  background-color: #fad267;
+
+  width: 100%;
+  height: 85vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentMotivation {
+  width: 90%;
+  height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5625rem;
+}
+
+.contentMotivationImagem img {
+  width: 40vw;
+}
+
+.contentMotivationText p {
+  margin-bottom: 0.875rem;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.contentMotivationText a {
+  background-color: #37b24d;
+  color: #f8f9fa;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.3s;
+}
+
+.contentMotivationText a:hover {
+  filter: opacity(0.7);
+}
+
+.contentMotivationText a > i {
+  font-size: 1rem;
+}
+/**/
+.planosBackground {
+  background: url("#{resource['imagens/imgSection.png']}");
+}
+
+.sectionPlanos .planosContent {
+  padding: 2rem 3rem;
+}
+
+.sectionPlanos .planosContent h2 {
+  font-size: 2.25rem;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.planosContent .tabelaPlanos {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tabelaPlanos,
+.tabelaPlanos th,
+.tabelaPlanos td {
+  background-color: var(--bgPlanosTabela);
+  border: solid var(--borderPlanosTabela) 1px;
+  text-align: center;
+}
+
+.tabelaPlanos th,
+.tabelaPlanos td {
+  padding: 1rem;
+}
+
+.tabelaPlanos thead tr th h4 {
+  padding-bottom: 1rem;
+  font-size: 1.25rem;
+  border-bottom: solid black 1px;
+}
+
+.tabelaPlanos thead tr th h3 {
+  padding: 1rem 0;
+  font-size: 1rem;
+}
+
+.tabelaPlanos thead tr th a {
+  background-color: var(--bgPlanosButton);
+  color: var(--colorPlanosButton);
+  border: solid var(--borderPlanosButton) 1px;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/**/
+
+.sectionTreinamento {
+  background-color: #fad267;
+  width: 100%;
+  padding: 5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.colLeft h3 {
+  font-size: 1.875rem;
+  margin-bottom: 1rem;
+}
+
+.colLeft p {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.colRight {
+  width: 20%;
+}
+
+.colRight a {
+  background-color: #37b24d;
+  color: #f8f9fa;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 1.5625rem;
+}
+
+.colRight a i {
+  font-size: 1rem;
+}
+
+/**/
+
+.sectionParceiros {
+  background-color: var(--bgParceirosSection);
+}
+
+.sectionParceiros .parceirosContent {
+  padding: 2rem;
+}
+
+.parceirosContent .parceirosHeader h2 {
+  font-size: 2.25rem;
+  text-align: center;
+}
+
+.parceirosContent .parceirosImages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
