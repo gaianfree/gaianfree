@@ -4,10 +4,6 @@ html {
   scroll-behavior: smooth;
 }
 
-:target {
-  scroll-margin-top: .8em;
-}
-
 * {
   margin: 0;
   padding: 0;
