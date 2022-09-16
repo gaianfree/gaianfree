@@ -7,15 +7,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import org.bouncycastle.util.Arrays.Iterator;
-
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
 import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.enums.Grupo;
+
 import gaian.mail.EmailUtil;
 
-// imports
 
 public class PainelEmailService implements Serializable {
 	
