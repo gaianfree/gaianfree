@@ -29,7 +29,6 @@ public class PainelEmailService implements Serializable {
 	@SuppressWarnings("unchecked")
 	public List<Tenant> getMunicipios(Long tenantId) {
 		return manager.createNamedQuery("Tenant.buscarTodos")
-				.setParameter("tenantId", tenantId)
 				.getResultList();
 	}
 	
