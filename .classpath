@@ -41,7 +41,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/murak/Documents/repo/github/gaian-mail/gaianmail.jar">
+	<classpathentry kind="lib" path="C:/Users/Everymind/Downloads/gaianmail.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

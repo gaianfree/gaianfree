@@ -45,6 +45,8 @@ public class Tenant implements Serializable {
 	
 	private String s3Key = null;
 	
+	private Boolean isFree;
+	
 	@Transient
 	public String getUrlAnexo() {
 		return AmazonS3Keys.URL_S3_BUCKET + getS3Key();

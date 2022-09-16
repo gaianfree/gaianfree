@@ -1,4 +1,5 @@
 package com.softarum.svsa.service;
+import org.apache.log4j.Logger;  
 
 import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -21,11 +22,15 @@ import com.softarum.svsa.modelo.enums.Status;
 import com.softarum.svsa.util.MessageUtil;
 import com.softarum.svsa.util.NegocioException;
 
+import lombok.extern.log4j.Log4j;
+
 /**
  * @author murakamiadmin
  *
  */
 public class UsuarioService implements Serializable {
+	
+	
 
 	private static final long serialVersionUID = 1L;
 	
@@ -46,19 +51,14 @@ public class UsuarioService implements Serializable {
 		verificaAgendamentos(usuario, tenantId);
 		
 		
-		
-		if (usuario.getRole() == null) 
-			throw new NegocioException("O papel (role) é obrigatório.");
-		if (usuario.getGrupo() == null) 
-			throw new NegocioException("O grupo é obrigatório.");
-		if (usuario.getStatus() == null) 
-			throw new NegocioException("O status é obrigatório.");
+		if (this.usuarioDAO.verificaUsuarioFreePeloTenant(tenantId) && this.usuarioDAO.encontrarQuantidadeDeUsuarios(tenantId) > 2) 
+			throw new NegocioException("Usuários da tier free são limitados a 3 cadastros");
 		
 		
 		if(usuario.getSenha() == null || usuario.getSenha().equals(""))
 			usuario.setSenha(BCrypt.hashpw("123456", BCrypt.gensalt()));		
 		
-					
+						
 		this.usuarioDAO.salvar(usuario);
 	}
 			
