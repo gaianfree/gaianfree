@@ -16,7 +16,9 @@ import gaian.mail.EmailUtil;
 
 
 public class PainelEmailService implements Serializable {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	@Inject
 	private EntityManager manager;
 	
@@ -27,12 +29,12 @@ public class PainelEmailService implements Serializable {
 	private UsuarioService usuarioService;
 	
 	@SuppressWarnings("unchecked")
-	public List<Tenant> getMunicipios(Long tenantId) {
+	public List<Tenant> getMunicipios() {
 		return manager.createNamedQuery("Tenant.buscarTodos")
 				.getResultList();
 	}
 	
-	public List<Unidade> getUnidadeByMunicipio(Long tenantId) {
+	public List<Unidade> getUnidadesByMunicipio(Long tenantId) {
 		return unidadeService.buscarTodos(tenantId);
 	}
 	
