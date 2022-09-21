@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.softarum.svsa.service.PainelEmailService;
 import com.softarum.svsa.modelo.Tenant;
@@ -20,6 +21,7 @@ import lombok.extern.log4j.Log4j;
 @Getter
 @Setter
 @Log4j
+@Named
 public class PainelEmailBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -55,10 +57,7 @@ public class PainelEmailBean implements Serializable {
 		);
 	}
 	
-	public void enviarEmail() {
-		log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		return;
-		
+	public void enviarEmail() {		
 		List<Long> idsUnidades = new ArrayList<Long>(this.getUnidadesSelecionadas().size());
 		
 		for (Unidade unidade : this.getUnidadesSelecionadas()) {

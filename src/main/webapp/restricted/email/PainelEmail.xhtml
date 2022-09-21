@@ -42,21 +42,21 @@
 		            </p:selectOneMenu>
 		            
 		            <h5>Unidade</h5>
-					<p:selectCheckboxMenu id="unidade" value="#{painelEmailBean.unidades}" style="min-width: 15rem"
-		                                  multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250"
+					<p:selectCheckboxMenu id="unidade" value="#{painelEmailBean.unidadesSelecionadas}" style="min-width: 15rem"
+		                                  multiple="true" panelStyle="width: 30rem" scrollHeight="250"
 		                                  updateLabel="true">
 						<f:selectItems
-							value="#{painelEmailBean.unidadesSelecionadas}"
+							value="#{painelEmailBean.unidades}"
 							var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade}"
 						/>
 		            </p:selectCheckboxMenu>
 		            
 		            <h5>Perfis</h5>
-					<p:selectCheckboxMenu id="pefil" value="#{painelEmailBean.grupos}" style="min-width: 15rem"
+					<p:selectCheckboxMenu id="pefil" value="#{painelEmailBean.gruposSelecionados}" style="min-width: 15rem"
 		                                  multiple="true" panelStyle="width: 30rem" scrollHeight="250"
 		                                  updateLabel="true">
 		                <f:selectItems
-		                	value="#{painelEmailBean.gruposSelecionados}"
+		                	value="#{painelEmailBean.grupos}"
 		                	var="grupo" itemLabel="#{grupo}" itemValue="#{grupo}"
 		                />
 		            </p:selectCheckboxMenu>
@@ -64,7 +64,12 @@
 				</div>
 			</div>
 			<div style="margin-bottom: 2rem; display: flex; flex: 1; justify-content: center">
-            	<p:button style="min-width: 30%" value="Enviar e-mails" onclick="#{painelEmailBean.enviarEmail}" />
+            	<p:commandButton
+            		style="min-width: 30%"
+            		value="Enviar e-mails"
+            		process="@this"
+		    		action="#{painelEmailBean.enviarEmail()}"
+		    	/>
 			</div>
 		</f:view>
 		
