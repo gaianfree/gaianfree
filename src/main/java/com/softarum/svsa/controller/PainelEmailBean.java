@@ -2,6 +2,7 @@ package com.softarum.svsa.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,12 +15,13 @@ import com.softarum.svsa.modelo.enums.Grupo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Getter
 @Setter
+@Log4j
 public class PainelEmailBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final int QTD_GRUPOS = 4;
 	
 	private List<Tenant> municipios;
 	private List<Unidade> unidades;
@@ -44,11 +46,7 @@ public class PainelEmailBean implements Serializable {
 				painelEmailService.getUnidadesByMunicipio(primeiroMunicipio.getCodigo())
 		);
 		
-		this.setGrupos(new ArrayList<Grupo>(QTD_GRUPOS));
-		this.getGrupos().add(Grupo.ADMINISTRATIVOS);
-		this.getGrupos().add(Grupo.TECNICOS);
-		this.getGrupos().add(Grupo.COORDENADORES);
-		this.getGrupos().add(Grupo.GESTORES);
+		this.setGrupos(Arrays.asList(Grupo.values()));
 	}
 	
 	public void atualizaUnidadesByMunicipio() {
@@ -58,6 +56,9 @@ public class PainelEmailBean implements Serializable {
 	}
 	
 	public void enviarEmail() {
+		log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		return;
+		
 		List<Long> idsUnidades = new ArrayList<Long>(this.getUnidadesSelecionadas().size());
 		
 		for (Unidade unidade : this.getUnidadesSelecionadas()) {
