@@ -33,7 +33,7 @@
 					<br /><br />
 					
 					<h5>Município</h5>
-					<p:selectOneMenu id="municipio" value="#{painelEmailBean.municipioSelecionado}" effect="fold">
+					<p:selectOneMenu id="municipio" value="#{painelEmailBean.municipioSelecionado}" style="max-width: 250px">
 		                <p:ajax event="itemSelect" actionListener="#{painelEmailBean.atualizaUnidadesByMunicipio}" />
 		                <f:selectItems
 		                	value="#{painelEmailBean.municipios}"
@@ -42,9 +42,9 @@
 		            </p:selectOneMenu>
 		            
 		            <h5>Unidade</h5>
-					<p:selectCheckboxMenu id="unidade" value="#{painelEmailBean.unidadesSelecionadas}" style="min-width: 15rem"
+					<p:selectCheckboxMenu id="unidade" value="#{painelEmailBean.unidadesSelecionadas}" style="max-width: 250px"
 		                                  multiple="true" panelStyle="width: 30rem" scrollHeight="250"
-		                                  updateLabel="true">
+		                                  >
 						<f:selectItems
 							value="#{painelEmailBean.unidades}"
 							var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade}"
@@ -52,7 +52,7 @@
 		            </p:selectCheckboxMenu>
 		            
 		            <h5>Perfis</h5>
-					<p:selectCheckboxMenu id="pefil" value="#{painelEmailBean.gruposSelecionados}" style="min-width: 15rem"
+					<p:selectCheckboxMenu id="pefil" value="#{painelEmailBean.gruposSelecionados}" style="max-width: 250px"
 		                                  multiple="true" panelStyle="width: 30rem" scrollHeight="250"
 		                                  updateLabel="true">
 		                <f:selectItems

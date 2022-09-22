@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,12 +17,11 @@ import com.softarum.svsa.modelo.enums.Grupo;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 
 @Getter
 @Setter
-@Log4j
 @Named
+@ViewScoped
 public class PainelEmailBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -57,7 +57,7 @@ public class PainelEmailBean implements Serializable {
 		);
 	}
 	
-	public void enviarEmail() {		
+	public void enviarEmail() {
 		List<Long> idsUnidades = new ArrayList<Long>(this.getUnidadesSelecionadas().size());
 		
 		for (Unidade unidade : this.getUnidadesSelecionadas()) {
