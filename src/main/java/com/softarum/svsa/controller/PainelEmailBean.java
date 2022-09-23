@@ -10,14 +10,16 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.softarum.svsa.service.PainelEmailService;
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
 import com.softarum.svsa.modelo.enums.Grupo;
+import com.softarum.svsa.service.PainelEmailService;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Getter
 @Setter
 @Named
@@ -29,12 +31,12 @@ public class PainelEmailBean implements Serializable {
 	private List<Unidade> unidades;
 	private List<Grupo> grupos;
 	
-	private String assunto;
-	private String corpo;
+	private String assunto = "";
+	private String corpo = "";
 	
-	private Tenant municipioSelecionado;
-	private List<Unidade> unidadesSelecionadas;
-	private List<Grupo> gruposSelecionados;
+	private Tenant municipioSelecionado = new Tenant();
+	private List<Unidade> unidadesSelecionadas = new ArrayList<Unidade>();
+	private List<Grupo> gruposSelecionados = new ArrayList<Grupo>();
 	
 	@Inject
 	private PainelEmailService painelEmailService;
@@ -58,17 +60,12 @@ public class PainelEmailBean implements Serializable {
 	}
 	
 	public void enviarEmail() {
-		List<Long> idsUnidades = new ArrayList<Long>(this.getUnidadesSelecionadas().size());
-		
-		for (Unidade unidade : this.getUnidadesSelecionadas()) {
-			idsUnidades.add(unidade.getCodigo());
-		}
-		
+		log.info(this.getAssunto() + this.getCorpo() + this.getMunicipioSelecionado() + this.getUnidadesSelecionadas() + this.getGruposSelecionados());
 		painelEmailService.enviarEmail(
 				this.getAssunto(),
 				this.getCorpo(),
 				this.getMunicipioSelecionado().getCodigo(),
-				idsUnidades,
+				this.getUnidadesSelecionadas(),
 				this.getGruposSelecionados()
 		);
 	}

@@ -8,25 +8,29 @@
 
 	<ui:define name="titulo">Painel de Email</ui:define>
 	
-	<ui:define name="corpo">			
-		<f:view contentType="text/html">
+	<ui:define name="corpo">
+		<h:form id="frmCadastro">
 			<div style="margin-left: 1rem; margin-bottom: 2rem; display: flex; flex-direction: row; justify-content: center">
 				<div>
 					<h2>Painel de envio de e-mails</h2>
 					<br />
 					
-					<h5>Assunto</h5>
-					<p:inputText id="assunto" value="#{painelEmailBean.assunto}"/>
+					<p:outputLabel value="Assunto" for="assunto"/>
+					<p:inputText id="assunto" value="#{painelEmailBean.assunto}" required="true" validatorMessage="Assunto é obrigatório"/>
 					<br />
-					<h5>Mensagem</h5>
+					<p:outputLabel value="Mensagem" for="mensagem"/>
 					<p:inputTextarea
 						rows="6"
 						cols="33"
-						id="corpo"
+						id="mensagem"
 						value="#{painelEmailBean.corpo}"
 						autoResize="false"
+						required="true"
+						validatorMessage="Mensagem é obrigatória"
 					/>
 					<br /><br />
+					
+					
 				</div>
 				<div style="margin-left: 15%">
 					<h2>Selecione os destinatários:</h2>
@@ -64,14 +68,14 @@
 				</div>
 			</div>
 			<div style="margin-bottom: 2rem; display: flex; flex: 1; justify-content: center">
-            	<p:commandButton
-            		style="min-width: 30%"
-            		value="Enviar e-mails"
-            		process="@this"
-		    		action="#{painelEmailBean.enviarEmail()}"
+	           	<p:commandButton
+	           		style="min-width: 30%"
+	           		value="Enviar e-mails"
+	           		process="@this frmCadastro"
+		    		action="#{painelEmailBean.enviarEmail}"
 		    	/>
 			</div>
-		</f:view>
+		</h:form>
 		
 	</ui:define>
 </ui:composition>

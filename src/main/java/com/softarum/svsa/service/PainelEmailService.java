@@ -13,8 +13,9 @@ import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.enums.Grupo;
 
 import gaian.mail.EmailUtil;
+import lombok.extern.log4j.Log4j;
 
-
+@Log4j
 public class PainelEmailService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,27 +39,27 @@ public class PainelEmailService implements Serializable {
 		return unidadeService.buscarTodos(tenantId);
 	}
 	
-	private Unidade getUnidadeById(Long unidadeId) {
-		return unidadeService.buscarPeloCodigo(unidadeId);
-	}
-	
 	private List<Usuario> getUsuariosByUnidade(Unidade unidade, Long tenantId) {		
 		return usuarioService.buscarUsuarios(unidade, tenantId);
 	}
 	
-	public void enviarEmail(String assunto, String corpo, Long tenantId, List<Long> unidades, List<Grupo> perfis) {
+	public void enviarEmail(String assunto, String corpo, Long tenantId, List<Unidade> unidades, List<Grupo> perfis) {
 		List<String> destinatarios = new ArrayList<>();
+
+		log.info(unidades);
 		
-		for(Long id : unidades) {
-			Unidade currentUnidade = getUnidadeById(id);
+		for(Unidade currentUnidade : unidades) {
 			List<Usuario> currentUsuarios = getUsuariosByUnidade(currentUnidade, tenantId);
+			log.info(currentUsuarios);
 			for(Usuario currentUsuario : currentUsuarios) {
 				if(perfis.contains(currentUsuario.getGrupo())) {
 					destinatarios.add(currentUsuario.getEmail());
+					log.info(currentUsuario.getEmail());
 				}
 			}
 		}
 		
+		log.info(destinatarios);
 		EmailUtil.sendEmail("SSL", destinatarios, assunto, corpo);
 	}
 	
