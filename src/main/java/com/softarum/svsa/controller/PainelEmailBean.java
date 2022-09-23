@@ -14,6 +14,7 @@ import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
 import com.softarum.svsa.modelo.enums.Grupo;
 import com.softarum.svsa.service.PainelEmailService;
+import com.softarum.svsa.util.MessageUtil;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,13 +42,15 @@ public class PainelEmailBean implements Serializable {
 	@Inject
 	private PainelEmailService painelEmailService;
 	
+	@Inject
+	private LoginBean loginBean;
+	
 	@PostConstruct
 	public void inicializar() {
-		this.setMunicipios(painelEmailService.getMunicipios());
+		this.setMunicipios(painelEmailService.getMunicipios());		
 		
-		Tenant primeiroMunicipio = this.getMunicipios().get(0);
 		this.setUnidades(
-				painelEmailService.getUnidadesByMunicipio(primeiroMunicipio.getCodigo())
+				painelEmailService.getUnidadesByMunicipio(loginBean.getTenantId())
 		);
 		
 		this.setGrupos(Arrays.asList(Grupo.values()));
@@ -60,13 +63,23 @@ public class PainelEmailBean implements Serializable {
 	}
 	
 	public void enviarEmail() {
-		log.info(this.getAssunto() + this.getCorpo() + this.getMunicipioSelecionado() + this.getUnidadesSelecionadas() + this.getGruposSelecionados());
-		painelEmailService.enviarEmail(
-				this.getAssunto(),
-				this.getCorpo(),
-				this.getMunicipioSelecionado().getCodigo(),
-				this.getUnidadesSelecionadas(),
-				this.getGruposSelecionados()
-		);
+		
+		try {
+			log.info(this.getAssunto() + this.getCorpo() + this.getMunicipioSelecionado() + this.getUnidadesSelecionadas() + this.getGruposSelecionados());
+			
+			painelEmailService.enviarEmail(
+					this.getAssunto(),
+					this.getCorpo(),
+					this.getMunicipioSelecionado().getCodigo(),
+					this.getUnidadesSelecionadas(),
+					this.getGruposSelecionados());
+			
+			MessageUtil.info("Mensagens enviadas com sucesso!");
+		}		
+		catch(Exception e) {			
+			MessageUtil.erro(e.getMessage());
+			e.printStackTrace();			
+		}
+		
 	}
 }

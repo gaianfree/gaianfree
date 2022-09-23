@@ -10,6 +10,11 @@
 	
 	<ui:define name="corpo">
 		<h:form id="frmCadastro">
+		
+			<p:growl id="growl" showDetail="false" closable="true"> 
+    			<p:autoUpdate />
+    		</p:growl>
+    		
 			<div style="margin-left: 1rem; margin-bottom: 2rem; display: flex; flex-direction: row; justify-content: center">
 				<div>
 					<h2>Painel de envio de e-mails</h2>
@@ -46,13 +51,13 @@
 		            </p:selectOneMenu>
 		            
 		            <h5>Unidade</h5>
-					<p:selectCheckboxMenu id="unidade" value="#{painelEmailBean.unidadesSelecionadas}" style="max-width: 250px"
-		                                  multiple="true" panelStyle="width: 30rem" scrollHeight="250"
-		                                  >
+					<p:selectCheckboxMenu id="unidade" style="max-width: 250px"
+                        multiple="true" panelStyle="width: 30rem" scrollHeight="250"
+                        value="#{painelEmailBean.unidadesSelecionadas}"
+                        converter="checkboxUnidConverter">
 						<f:selectItems
 							value="#{painelEmailBean.unidades}"
-							var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade}"
-						/>
+							var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade}"/>
 		            </p:selectCheckboxMenu>
 		            
 		            <h5>Perfis</h5>

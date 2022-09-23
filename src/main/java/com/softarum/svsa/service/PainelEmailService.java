@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
 import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.enums.Grupo;
+import com.softarum.svsa.util.EmailUtil;
 
-import gaian.mail.EmailUtil;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -21,18 +20,16 @@ public class PainelEmailService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private EntityManager manager;
+	private UnidadeService unidadeService;
 	
 	@Inject
-	private UnidadeService unidadeService;
+	private TenantService tenantService;
 	
 	@Inject
 	private UsuarioService usuarioService;
 	
-	@SuppressWarnings("unchecked")
-	public List<Tenant> getMunicipios() {
-		return manager.createNamedQuery("Tenant.buscarTodos")
-				.getResultList();
+	public List<Tenant> getMunicipios() {		
+		return tenantService.buscarTodos();
 	}
 	
 	public List<Unidade> getUnidadesByMunicipio(Long tenantId) {
@@ -46,11 +43,20 @@ public class PainelEmailService implements Serializable {
 	public void enviarEmail(String assunto, String corpo, Long tenantId, List<Unidade> unidades, List<Grupo> perfis) {
 		List<String> destinatarios = new ArrayList<>();
 
-		log.info(unidades);
+		log.info(assunto);
+		log.info(corpo);
+		log.info(tenantId);
+		log.info(unidades.size());
+		log.info(unidades.toString());
+		log.info(perfis.size());		
 		
 		for(Unidade currentUnidade : unidades) {
+			
 			List<Usuario> currentUsuarios = getUsuariosByUnidade(currentUnidade, tenantId);
-			log.info(currentUsuarios);
+			
+			log.info(currentUsuarios.size());
+			
+			
 			for(Usuario currentUsuario : currentUsuarios) {
 				if(perfis.contains(currentUsuario.getGrupo())) {
 					destinatarios.add(currentUsuario.getEmail());
@@ -59,7 +65,8 @@ public class PainelEmailService implements Serializable {
 			}
 		}
 		
-		log.info(destinatarios);
+		log.info(destinatarios.size());
+
 		EmailUtil.sendEmail("SSL", destinatarios, assunto, corpo);
 	}
 	
