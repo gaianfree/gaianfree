@@ -5,19 +5,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background-color: var(--bgHeader);
-}
-
-.navRegisterUnitCity ul {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.navRegisterUnitCity ul a {
-  color: var(--colorItemsMenu);
-  font-size: 1.125rem;
 }
 
 .divider {
@@ -36,76 +23,54 @@
 }
 
 .navHomePage ul a {
+  display: block;
   color: var(--colorItemsMenu);
   font-size: 1.125rem;
+  padding: .5rem;
 }
 
 .navHomePage ul a.btnLogin {
-  color: var(--colorItemsMenuLogin);
+  display: flex;
+  gap: .3125rem;
+  color: var(--colorBlue);
 }
 
-/*Modal*/
-
-.modal-container {
-  width: 100vw;
-  position: fixed;
-  top: 30px;
+#btnMobile{
   display: none;
-  z-index: 999;
-  justify-content: center;
 }
 
-.modal {
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  width: 50%;
-}
+@media (max-width: 37.5rem){
+  #btnMobile{
+    display: block;
+    font-size: 2rem;
+    cursor: pointer;
 
-.active {
-  display: flex;
-}
-
-.active .modal {
-  animation: modal 0.4s;
-}
-
-@keyframes modal {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -60px, 0);
+    color: var(--colorOrange);
   }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+
+  #menu{
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 6rem;
+    right: 0rem;
+    background: #f5f6f7;
+    transition: .6s;
+    z-index: 1000;
+    height: 0rem;
+    visibility: hidden;
+    overflow-y: hidden;
   }
-}
 
-span {
-  margin: 10px auto;
-}
+  #nav.active #menu {
+    height: 50%;
+    visibility: visible;
+    overflow-y: auto;
+  }
 
-.btns {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.btns button {
-  font-size: medium;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-}
-
-.btnOK {
-  background-color: blue !important;
-}
-
-.btnClose {
-  background-color: brown !important;
+  #menu a {
+    padding: 1rem 0;
+    margin: 0 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  }
 }

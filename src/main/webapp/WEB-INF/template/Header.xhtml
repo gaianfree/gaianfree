@@ -9,58 +9,45 @@
 >
   <body>
     <ui:composition>
-      <div class="containerHeader">
-        <nav class="navRegisterUnitCity">
-          <ul>
-            <li>
-              <a href="#" aria-label="Ir para a página de cadastro de município"> Cadastro de Município </a>
-            </li>
-            <li>
-              <span class="divider"></span>
-            </li>
-            <li>
-              <a href="#" aria-label="Ir para a página de auto cadastro">Auto Cadastro</a>
-            </li>
-          </ul>
-        </nav>
-        <div class="containerImg">
-          <a href="/svsafree" aria-label="Ir para a página inicial">
-          	<h:graphicImage alt="Logo da SVSA" library="imagens" name="svsa_t.png" />
-          </a>
-        </div>
-        <nav class="navHomePage">
-          <ul>
-            <li>
-              <a href="#sectionSobre" aria-label="Conhecer mais sobre o SVSA">Sobre</a>
-            </li>
-            <li>
-              <span class="divider"></span>
-            </li>
-            <li>
-              <a href="#plans" aria-label="Conheça nossos planos, preços e vantagens">Planos</a>
-            </li>
-            <li>
-              <span class="divider"></span>
-            </li>
-            <li>
-              <a href="#" class="btnLogin" onclick="openModal()" aria-label="Abrir modal de login">
-                <i class="pi pi-user"></i>
-                Login
-              </a>
-            </li>
-          </ul>
-        </nav>
+     	<div class="containerHeader">
+	        <div class="containerImg">
+	          <a href="/">
+	          	<h:graphicImage alt="Logo da SVSA" library="imagens" name="svsa_t.png"></h:graphicImage>
+	          </a>
+	        </div>
+	        <nav class="navHomePage" id="nav">
+	          <i id="btnMobile" class="pi pi-bars"></i>
+	          
+	          <ul id="menu">
+	            <li>
+	              <a href="#" class="btnLogin" onclick="PF('dlg2').show()">
+	                <i class="pi pi-user"></i>
+	                Login
+	              </a>
+	            </li>
+	            <li>
+	              <span class="divider"></span>
+	            </li>
+	            <li>
+	              <a href="#"> Cadastro de Município </a>
+	            </li>
+	            <li>
+	              <span class="divider"></span>
+	            </li>
+	            <li>
+	              <a href="#">Auto Cadastro</a>
+	            </li>
+	          </ul>
+	        </nav>
       </div>
-
-      <div class="modal-container">
-        <div class="modal">
-          <h2>Funcionou</h2>
-          <div class="btns">
-            <button class="btnOK" onclick="closeModal()">OK</button>
-            <button class="btnClose" onclick="closeModal()">Close</button>
-          </div>
-        </div>
-      </div>
+    
+    	<p:dialog header="Formulário de Login" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">
+    		<h:form>
+    			<div class="card">
+    				<h5>Realizar login na aplicação</h5>
+    			</div>
+    		</h:form>
+    	</p:dialog>
     </ui:composition>
   </body>
 </html>
