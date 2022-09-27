@@ -319,7 +319,7 @@
 		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
-			<url>https://repository.primefaces.org/org/primefaces/themes/</url>
+			<url>https://repository.primefaces.org</url>
 			<layout>default</layout>
 		</repository>
 
