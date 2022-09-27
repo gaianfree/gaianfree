@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <div class="col-md-8">
+        <h1>Crie sua conta do Gaianfree</h1>
+        <p>Criando sua conta Gaianfree, você poderá coordenar uma
+            unidade do Sistema de Vigilância SocioAssistencial.</p>
+        <br />
+        <h:form class="form-horizontal" role="form">
+            <div class="form-group">
+                <h:outputLabel for="inputEmail" value="Email"
+                               styleClass="col-sm-3 control-label" />
+                <div class="col-sm-5">
+                    <h:inputText value="#{UsarioBean.profile.email}" required="true"
+                                 class="form-control" id="inputEmail"
+                                 pt:placeholder="Digite aqui seu email"
+                                 validatorMessage="email inválido."
+                                 requiredMessage="é necessário que você informe seu email.">
+                        <f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
+                        <f:ajax event="blur" render="m_inputEmail" />
+                    </h:inputText>
+                    <h:message id="m_inputEmail" for="inputEmail"
+                               style="color:#D74937;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="inputname" value="Nome"
+                               styleClass="col-sm-3 control-label" />
+                <div class="col-sm-7">
+                    <h:inputText value="#{UsarioBean.profile.nome}" class="form-control"
+                                 id="inputname"
+                                 pt:placeholder="Digite aqui seu primeiro nome entre 2 e 30 caracteres"
+                                 required="true"
+                                 validatorMessage="primeiro nome deve conter entre 2 e 30 caracteres."
+                                 requiredMessage="é necessário que você informe seu primeiro nome.">
+                        <f:validateLength minimum="2" maximum="30" />
+                        <f:ajax event="blur" render="m_inputname" />
+                    </h:inputText>
+                    <h:message id="m_inputname" for="inputname"
+                               style="color:#D74937;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel for="password" value="Senha"
+                               styleClass="col-sm-3 control-label" />
+                <div class="col-sm-6">
+                    <h:inputSecret value="#{UsarioBean.usuarioTemp.senha}" id="password"
+                                   styleClass="form-control"
+                                   pt:placeholder="Digite aqui sua senha entre 6 e 20 caracteres"
+                                   required="true"
+                                   requiredMessage="é necessário que você informe sua senha."
+                                   validatorMessage="a senha deve conter entre 6 e 20 caracteres."
+                                   binding="#{passwordComponent}">
+                        <f:validateLength minimum="6" maximum="20" />
+                        <f:ajax event="blur" render="m_password" />
+                    </h:inputSecret>
+                    <h:message id="m_password" for="password" style="color:#D74937;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel for="confirmPassword" value="Confirme a senha"
+                               styleClass="col-sm-3 control-label" />
+                <div class="col-sm-6">
+                    <h:inputSecret id="confirmPassword" required="#{not empty passwordComponent.value}"
+                                   styleClass="form-control"
+                                   pt:placeholder="Confirme aqui sua senha"
+                                   requiredMessage="é necessário que você informe a confirmação de sua senha.">
+                        <f:validator validatorId="confirmPasswordValidator" />
+                        <f:attribute name="passwordComponent" value="#{passwordComponent}" />
+                        <f:ajax event="blur" execute="confirmPassword password" render="m_confirm" />
+                    </h:inputSecret>
+                    <h:message id="m_confirm" for="confirmPassword" style="color:#D74937;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <div class="checkbox">
+                        <h:outputLabel>
+                            <h:selectBooleanCheckbox
+                                    requiredMessage="por favor, confirme a leitura de nossos termos de serviço"
+                                    id="terms">
+                                <f:validator validatorId="requiredCheckboxValidator" />
+                                <f:ajax event="blur" render="m_terms" />
+                            </h:selectBooleanCheckbox>
+                            Concordo com os <h:outputLink value="#">termos de serviço</h:outputLink> do Gaianfree.
+                        </h:outputLabel>
+                    </div>
+                    <h:message id="m_terms" for="terms" style="color:#D74937;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <h:commandButton action="#{UsarioBean.save()}" value="Próxima etapa"
+                                     styleClass="btn btn-default" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <span> <h:outputLink href="#">Saiba mais</h:outputLink>
+                        Sobre o motivo de pedirmos essas informações.
+                    </span>
+                </div>
+            </div>
+        </h:form>
+    </div>
+</ui:composition>
