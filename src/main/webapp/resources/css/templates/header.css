@@ -39,6 +39,35 @@
   display: none;
 }
 
+#containerSocialNetwork {  /* Temporario */
+  display: block;
+}
+
+#containerSocialNetwork ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#containerSocialNetwork ul li a {
+  margin-top: .5rem;
+  font-size: 1.5rem;
+  border-bottom: none;
+}
+
+.iconFacebook i{
+  color: #3b5998;
+}
+
+.iconInstagram i{
+  color: #ff6eb4;
+}
+
+.iconYoutube i{
+  color: #ff0000;
+}
+
 @media (max-width: 37.5rem){
   #btnMobile{
     display: block;
@@ -72,5 +101,14 @@
     padding: 1rem 0;
     margin: 0 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  }
+
+  #containerSocialNetwork { 
+    display: block;
+    visibility: visible;
+  }
+
+  #containerSocialNetwork ul li a {
+    font-size: 1.75rem;
   }
 }

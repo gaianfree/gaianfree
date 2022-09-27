@@ -5,12 +5,10 @@
 }
 
 .containerFooter {
-  padding: 0.3125rem 0;
+  padding: 0.3125rem 0 1.25rem ;
   display: flex;
   gap: 1rem;
   flex-direction: column;
-
-  padding-bottom: 1.25rem;
 }
 
 .containerFooter h2 {
@@ -63,8 +61,26 @@
   font-size: 1.25rem;
   background-color: #2fc8e7;
   color: #f8f9fa;
+  transition: all 0.3s;
 }
 
 .containerFooter .col-3 a i{
-  font-size: 1.3125rem;
+  font-size: 1.125rem;
+}
+
+@media (min-width: 992px) {
+  .containerFooter {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    text-align: center;
+  }
+  
+  .containerFooter h2 {
+    font-size: 2.25rem;
+  }
+
+  .containerFooter .col-3 a:hover{
+    filter: opacity(0.8);
+  }
 }

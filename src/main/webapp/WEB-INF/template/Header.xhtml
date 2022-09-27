@@ -37,14 +37,42 @@
 	            <li>
 	              <a href="#">Auto Cadastro</a>
 	            </li>
+	            <li>
+	              <span class="divider"></span>
+	            </li>
+	            <li>
+	              <div id="containerSocialNetwork">
+	                <ul>
+	                  <li>
+	                    <a href="https://www.facebook.com/GaianOficial/" class="iconFacebook"
+	                      ><i class="pi pi-facebook"></i
+	                    ></a>
+	                  </li>
+	                  <li>
+	                    <a href="https://www.instagram.com/gaianoficial/" class="iconInstagram"
+	                      ><i class="pi pi-instagram"></i
+	                    ></a>
+	                  </li>
+	                  <li>
+	                    <a href="https://www.youtube.com/channel/UCtDRtIaNumFjnO9DTvYDODw" class="iconYoutube">
+	                    	<i class="pi pi-youtube"></i>
+	                    </a>
+	                  </li>
+	                </ul>
+	              </div>
+	            </li>
 	          </ul>
 	        </nav>
       </div>
     
-    	<p:dialog header="Formulário de Login" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">
-    		<h:form>
+    	<p:dialog header="Formulário de Login" widgetVar="dlg2" height="400" width="700" showEffect="fade" modal="true">
+    		<h:form class="formModal">
     			<div class="card">
-    				<h5>Realizar login na aplicação</h5>
+    				<fieldset class="fieldset">
+			            <input class="inputForm" type="text" name="username" placeholder="Digite seu nome" />
+			            <input class="inputForm" type="password" name="userPassword" placeholder="Digite sua senha" />
+			            <button class="btnSubmitLoginUser" type="submit">Enviar</button>
+			        </fieldset>
     			</div>
     		</h:form>
     	</p:dialog>

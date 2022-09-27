@@ -97,6 +97,46 @@
   color: rgba(255, 255, 255, 0.87);
 }
 
+@media (min-width: 992px) {
+  .containerIntroduction {
+    width: 95%;
+    margin: 0 auto;
+    padding: 1.5625rem;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+  
+  .containerImgIntroduction img {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .containerCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .containerText {
+    padding: 1.5625rem;
+  }
+  
+  .containerText h1 {
+    font-size: 4rem;
+  }
+  
+  .containerText p {
+    width: 90%;
+    padding: 1rem 0 0 0;
+  }
+
+  .containerLinks {
+    width: 80%;
+  }
+}
+
 /*2° Section*/
 .sectionCardsMotivationSVSA {
   width: 100%;
@@ -152,13 +192,30 @@
   margin: 0.75rem 0 2.5rem 0;
 }
 
+@media (min-width: 992px) {
+  .sectionCardsMotivationSVSA {
+    width: 100%;
+    padding: 1.75rem 0;
+  }
+  
+  .containerCards {
+    padding: 0 .75rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+  }
+  
+  .containerCards > article {
+    height: 95%;
+  }
+}
+
 /*Table*/
 
 .sectionPrices {
   width: 100%;
   margin: 0 auto;
   padding: 0.5rem 1rem 1.5rem 1rem;
-  background-color: #f5f6f7;
   background-color: var(--colorGreen);
 }
 
@@ -221,9 +278,35 @@
 .tabelaPlanos thead tr th a {
   background-color: var(--colorOrange);
   color: var(--colorPlanosButton);
-  border: solid var(--borderPlanosButton) 1px;
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
+  transition: 250ms;
+}
+
+.tabelaPlanos thead tr th a:hover {
+  filter: opacity(0.8);
+}
+
+@media (min-width: 992px) {
+  
+  .containerTextPrice {
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 1.25rem;
+    gap: 1.125rem;
+  }
+  
+  .containerTextPrice h5 {
+    font-size: 1.5rem;
+  }
+  
+  .containerTable {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Carousel */
@@ -276,3 +359,71 @@
   min-width: 100%;
 }
 
+@media (min-width: 992px) {
+  .containerParceiros{
+    padding: 1rem 0;
+  }
+
+  .containerCarousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .carousel {
+    width: 70%;
+    height: 62vh;
+  }
+  
+  .slides .slide {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+form, .formModal{
+    width: 37.5rem;
+    margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: weight;
+    font-style: normal;
+    padding: .625rem;
+}
+    
+.fieldset{
+    border: none;
+    font-weight: normal;
+}
+        
+.inputForm{
+    display: block;
+    color: #333333;
+    width: 100%;
+    padding: .4375rem;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: .625rem;
+    font-family: inherit;
+    font-size: 1.125rem;
+    height: 2.8125rem;
+}
+    
+.btnSubmitLoginUser{
+    display: block;
+    padding: 1.1875rem 2.4375rem 1.125rem 2.4375rem;
+    color: #ffffff;
+    background: #1abc9c;
+    font-size: 1.125rem;
+    width: 100%;
+    border: .0625rem solid #16a085;
+    border-width: .0625rem .0625rem .1875rem;
+    margin-top: 3.125rem;
+    margin-bottom: .625rem;
+    cursor: pointer;
+    transition: all .3s;
+    outline: none;
+}
+    
+.btnSubmitLoginUser:hover{
+    background: #109177;
+}
