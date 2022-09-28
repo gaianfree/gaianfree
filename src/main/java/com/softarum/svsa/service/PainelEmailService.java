@@ -41,21 +41,10 @@ public class PainelEmailService implements Serializable {
 	}
 	
 	public void enviarEmail(String assunto, String corpo, Long tenantId, List<Unidade> unidades, List<Grupo> perfis) {
-		List<String> destinatarios = new ArrayList<>();
-
-		log.info(assunto);
-		log.info(corpo);
-		log.info(tenantId);
-		log.info(unidades.size());
-		log.info(unidades.toString());
-		log.info(perfis.size());		
+		List<String> destinatarios = new ArrayList<>();	
 		
 		for(Unidade currentUnidade : unidades) {
-			
 			List<Usuario> currentUsuarios = getUsuariosByUnidade(currentUnidade, tenantId);
-			
-			log.info(currentUsuarios.size());
-			
 			
 			for(Usuario currentUsuario : currentUsuarios) {
 				if(perfis.contains(currentUsuario.getGrupo())) {
@@ -64,8 +53,6 @@ public class PainelEmailService implements Serializable {
 				}
 			}
 		}
-		
-		log.info(destinatarios.size());
 
 		EmailUtil.sendEmail("SSL", destinatarios, assunto, corpo);
 	}

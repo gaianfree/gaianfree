@@ -63,7 +63,6 @@ public class PainelEmailBean implements Serializable {
 	}
 	
 	public void enviarEmail() {
-		
 		try {
 			log.info(this.getAssunto() + this.getCorpo() + this.getMunicipioSelecionado() + this.getUnidadesSelecionadas() + this.getGruposSelecionados());
 			
