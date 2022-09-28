@@ -300,73 +300,75 @@
   }
 }
 
-.containerParceiros {
-  width: 100%;
-  margin: 1rem auto;
-  text-align: center;
+
+.sectionPartnerships{
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 1rem;
 }
 
-.containerParceiros h4 {
+.containerParthershipsAll{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.containerPartherships{
+	text-align: center;
+}
+
+.containerPartherships h4 {
   font-size: 1.25rem;
   padding: 1rem 0;
   color: var(--colorBlue);
 }
 
-.containerParceiros p {
+.containerPartherships p {
   font-size: 2.125rem;
   color: #353535;
 }
 
-.containerCarousel {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.containerImgPartherships{
+	width: 95%;
+	margin: 0 auto;
+	padding: 1rem 0;
 }
 
-.carousel {
-  width: 90%;
-  height: 30vh;
-  border-radius: 0.1875rem;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, 0.2);
-}
-
-.slides {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  display: flex;
-  width: 100%;
-  transition: 1s ease-in-out all;
-}
-
-.slides .slide {
-  min-width: 100%;
+.containerImgPartherships img{
+	width: 85%;
+	margin: 0 auto;
+	padding: 0 1rem 2rem 0;
 }
 
 @media (min-width: 992px) {
-  .containerParceiros {
-    padding: 1rem 0;
-  }
-
-  .containerCarousel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .carousel {
-    width: 70%;
-    height: 62vh;
-  }
-
-  .slides .slide {
-    width: 100%;
-    margin: 0 auto;
-  }
+	.containerPartherships{
+		text-align: center;
+	}
+	
+	.containerPartherships h4 {
+	  font-size: 1.25rem;
+	  padding: 1rem 0;
+	  color: var(--colorBlue);
+	}
+	
+	.containerPartherships p {
+	  font-size: 2.125rem;
+	  color: #353535;
+	}
+	
+	.containerImgPartherships{
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+	
+	.containerImgPartherships img{
+		width: 85%;
+	}
+	
+	.containerImgPartherships img.imagePart{
+		margin-top: 2.25rem;
+	}
 }
 
 form, .formModal{
