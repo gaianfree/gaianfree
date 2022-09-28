@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom: 0 1rem 1rem 1rem;
+  padding: 0 1rem 1rem 1rem;
 }
 
 .containerImgIntroduction img {
@@ -81,7 +81,7 @@
 
   transition: 250ms;
 }
-.containerLinks .buySoftware:hover{
+.containerLinks .buySoftware:hover {
   filter: opacity(0.8);
 }
 
@@ -99,41 +99,35 @@
 
 @media (min-width: 992px) {
   .containerIntroduction {
-    width: 95%;
-    margin: 0 auto;
-    padding: 1.5625rem;
     flex-direction: row-reverse;
     justify-content: space-between;
-    gap: .5rem;
+    padding: 1rem 0;
   }
-  
+
   .containerImgIntroduction img {
     width: 100%;
     margin: 0 auto;
   }
-  
-  .containerCol {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
+
   .containerText {
-    padding: 1.5625rem;
+    text-align: left;
   }
-  
+
   .containerText h1 {
+    padding-left: 1.625rem;
     font-size: 4rem;
   }
-  
+
   .containerText p {
-    width: 90%;
-    padding: 1rem 0 0 0;
+    width: 93%;
+    padding: 1rem 0;
   }
 
   .containerLinks {
-    width: 80%;
+    padding: 0 2rem;
+    justify-content: left;
+    text-align: left;
+    gap: 1.5rem;
   }
 }
 
@@ -197,20 +191,18 @@
     width: 100%;
     padding: 1.75rem 0;
   }
-  
+
   .containerCards {
-    padding: 0 .75rem;
+    padding: 0 0.75rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
   }
-  
+
   .containerCards > article {
     height: 95%;
   }
 }
-
-/*Table*/
 
 .sectionPrices {
   width: 100%;
@@ -231,11 +223,11 @@
 .containerTextPrice i {
   font-size: 1.25rem;
 
-  color: #FAD267;
+  color: #fad267;
   color: var(--colorBlue);
 }
 
-.containerTextPrice h5 {
+.containerTextPrice h3 {
   font-weight: 300;
   font-size: 1.25rem;
   padding-bottom: 1rem;
@@ -288,18 +280,17 @@
 }
 
 @media (min-width: 992px) {
-  
   .containerTextPrice {
     width: 90%;
     margin: 0 auto;
     padding-bottom: 1.25rem;
     gap: 1.125rem;
   }
-  
+
   .containerTextPrice h5 {
     font-size: 1.5rem;
   }
-  
+
   .containerTable {
     width: 100%;
     margin: 0 auto;
@@ -309,23 +300,20 @@
   }
 }
 
-/* Carousel */
-
 .containerParceiros {
   width: 100%;
   margin: 1rem auto;
   text-align: center;
 }
 
-.containerParceiros h5 {
+.containerParceiros h4 {
   font-size: 1.25rem;
   padding: 1rem 0;
   color: var(--colorBlue);
 }
 
-.containerParceiros h3 {
+.containerParceiros p {
   font-size: 2.125rem;
-
   color: #353535;
 }
 
@@ -360,7 +348,7 @@
 }
 
 @media (min-width: 992px) {
-  .containerParceiros{
+  .containerParceiros {
     padding: 1rem 0;
   }
 
@@ -369,12 +357,12 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .carousel {
     width: 70%;
     height: 62vh;
   }
-  
+
   .slides .slide {
     width: 100%;
     margin: 0 auto;

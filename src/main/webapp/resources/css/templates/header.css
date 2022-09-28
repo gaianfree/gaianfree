@@ -56,15 +56,15 @@
   border-bottom: none;
 }
 
-.iconFacebook i{
+a.iconFacebook i{
   color: #3b5998;
 }
 
-.iconInstagram i{
+a.iconInstagram i{
   color: #ff6eb4;
 }
 
-.iconYoutube i{
+a.iconYoutube i{
   color: #ff0000;
 }
 
