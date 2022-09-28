@@ -9,9 +9,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 @Getter
 @Setter
+@Named
+@ViewScoped
 public class UsuarioBean {
     private UsuarioTemp usuarioTemp = null;
     private Profile profile = null;
@@ -31,6 +35,6 @@ public class UsuarioBean {
         profile.setUsuarioTemp(usuarioTemp);
         profileDAO.save(profile);
 
-        return "/public/feedback_login";
+        return "/public/feedback";
     }
 }
