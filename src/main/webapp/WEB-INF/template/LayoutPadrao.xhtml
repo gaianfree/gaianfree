@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-	
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">	
-	
-	<h:head>		
-		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/imagens/favicon.ico"/>				
-		<link rel="shortcut icon" type="image/x-icon" href="#{resource['imagens/favicon.ico']}"  title="Svsa"/>
-		<title>SVSA - Gaian.com.br</title>
-		<h:outputStylesheet library="css" name="sistema.css" />
-	</h:head>
-			
-	<body>	
-		<div class="card" id="header">
-			<ui:include src="Header.xhtml" />
-		</div>	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-	    <div class="card" id="conteudo">			
-			<ui:insert name="corpo" />
-		</div>
-	
-		<div class="card" id="footer">
-			<ui:include src="Footer.xhtml" />
-		</div>
-	 
-    </body>	
-	
-
+<html
+  lang="pt-BR"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+  <h:head>
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="#{request.contextPath}/resources/imagens/favicon.ico"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="#{resource['imagens/favicon.ico']}"
+      title="Svsa"
+    />
+    <title>SVSA - Gaian.com.br</title>
+    <h:outputStylesheet library="css" name="global.css" />
+    <h:outputStylesheet library="css" name="templates/header.css" />
+    <h:outputStylesheet library="css" name="home.css" />
+    <h:outputStylesheet library="css" name="templates/footer.css" />
+    <!-- Esse link de css deve ficar comentado, até que as refatorações sejam realizadas
+		<h:outputStylesheet library="css" name="sistema.css" /> 
+		-->
+  </h:head>
+  <body>
+    <header class="header" id="header">
+      <ui:include src="Header.xhtml" />
+    </header>
+    <main class="card" id="conteudo">
+      <ui:insert name="corpo" />
+    </main>
+    <footer class="footer" id="footer">
+      <ui:include src="Footer.xhtml" />
+    </footer>
+    <h:outputScript library="js" name="initMenuMobile.js"></h:outputScript>
+    <h:outputScript library="js" name="initModal.js"></h:outputScript>
+    <h:outputScript library="js" name="initCarousel.js"></h:outputScript>
+  </body>
 </html>

@@ -1,76 +1,217 @@
-<ui:composition template="/WEB-INF/template/LayoutLogin.xhtml" 
-      xmlns="http://www.w3.org/1999/xhtml"
- 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui">
+<ui:composition
+  template="/WEB-INF/template/LayoutPadrao.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:define name="titulo">SVSA</ui:define>
 
-	<ui:define name="titulo">SVSA</ui:define>	
+  <ui:define name="corpo">
+	<section class="sectionIntroduction" id="sectionIntroduction">
+      <div class="containerIntroduction">
+        <div class="containerImgIntroduction">
+          <h:graphicImage alt="Logo da SVSA" library="imagens" name="SVSA_Transparente.png"></h:graphicImage>
+        </div>
+        <div class="containerCol">
+          <div class="containerText">
+            <span>SVSA</span>
+            <h1>Sistema de vigilância socioassistencial</h1>
+            <p>
+              O SVSA ajuda os municípios na função de uma vigilância
+              socioassistencial sistematizada.
+            </p>
+          </div>
+          <div class="containerLinks">
+            <a href="#sectionPrices" class="buySoftware">Adquirir software</a>
+            <a href="#sectionCards" class="whySoftware">Porque utilizar o SVSA?</a>
+            <a href="#" class="whySoftware">Como utilizar o SVSA?</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<ui:define name="corpo">
+    <section class="sectionCardsMotivationSVSA" id="sectionCards">
+      <div class="containerCards">
+        <article>
+          <i class="pi pi-sun"></i>
+          <h2>O que é o SVSA?</h2>
+          <p>
+            O objetivo do SVSA é automatizar as tarefas do dia a dia dos
+            técnicos e gestores do serviço de assistência social dos municípios.
+            Permite a coleta e análise dos dados das famílias vulneráveis ou em
+            situação de risco e a consolidação das informações para a vigilância
+            SocioAssistencial.
+          </p>
+        </article>
+
+        <article>
+          <i class="pi pi-sun"></i>
+          <h2>Como o SVSA pode aprimorar a vigilância socioassistencial?</h2>
+          <p>
+            o SVSA oferece as ferramentas necessárias para obtenção dos dados
+            operacionais nas unidades. Dados que são consolidados e visualizados
+            de forma tabular, gráfica e estatística, o que permite à vigilância
+            de forma precisa, monitorar, vigiar, planejar, redefinir ou definir
+            novas ações socioassistenciais.
+          </p>
+        </article>
+
+        <article>
+          <i class="pi pi-sun"></i>
+          <h2>Quais os benefícios em utilizar o SVSA?</h2>
+          <p>
+            O SVSA sistematiza os trabalhos dos técnicos e gestores no dia a
+            dia, estrutura e padroniza as informações territorializadas, o que
+            permite à vigilância e à gestão realizarem atividades de
+            planejamento, organização e execução de ações com maior precisão.
+          </p>
+        </article>
+
+        <article>
+          <i class="pi pi-sun"></i>
+          <h2>Como surgiu o SVSA?</h2>
+          <p>
+            O Sistema de Vigilância SocioAssistencial (SVSA) surgiu de um
+            projeto de pesquisa e inovação desenvolvido pelo Instituto Federal
+            de São Paulo (IFSP), Câmpus Salto, em parceria com a Secretaria de
+            Assistência Social e Cidadania (SASC) do município de Salto-SP.
+          </p>
+        </article>
+
+        <article>
+          <i class="pi pi-sun"></i>
+          <h2>O SVSA é acessível para qual publico?</h2>
+          <p>
+            Nosso projeto visa o estilo de codigo aberto, permitindo uma versão
+            gratuita para as prefeituras com certos Pibs e um plano pago para
+            outras prefeituras. Nosss aplicação é acessível, por Computador,
+            Tablet e Celular.
+          </p>
+        </article>
+
+        <article>
+          <i class="pi pi-sun"></i>
+          <h2>E-book Gratuito</h2>
+          <p>
+            Nós temos um E-book Gratuito para download sobre como o SVSA pode
+            ajudar os municípios na função vigilância socioassistencial
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <hr class="dividerSection" />
+
+    <section class="sectionPrices" id="sectionPrices">
+      <div class="containerTextPrice">
+        <i class="pi pi-heart-fill"></i>
+        <h5>
+          O <span>SVSA</span>
+          possui uma versão gratuita, de código aberto disponivel para download.
+          Além disso também temos as versões pagas, do qual a diferença entre as
+          versões você encontra.
+        </h5>
+      </div>
+      <div class="containerTable">
+        <table class="tabelaPlanos">
+          <thead>
+            <tr>
+              <th></th>
+              <th>
+                <h4>P</h4>
+                <h3>R$25,99/mês</h3>
+                <a href="#">Contratar</a>
+              </th>
+              <th>
+                <h4>M</h4>
+                <h3>R$49,99/mês</h3>
+                <a href="#">Contratar</a>
+              </th>
+              <th>
+                <h4>G</h4>
+                <h3>R$69,99/mês</h3>
+                <a href="#">Contratar</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1 ano de domínio gratís</td>
+              <td>Apenas para planos M e G</td>
+              <td>Apenas para planos M e G</td>
+              <td><i class="ph-check-bold"></i></td>
+            </tr>
+            <tr>
+              <td>Memória</td>
+              <td>384MB</td>
+              <td>512MB</td>
+              <td>768MB</td>
+            </tr>
+            <tr>
+              <td>Espaço</td>
+              <td>10GB</td>
+              <td>20GB</td>
+              <td>40GB</td>
+            </tr>
+            <tr>
+              <td>Contas de E-mail - 12 GB</td>
+              <td>1</td>
+              <td>3</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Espaço para bases MYSQL</td>
+              <td>1GB</td>
+              <td>2GB</td>
+              <td>5GB</td>
+            </tr>
+            <tr>
+              <td>Sites Hospedados</td>
+              <td>2</td>
+              <td>Ilimitados</td>
+              <td>Ilimitados</td>
+            </tr>
+            <tr>
+              <td>Transferência ilimitada</td>
+              <td><i class="ph-check-bold"></i></td>
+              <td><i class="ph-check-bold"></i></td>
+              <td><i class="ph-check-bold"></i></td>
+            </tr>
+            <tr>
+              <td>Backup de sites</td>
+              <td><i class="ph-x-bold"></i></td>
+              <td><i class="ph-x-bold"></i></td>
+              <td><i class="ph-x-bold"></i></td>
+            </tr>
+            <tr>
+              <td>Certificados</td>
+              <td><i class="ph-check-bold"></i></td>
+              <td><i class="ph-check-bold"></i></td>
+              <td><i class="ph-check-bold"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sectionParceiros">
+      <div class="containerParceiros">
+        <h5>Nossos parceiros</h5>
+        <h3>Quem já utiliza nossa aplicação?</h3>
+
+        <div class="containerCarousel">
+          <div class="carousel">
+            <div class="slides">
+              <h:graphicImage class="slide" alt="slide image" library="imagens" name="Prefeitura_Salto_t.png"></h:graphicImage>
+              <h:graphicImage class="slide" alt="slide image" library="imagens" name="Prefeitura-Itapetininga-logomarca.png"></h:graphicImage>
+              <h:graphicImage class="slide" alt="slide image" library="imagens" name="IFSP_Salto_Transparente.png"></h:graphicImage>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 	
-		<style type="text/css">
-		    .product-item .product-item-content {
-		        border: 2px solid var(--surface-d);
-		        border-radius: 2px;
-		        margin: .3rem;
-		        text-align: center;
-		        padding: .5rem 0;
-		    }
-		
-		    .product-item .product-image {
-		        width: 40%;		       
-		   }
-		</style>
-		
-		<h:form id="formLogin">			
-			
-			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-
-			 <div class="product-item">
-                <div class="product-item-content">
-                    <div class="p-mb-3">
-				        <p:carousel value="#{homeBean.products}" var="logo" circular="true" autoplayInterval="5000"
-				                    responsiveOptions="#{homeBean.responsiveOptions}" numVisible="1" numScroll="1">		
-				            <div class="product-item">
-		                        <p:graphicImage library="imagens" name="#{logo.imagem}" styleClass="product-image"/>
-				            </div>
-				        </p:carousel>
-		        	</div>
-		        </div>				        
-		    </div>
-		    
-		   <!-- LOGIN  git commit -a -m 'Create new footer [issue 53]' -->
-			<div class="login">		
-				<div class="contact-container">			
-				  <h1><b>Bem-vindos ao SVSA!</b></h1>		  
-				</div>
-				<br/>							
-				<h:panelGrid style="margin: 0 auto;">					
-					<h:graphicImage library="imagens" name="login2.png" width="80" height="80 "/>
-					<p:button icon="pi pi-refresh" value="Login" outcome="/restricted/home/SvsaHome.xhtml"/>					
-	   			</h:panelGrid>	
-			</div>
-			<!-- FIM LOGIN -->
-			
-			<p:dock position="bottom">
-				<p:menuitem value="E-Mail" icon="/resources/imagens/email_t.png" 
-        			url="mailto:atendimento@gaian.com.br"/>        		
-        		<p:menuitem value="Facebook" icon="/resources/imagens/facebook_t.png" 
-        			url="https://www.facebook.com/GaianOficial"/>
-        		<p:menuitem value="Instagran" icon="/resources/imagens/instagran_t.png" 
-        			url="https://www.instagram.com/gaianoficial/"/>
-       			<p:menuitem value="Gaian.com.br" icon="/resources/imagens/whatsapp_t.png" 
-        			url="https://api.whatsapp.com/send?phone=5519992607200"/>       			
-        		<p:menuitem value="Gaian.com.br" icon="/resources/imagens/gaian_t.png" 
-        			url="https://gaian.com.br/"/>       		
-			</p:dock>
-		    
-		    <br/><br/><br/>
-        	<div>
-			    <h:graphicImage library="imagens" name="gaian_paleta.png" width="900" height="250" />
-			</div>
-		</h:form>
-	
-	</ui:define>
+  </ui:define>
 </ui:composition>

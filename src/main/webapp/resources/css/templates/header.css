@@ -1,0 +1,76 @@
+.containerHeader {
+  width: 100%;
+  height: 15vh;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.divider {
+  border-left: 2px solid var(--colorItemsMenu);
+  height: 5px;
+}
+
+.containerImg img {
+  width: 100%;
+}
+
+.navHomePage ul {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navHomePage ul a {
+  display: block;
+  color: var(--colorItemsMenu);
+  font-size: 1.125rem;
+  padding: .5rem;
+}
+
+.navHomePage ul a.btnLogin {
+  display: flex;
+  gap: .3125rem;
+  color: var(--colorBlue);
+}
+
+#btnMobile{
+  display: none;
+}
+
+@media (max-width: 37.5rem){
+  #btnMobile{
+    display: block;
+    font-size: 2rem;
+    cursor: pointer;
+
+    color: var(--colorOrange);
+  }
+
+  #menu{
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 6rem;
+    right: 0rem;
+    background: #f5f6f7;
+    transition: .6s;
+    z-index: 1000;
+    height: 0rem;
+    visibility: hidden;
+    overflow-y: hidden;
+  }
+
+  #nav.active #menu {
+    height: 50%;
+    visibility: visible;
+    overflow-y: auto;
+  }
+
+  #menu a {
+    padding: 1rem 0;
+    margin: 0 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  }
+}

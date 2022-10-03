@@ -1,0 +1,70 @@
+.footer {
+  width: 100%;
+  padding: 1.25rem 1.375rem;
+  background-color: #212529; /*Variavél*/
+}
+
+.containerFooter {
+  padding: 0.3125rem 0;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  padding-bottom: 1.25rem;
+}
+
+.containerFooter h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #fcc419;
+  letter-spacing: 0.15rem;
+}
+
+.containerFooter .col-1 p,
+.containerFooter .col-3 p {
+  font-size: 1.125rem;
+  color: aliceblue;
+  text-align: justify;
+}
+
+.containerFooter .col-2 > h2{
+  margin-bottom: 0rem;
+}
+
+.containerFooter .col-2 .navFooter .listItensFooter li {
+  padding: 0.75rem 0;
+}
+
+.containerFooter .col-2 .navFooter .listItensFooter li a {
+  color: #f5f6f7;
+  font-size: 1rem;
+  transition: all .3s ease-in-out;
+}
+
+.containerFooter .col-2 .navFooter .listItensFooter li a:hover{
+  text-decoration: underline;
+}
+
+.containerFooter .col-3 p {
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+}
+
+.containerFooter .col-3 a {
+  width: 100%;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: .5rem;
+  border-radius: .5rem;
+  font-size: 1.25rem;
+  background-color: #2fc8e7;
+  color: #f8f9fa;
+}
+
+.containerFooter .col-3 a i{
+  font-size: 1.3125rem;
+}
