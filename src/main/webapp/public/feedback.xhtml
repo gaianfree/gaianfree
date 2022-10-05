@@ -1,5 +1,4 @@
 <ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
-<<<<<<< HEAD
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -8,13 +7,16 @@
 
     <ui:define name="titulo">Confirmação de Email</ui:define>
     <ui:define name="corpo">
-        <h1>Email de confirmação enviado!</h1>
-        <div>
-            <br/>
-            <h:form id="frmConfirmação">
-                <div>
-                    <h:outputLabel for="inputToken" value="Token"/>
-                    <div class="col-sm-5">
+
+        <h:form id="form" style="font-size: small">
+            <div style="text-align: center;margin: 0 auto">
+                <h1>Email de confirmação enviado</h1>
+            </div>
+
+            <pt:tabView style="text-align: center">
+                <pt:tab title="Insira a chave de acesso">
+                    <h:outputLabel for="inputToken" value="Chave de acesso"/>
+                    <div >
                         <h:inputText value="#{usuarioTempBean.usuarioTemp.token}"
                                      class="form-control" id="inputToken"
                                      pt:placeholder="Insira o Token de validação"
@@ -24,20 +26,21 @@
                         <h:message id="m_inputToken" for="inputToken"
                                    style="color:#D74937;" />
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-10">
-                        <h:commandButton action="#{usuarioTempBean.verificaToken()}" value="Verificar"
-                                         styleClass="btn btn-default" />
+                    <br></br>
+                    <br></br>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-10">
+                            <h:commandButton action="#{usuarioTempBean.verificaToken()}" value="Verificar"
+                                             styleClass="btn btn-default" />
+                        </div>
                     </div>
-                </div>
-            </h:form>
-=======
-                xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="container">
-        <div class="row">
-            <div class="container" style="padding-top: 50px;">Cadastrado.</div>
->>>>>>> b0267cc28b78e8d049ddf3430d547d8c62320560
-        </div>
+
+                    <br></br>
+                    <br></br>
+
+                </pt:tab>
+            </pt:tabView>
+        </h:form>
+
     </ui:define>
 </ui:composition>

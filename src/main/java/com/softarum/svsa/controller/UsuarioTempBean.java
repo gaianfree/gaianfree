@@ -37,7 +37,7 @@ public class UsuarioTempBean implements Serializable {
     }
     public String verificaToken(){
         if(usuarioTempDAO.verifyToken(usuarioTemp)){
-            return "confirmacao.xhtml?faces-redirect=true";
+            return "confirmado.xhtml?faces-redirect=true";
         }
         else{
             return "naoconfirmado.xhtml?faces-redirect=true";
