@@ -49,23 +49,32 @@
   font-size: 1.125rem;
 }
 
-.containerFooter .col-3 a {
+.btnCopyEmail {
+  background: #2fc8e7;
   width: 100%;
-  padding: 14px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: .5rem;
-  border-radius: .5rem;
-  font-size: 1.25rem;
-  background-color: #2fc8e7;
-  color: #f8f9fa;
-  transition: all 0.3s;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
 
-.containerFooter .col-3 a i{
+.btnCopyEmail div {
+  border-radius: 0.5rem;
+  background-color: #2aaac4;
+  padding: 1rem;
+}
+
+.btnCopyEmail div i {
+  color: white;
   font-size: 1.125rem;
+}
+
+.btnCopyEmail span {
+  flex: 1;
+  font-size: 1rem;
+  color: #f8f9fa;
 }
 
 @media (min-width: 992px) {
@@ -80,7 +89,7 @@
     font-size: 2.25rem;
   }
 
-  .containerFooter .col-3 a:hover{
+  .btnCopyEmail:hover {
     filter: opacity(0.8);
   }
 }
