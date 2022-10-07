@@ -5,10 +5,10 @@
 
 	<groupId>com.softarum</groupId>
 	<artifactId>svsafree</artifactId>
-	<version>5.0.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<description>Sistema de Vigilância SocioAssistencial</description>
+	<description>Sistema de Vigilância SocioAssistencial Free</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,7 +44,14 @@
 	</build>
 
 	<dependencies>
-	
+
+		<!-- Email dependency -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
 		<!-- Servlet https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api anterior = 3.1.0 -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
@@ -319,7 +326,7 @@
 		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
-			<url>https://repository.primefaces.org/</url>
+			<url>https://repository.primefaces.org</url>
 			<layout>default</layout>
 		</repository>
 

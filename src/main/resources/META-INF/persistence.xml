@@ -6,16 +6,8 @@
              
 	<persistence-unit name="svsaPU" transaction-type="RESOURCE_LOCAL">
 
-		<properties> 		
-		
-			<!--################ PRODUÇÃO ###################-->			
+		<properties> 	
 			
-			<!--  AWS svsa-free 
-			<property name="hibernate.connection.url" value="jdbc:mysql://database-1.csmrh3howepe.us-east-1.rds.amazonaws.com/svsafree?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="hibernate.connection.username" value="projeto"/>
-			<property name="hibernate.connection.password" value="projetolp2"/>
-			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-			-->
 								
 			<!-- ################ DESENVOLVIMENTO  ###################-->
 							
