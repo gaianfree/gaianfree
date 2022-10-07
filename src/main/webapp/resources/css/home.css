@@ -238,36 +238,36 @@
   background-color: transparent;
 }
 
-.tabelaPlanos {
+.tablePlans {
   border-collapse: separate;
   border-spacing: 0;
 }
 
-.tabelaPlanos,
-.tabelaPlanos th,
-.tabelaPlanos td {
+.tablePlans,
+.tablePlans th,
+.tablePlans td {
   background-color: var(--bgPlanosTabela);
   border: solid var(--borderPlanosTabela) 1px;
   text-align: center;
 }
 
-.tabelaPlanos th,
-.tabelaPlanos td {
+.tablePlans th,
+.tablePlans td {
   padding: 0.5rem;
 }
 
-.tabelaPlanos thead tr th h4 {
+.tablePlans thead tr th h4 {
   padding-bottom: 1rem;
   font-size: 1.25rem;
   border-bottom: solid black 1px;
 }
 
-.tabelaPlanos thead tr th h3 {
+.tablePlans thead tr th h3 {
   padding: 1rem 0;
   font-size: 1rem;
 }
 
-.tabelaPlanos thead tr th a {
+.tablePlans thead tr th a {
   background-color: var(--colorOrange);
   color: var(--colorPlanosButton);
   border-radius: 0.25rem;
@@ -275,7 +275,7 @@
   transition: 250ms;
 }
 
-.tabelaPlanos thead tr th a:hover {
+.tablePlans thead tr th a:hover {
   filter: opacity(0.8);
 }
 
@@ -307,66 +307,66 @@
 	padding: 0 1rem;
 }
 
-.containerParthershipsAll{
+.containerPartnershipsAll{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
 
-.containerPartherships{
+.containerPartnerships{
 	text-align: center;
 }
 
-.containerPartherships h4 {
+.containerPartnerships h4 {
   font-size: 1.25rem;
   padding: 1rem 0;
   color: var(--colorBlue);
 }
 
-.containerPartherships p {
+.containerPartnerships p {
   font-size: 2.125rem;
   color: #353535;
 }
 
-.containerImgPartherships{
+.containerImgPartnerships{
 	width: 95%;
 	margin: 0 auto;
 	padding: 1rem 0;
 }
 
-.containerImgPartherships img{
+.containerImgPartnerships img{
 	width: 85%;
 	margin: 0 auto;
 	padding: 0 1rem 2rem 0;
 }
 
 @media (min-width: 992px) {
-	.containerPartherships{
+	.containerPartnerships{
 		text-align: center;
 	}
 	
-	.containerPartherships h4 {
+	.containerPartnerships h4 {
 	  font-size: 1.25rem;
 	  padding: 1rem 0;
 	  color: var(--colorBlue);
 	}
 	
-	.containerPartherships p {
+	.containerPartnerships p {
 	  font-size: 2.125rem;
 	  color: #353535;
 	}
 	
-	.containerImgPartherships{
+	.containerImgPartnerships{
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 	}
 	
-	.containerImgPartherships img{
+	.containerImgPartnerships img{
 		width: 85%;
 	}
 	
-	.containerImgPartherships img.imagePart{
+	.containerImgPartnerships img.imagePart{
 		margin-top: 2.25rem;
 	}
 }

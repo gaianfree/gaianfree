@@ -1,44 +1,9 @@
 @charset "utf-8";
 
-body {
-  font-size: 12px;
-  font-family: Gill Sans Extrabold, Trebuchet MS, sans-serif;
-  margin: 0px;
-  font-weight: normal;
-}
-
-header {
-  padding: 5px 5px;
-  margin-bottom: 20px;
-}
-
-header > div {
-  margin-left: 8px;
-}
-
 #conteudo {
   padding: 0px 8px;
 }
 
-footer {
-  padding: 0px 8px;
-  margin-bottom: 10px;
-}
-
-h1 {
-  font-size: 24px;
-  font-weight: 500;
-  text-align: center;
-  padding: 0px;
-  margin: 0px;
-}
-h3 {
-  font-size: 14px;
-  font-weight: 300;
-  text-align: center;
-  padding: 0px;
-  margin: 0px;
-}
 IMG.displayed {
   display: block;
   margin-left: auto;
