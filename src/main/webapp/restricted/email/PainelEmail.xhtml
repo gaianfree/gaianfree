@@ -11,7 +11,7 @@
 	<ui:define name="corpo">
 		<h:form id="frmCadastro">
 		
-			<p:growl id="growl" showDetail="false" closable="true"> 
+			<p:growl id="growl" showDetail="true" life="3000"> 
     			<p:autoUpdate />
     		</p:growl>
     		
@@ -20,10 +20,10 @@
 					<h2>Painel de envio de e-mails</h2>
 					<br />
 					
-					<p:outputLabel value="Assunto" for="assunto"/>
-					<p:inputText id="assunto" value="#{painelEmailBean.assunto}" required="true" validatorMessage="Assunto é obrigatório"/>
+					<h5>Assunto</h5>
+					<p:inputText id="assunto" value="#{painelEmailBean.assunto}" required="true" requiredMessage="Assunto é obrigatório"/>
 					<br />
-					<p:outputLabel value="Mensagem" for="mensagem"/>
+					<h5>Mensagem</h5>
 					<p:inputTextarea
 						rows="6"
 						cols="33"
@@ -31,7 +31,7 @@
 						value="#{painelEmailBean.corpo}"
 						autoResize="false"
 						required="true"
-						validatorMessage="Mensagem é obrigatória"
+						requiredMessage="Mensagem é obrigatória"
 					/>
 					<br /><br />
 					
@@ -42,7 +42,13 @@
 					<br /><br />
 					
 					<h5>Município</h5>
-					<p:selectOneMenu id="municipio" value="#{painelEmailBean.municipioSelecionado}" style="max-width: 250px">
+					<p:selectOneMenu
+						id="municipio"
+						value="#{painelEmailBean.municipioSelecionado}"
+						style="max-width: 250px"
+						required="true"
+						validatorMessage="O município é obrigatório"
+					>
 		                <p:ajax event="itemSelect" actionListener="#{painelEmailBean.atualizaUnidadesByMunicipio}" />
 		                <f:selectItems
 		                	value="#{painelEmailBean.municipios}"
@@ -54,16 +60,27 @@
 					<p:selectCheckboxMenu id="unidade" style="max-width: 250px"
                         multiple="true" panelStyle="width: 30rem" scrollHeight="250"
                         value="#{painelEmailBean.unidadesSelecionadas}"
-                        converter="checkboxUnidConverter">
+                        converter="checkboxUnidConverter"
+						required="true"
+						validatorMessage="A unidade é obrigatória"
+					>
 						<f:selectItems
 							value="#{painelEmailBean.unidades}"
 							var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade}"/>
 		            </p:selectCheckboxMenu>
 		            
 		            <h5>Perfis</h5>
-					<p:selectCheckboxMenu id="pefil" value="#{painelEmailBean.gruposSelecionados}" style="max-width: 250px"
-		                                  multiple="true" panelStyle="width: 30rem" scrollHeight="250"
-		                                  updateLabel="true">
+					<p:selectCheckboxMenu
+						id="pefil"
+						value="#{painelEmailBean.gruposSelecionados}"
+						style="max-width: 250px"
+						multiple="true"
+						panelStyle="width: 30rem"
+						scrollHeight="250"
+						updateLabel="true"
+						required="true"
+						validatorMessage="O perfil é obrigatório"
+					>
 		                <f:selectItems
 		                	value="#{painelEmailBean.grupos}"
 		                	var="grupo" itemLabel="#{grupo}" itemValue="#{grupo}"
