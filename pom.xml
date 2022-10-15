@@ -326,11 +326,7 @@
 		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
-<<<<<<< HEAD
 			<url>https://repository.primefaces.org</url>
-=======
-			<url>https://repository.primefaces.org/</url>
->>>>>>> b0267cc28b78e8d049ddf3430d547d8c62320560
 			<layout>default</layout>
 		</repository>
 
