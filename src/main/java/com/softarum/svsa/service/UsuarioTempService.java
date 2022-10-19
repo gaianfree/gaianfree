@@ -1,4 +1,4 @@
-package com.softarum.svsa.dao;
+package com.softarum.svsa.service;
 
 import com.softarum.svsa.modelo.UsuarioTemp;
 import org.apache.commons.mail.EmailException;
@@ -12,7 +12,6 @@ import java.util.List;
 
 @Setter
 public class UsuarioTempService {
-
 
     public void envia(UsuarioTemp usuarioTemp) throws EmailException {
         String msgCorpo = AutoCadHtmlUtil.sendHtml(usuarioTemp.getValidacao());

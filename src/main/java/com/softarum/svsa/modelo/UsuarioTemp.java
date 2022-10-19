@@ -1,7 +1,7 @@
 package com.softarum.svsa.modelo;
+
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Setter
@@ -14,5 +14,4 @@ public class UsuarioTemp {
     private String email;
     private String validacao;
     private String token;
-
 }
