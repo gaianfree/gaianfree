@@ -1,0 +1,36 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Painel de Administrador SVSA</ui:define>
+	
+	<ui:define name="corpo">
+	
+	<div style="height:100%">
+    	<h:form>
+			<p:dataTable value="#{painelAdminBean.unidades}" var="unidade"
+			lazy="false" id="tabelaUnidades" widgetVar="tabelaUnidades"
+			emptyMessage="Sem resultados"  
+			selection="#{painelAdminBean.unidades}">
+				<p:column headerText="Nome" filterBy="#{unidade.nome}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.nome}"/>
+				</p:column>
+				<p:column headerText="Tipo de Unidade" filterBy="#{unidade.tipo}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.tipo}"/>
+				</p:column>
+				<p:column headerText="Endereço" filterBy="#{unidade.endereco}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.endereco}"/>
+				</p:column>
+				<p:column headerText="Contato" filterBy="#{unidade.contato}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.contato}"/>
+				</p:column>
+			</p:dataTable>
+    	</h:form>
+	</div>
+		
+	</ui:define>
+
+</ui:composition>
