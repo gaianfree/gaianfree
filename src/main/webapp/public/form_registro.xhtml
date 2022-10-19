@@ -1,0 +1,65 @@
+<ui:composition
+        template="/WEB-INF/template/LayoutPadrao.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:pt="http://primefaces.org/ui"
+        xmlns:p="http://java.sun.com/jsf/html">
+    <ui:define name="titulo">AutoCadastro</ui:define>
+    <ui:define name="corpo">
+        <h:form id="form" style="font-size: small">
+            <pt:tabView style="text-align: center">
+                <pt:tab title="Crie sua conta do Gaianfree">
+                    <div>
+                        <h:outputText value="E-mail"/>     <h:inputText value="#{usuarioTempBean.usuarioTemp.email}"
+                                                                        pt:placeholder="Digite aqui seu email"
+                                                                        validatorMessage="email inválido."
+                                                                        requiredMessage="é necessário que você informe seu email.">
+                        <f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
+                    </h:inputText>
+                    </div>
+
+                    <br></br>
+                    <div>
+                        <h:outputText value="Nome"/>     <h:inputText value="#{usuarioTempBean.usuarioTemp.nome}"
+                                                                      pt:placeholder="Digite aqui seu primeiro nome entre 2 e 30 caracteres"
+                                                                      required="true"
+                                                                      validatorMessage="primeiro nome deve conter entre 2 e 30 caracteres."
+                                                                      requiredMessage="é necessário que você informe seu primeiro nome.">
+                        <f:validateLength minimum="2" maximum="30" />
+                    </h:inputText>
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <h:outputLabel>
+                        <h:selectBooleanCheckbox
+                                requiredMessage="por favor, confirme a leitura de nossos termos de serviço"
+                                id="terms">
+                            <f:validator validatorId="requiredCheckboxValidator" />
+                            <f:ajax event="blur" render="m_terms" />
+                        </h:selectBooleanCheckbox>
+                        Concordo com os <h:outputLink value="#">termos de serviço</h:outputLink> do Gaianfree.
+                    </h:outputLabel>
+                    <br></br>
+                    <br></br>
+                    <div>
+                        <div class="col-sm-offset-3 col-sm-10">
+
+                            <h:commandButton action="#{usuarioTempBean.enviaEmail()}" value="Próxima etapa"
+                                             styleClass="btn btn-default" />
+                        </div>
+                    </div>
+
+                    <br></br>
+                    <br></br>
+
+                </pt:tab>
+            </pt:tabView>
+        </h:form>
+
+
+    </ui:define>
+    <ui:define name="footer"></ui:define>
+</ui:composition>
