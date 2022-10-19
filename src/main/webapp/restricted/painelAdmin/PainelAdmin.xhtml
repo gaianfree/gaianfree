@@ -9,9 +9,11 @@
 	
 	<ui:define name="corpo">
 	
-	<div style="height:100%">
-		<h1 style="text-align:center">Consulta de unidades</h1>
-		<p:button value="Email" outcome="/restricted/email/PainelEmail.xhtml" styleClass="mr-2" />
+	<div style="height:100%;margin:0 20px">
+		<div style="display:flex;flex-direction:row;justify-content:space-between">
+			<h1 style="text-align:center">Consulta de unidades</h1>
+			<p:button value="Painel de Emails" outcome="/restricted/email/PainelEmail.xhtml"/>
+    	</div>
     	<h:form>
 			<p:dataTable value="#{painelAdminBean.unidades}" var="unidade"
 			lazy="false" id="tabelaUnidades" widgetVar="tabelaUnidades"
