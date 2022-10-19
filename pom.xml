@@ -1,4 +1,4 @@
-﻿<project xmlns="http://maven.apache.org/POM/4.0.0" 
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -16,7 +16,7 @@
 		<poi.version>5.0.0</poi.version> <!--  4.1.2 -->
 		<hibernate.version>5.6.8.Final</hibernate.version>
 	</properties>
-	
+
 
 	<build>
 		<finalName>svsafree</finalName>
@@ -24,7 +24,7 @@
 			<plugin>
 				<!-- para compilar o codigo java -->
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.10.1</version>				
+				<version>3.10.1</version>
 				<configuration>
 					<!-- versão do java -->
 					<source>1.8</source>
