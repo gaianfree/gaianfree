@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml"
- 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui">	
-	
-	<body>
-		<ui:composition>
-		<form>
-			<!--  Tratamento de Erros de sistema -->
-			<p:panel>
-				<p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
-		                                update="exceptionDialog"
-		                                onexception="PF('exceptionDialog').show();" />
-		
-		        <p:ajaxExceptionHandler type="java.lang.Throwable"
-		                                update="exceptionDialog"
-		                                onexception="PF('exceptionDialog').show();"/>
-		                                
-                <p:ajaxExceptionHandler type="javax.faces.FacesException"
-		                                update="exceptionDialog"
-		                                onexception="PF('exceptionDialog').show();" />
-
-
-				<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occured!" 
-					modal="true" resizable="true" closeOnEscape="true"
-					widgetVar="exceptionDialog" height="200px">
-					
-				    Message: #{pfExceptionHandler.message} <br/><br/>				    
-				    
-				</p:dialog>		
-
-			</p:panel>
-	
-			<footer>				
-				
-				<div align="center" style="float: center">
-					<h:graphicImage library="imagens" name="prefeitura_salto.png"/>					
-					<p:spacer width="20px" />
-					<h:graphicImage library="imagens" name="ifsp2.png"/>					
-					<p:spacer width="10px" />	
-					<h:graphicImage library="imagens" name="logo_gaian.png"/>				
-				</div>				
-				
-			</footer>			
-		</form>	
-		</ui:composition>		
-	</body>
-
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <body>
+    <ui:composition>
+      <div class="containerFooter">
+        <div class="col-1">
+          <h2>SVSA</h2>
+          <p>
+            SVSA pode ajudar os técnicos e gestores da política de assistência
+            social dos municípios na obtenção de informações sobre a evolução
+            das famílias e seus membros.
+          </p>
+        </div>
+        <div class="col-2">
+          <h2>Link</h2>
+          <nav class="navFooter">
+            <ul class="listItensFooter">
+              <li><a href="/">Cadastro de Município</a></li>
+              <li><a href="/">Auto Cadastro</a></li>
+              <li><a href="#sectionCards">Sobre</a></li>
+              <li><a href="#sectionPrices">Planos</a></li>
+              <li><a href="/svsafree/pages/videosTreinamentos/videosTreinamentos.xhtml">Como usar o SVSA</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="col-3">
+          <h2>Contato</h2>
+          <p>
+            Dúvidas e esclarecimentos? Clique no botão abaixo para enviar um
+            email para a gente
+          </p>
+          <button class="btnCopyEmail" id="btnCopyEmail">
+            <div>
+              <i class="pi pi-copy"></i>
+            </div>
+            <span>
+              atendimento@gaian.com.br
+            </span>
+          </button>
+        </div>
+      </div>
+    </ui:composition>
+  </body>
 </html>
