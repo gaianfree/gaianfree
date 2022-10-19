@@ -1,5 +1,4 @@
 package com.softarum.svsa.modelo;
-import com.softarum.svsa.util.GenerateValidation;
 import lombok.Getter;
 import lombok.Setter;
 
