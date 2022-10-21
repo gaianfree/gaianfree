@@ -6,8 +6,9 @@
              
 	<persistence-unit name="svsaPU" transaction-type="RESOURCE_LOCAL">
 
-		<properties> 		
-		
+
+		<properties> 	
+
 			
 								
 			<!-- ################ DESENVOLVIMENTO  ###################-->
