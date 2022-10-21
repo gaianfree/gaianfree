@@ -1,0 +1,103 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Painel de Email</ui:define>
+	
+	<ui:define name="corpo">
+		<h:form id="frmCadastro">
+		
+			<p:growl id="growl" showDetail="true" life="3000"> 
+    			<p:autoUpdate />
+    		</p:growl>
+    		
+			<div style="margin-left: 1rem; margin-bottom: 2rem; display: flex; flex-direction: row; justify-content: center">
+				<div>
+					<h2>Painel de envio de e-mails</h2>
+					<br />
+					
+					<h5>Assunto</h5>
+					<p:inputText id="assunto" value="#{painelEmailBean.assunto}" required="true" requiredMessage="Assunto é obrigatório"/>
+					<br />
+					<h5>Mensagem</h5>
+					<p:inputTextarea
+						rows="6"
+						cols="33"
+						id="mensagem"
+						value="#{painelEmailBean.corpo}"
+						autoResize="false"
+						required="true"
+						requiredMessage="Mensagem é obrigatória"
+					/>
+					<br /><br />
+					
+					
+				</div>
+				<div style="margin-left: 15%">
+					<h2>Selecione os destinatários:</h2>
+					<br /><br />
+					
+					<h5>Município</h5>
+					<p:selectOneMenu
+						id="municipio"
+						value="#{painelEmailBean.municipioSelecionado}"
+						style="max-width: 250px"
+						required="true"
+						validatorMessage="O município é obrigatório"
+					>
+		                <p:ajax event="itemSelect" actionListener="#{painelEmailBean.atualizaUnidadesByMunicipio}" />
+		                <f:selectItems
+		                	value="#{painelEmailBean.municipios}"
+		                	var="municipio" itemLabel="#{municipio.secretaria}" itemValue="#{municipio}"
+		                />
+		            </p:selectOneMenu>
+		            
+		            <h5>Unidade</h5>
+					<p:selectCheckboxMenu id="unidade" style="max-width: 250px"
+                        multiple="true" panelStyle="width: 30rem" scrollHeight="250"
+                        value="#{painelEmailBean.unidadesSelecionadas}"
+                        converter="checkboxUnidConverter"
+						required="true"
+						validatorMessage="A unidade é obrigatória"
+					>
+						<f:selectItems
+							value="#{painelEmailBean.unidades}"
+							var="unidade" itemLabel="#{unidade.nome}" itemValue="#{unidade}"/>
+		            </p:selectCheckboxMenu>
+		            
+		            <h5>Perfis</h5>
+					<p:selectCheckboxMenu
+						id="pefil"
+						value="#{painelEmailBean.gruposSelecionados}"
+						style="max-width: 250px"
+						multiple="true"
+						panelStyle="width: 30rem"
+						scrollHeight="250"
+						updateLabel="true"
+						required="true"
+						validatorMessage="O perfil é obrigatório"
+					>
+		                <f:selectItems
+		                	value="#{painelEmailBean.grupos}"
+		                	var="grupo" itemLabel="#{grupo}" itemValue="#{grupo}"
+		                />
+		            </p:selectCheckboxMenu>
+					<br /><br />
+				</div>
+			</div>
+			<div style="margin-bottom: 2rem; display: flex; flex: 1; justify-content: center">
+	           	<p:commandButton
+	           		style="min-width: 30%"
+	           		value="Enviar e-mails"
+	           		process="@this frmCadastro"
+		    		action="#{painelEmailBean.enviarEmail}"
+		    	/>
+			</div>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
