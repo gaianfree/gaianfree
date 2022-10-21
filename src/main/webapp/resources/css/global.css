@@ -34,13 +34,18 @@ html {
 	--colorFacebookIcon: #1778f2;
 	--colorInstagramIcon: #f00075;
 	--colorYoutubeIcon: #ff0000;
-	
-	/*CORES GAIAN*/
 	--colorBlue: #00BCE1;
 	--colorOrange: #EB894C;
 	--colorYellow: #FAD267;
 	--colorGreen: #D4E5B3;
 	--colorBlack: #000000;
+	/*Cores da Pagina de Videos*/
+	--colorBorderDivider: #e5e5e5;
+	--colorPlaylistHover: #3c3c3ccc;
+	--colorBackgroundSection: #e2e2e65a;
+	--colorContainerVideosIntroTitle: #3c3c3ce6;
+	--colorVideosIntroButtonsBorder: #d1d1d1;
+	--colorVideosIntroButtonsHover: #ffffff;
 }
 
 body {
