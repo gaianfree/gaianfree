@@ -153,4 +153,8 @@ public class Usuario implements Serializable {
 			this.setDataCriacao( new Date() );
 		}		
 	}
+	
+	
+	
+	
 }
