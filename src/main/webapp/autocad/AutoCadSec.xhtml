@@ -1,144 +1,191 @@
 <ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
- 	xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:o="http://omnifaces.org/ui">
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
-<ui:define name="titulo">Cadastro de Secretaria</ui:define>
-    
-<ui:define name="corpo">
-    		
-   <style>
-    .label {
-        width: 20%;
-        padding: 4px;
-    }
+	<ui:define name="titulo">Cadastro de Secretaria</ui:define>
 
-    .value {
-        width: 80%;
-        padding: 4px;
-    }
+	<ui:define name="corpo">
 
-    .grid {
-        width: 100%;
-    }
+		<style>
+.label {
+	width: 20%;
+	padding: 4px;
+}
 
-    .error {
-        color: red;
-    }
+.value {
+	width: 80%;
+	padding: 4px;
+}
 
-    .outputLabel {
-        font-weight: bold;
-    }
+.grid {
+	width: 100%;
+}
 
-    .grid {
-        width: 33%;
-        padding: 4px;
-    }
+.error {
+	color: red;
+}
+
+.outputLabel {
+	font-weight: bold;
+}
+
+.grid {
+	width: 33%;
+	padding: 4px;
+}
 </style>
 
-<div class="card">
-    <h:form id="frmCadastro">
-    
-    	<p:defaultCommand target="botaoSalvar" />  
-        <p:growl id="growl" sticky="true" showDetail="true"/>
-        <p:wizard flowListener="#{autoCadSecBean.onFlowProcess}" nextLabel="Próximo" backLabel="Anterior">
-            <p:tab id="secretaria" title="Secretaria">
-                <p:panel header="Cadastrar Secretaria">
-                    <p:messages/>
-                    <h:panelGrid columns="2" columnClasses="label, value">
-                        
-                        <h:outputText value="Nome Secretaria: "/>
-                        <p:inputText value="#{autoCadSecBean.autocadTO.secretaria.tenant}" required="true"/>
-						
-						<h:outputText value="Tipo: "/>
-                        <p:selectOneMenu id="tipoSecretaria" value="#{autoCadSecBean.autocadTO.secretaria.secretaria}" required="true" label="Text 3">
-                    	<f:selectItem itemLabel="Selecione o tipo da Secretaria" itemValue="" noSelectionOption="true"/>
-                    	<f:selectItem itemLabel="SCFV" itemValue="SCFV"/>
-                    	<f:selectItem itemLabel="CREAS" itemValue="CREAS"/>
-                    	<f:selectItem itemLabel="CRAS" itemValue="CRAS"/>
-                    	<f:selectItem itemLabel="SASC" itemValue="SASC"/>
-                		</p:selectOneMenu>
-                    </h:panelGrid>     
-                </p:panel>
-            </p:tab>
-            
-            <p:tab id="unidade" title="Unidade">
-                <p:panel header="Cadastrar Unidade">
-                    <p:messages/>
-                    <h:panelGrid columns="2" columnClasses="label, value">
-                        <h:outputText value="Nome: "/>
-                        <p:inputText value="#{autoCadSecBean.autocadTO.unidade.nome}" required="true" label="Nome Unidade"/>
-                        
-                        <h:outputText value="CEP: "/>    	
-		    			<h:panelGroup>                   	
-			    		<p:inputMask id="cep" mask="99999-999" size="9" 
-                   		value="#{autoCadSecBean.autocadTO.unidade.endereco.cep}" 
-                   		required="true"                   		
-			    		validatorMessage="O cep é obrigatório."/>
-			    		<p:spacer width="10px" />
-                        </h:panelGroup>	
-        
-                        
-                        <h:outputText value="Endereço: "/>
-                        <p:inputText value="#{autoCadSecBean.autocadTO.unidade.endereco.endereco}" required="false" label="Endereço"/>
-                    
-                    	<h:outputText value="Número: "/>
-                        <p:inputText value="#{autoCadSecBean.autocadTO.unidade.endereco.numero}" required="false" label="Número" 
-                        size="5" maxlength="8" validatorMessage="O número é obrigatório."/>
-                        
-                        
-                     	<h:outputText value="UF: "/>    
-                      	<p:selectOneMenu id="UF" value="#{autoCadSecBean.autocadTO.unidade.endereco.uf}" required="true" label="Text 3"> 
-                        <h:outputText value="UF: "/>
-                        <f:selectItem itemLabel="Selecione a UF:" itemValue="" noSelectionOption="true"/>
-                    	<f:selectItem itemLabel="SP" itemValue="SP"/>
-                    	<f:selectItem itemLabel="RJ" itemValue="RJ"/>
-                    	<f:selectItem itemLabel="MG" itemValue="MG"/>
-                    	<f:selectItem itemLabel="SC" itemValue="SC"/>
-                      </p:selectOneMenu>  
-                    </h:panelGrid>     
-                </p:panel>
-            </p:tab>
-            
-                <p:tab id="confirm" title="Confirmação">
-                <p:panel header="Confirmation">
-                    <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
-                        <h:panelGrid columns="2" columnClasses="label, value">
-                            <h:outputText value="Nome Secretaria: "/>
-                            <h:outputText value="#{autoCadSecBean.autocadTO.secretaria.tenant}" styleClass="outputLabel"/>
+		<div class="card">
+			<h:form id="frmCadastro">
+				<p:growl id="growl" sticky="true" showDetail="true" />
+				<p:wizard flowListener="#{autoCadSecBean.onFlowProcess}"
+					nextLabel="Próximo" backLabel="Anterior">
+					
+					<p:tab id="secretaria" title="Secretaria">
+						<p:panel header="Cadastrar Secretaria">
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Município: " />
+								<p:inputText
+									value="#{autoCadSecBean.autocadTO.secretaria.tenant}"
+									required="false" />
+									
+								<h:outputText value="Secretaria: " />
+								<p:inputText
+									value="#{autoCadSecBean.autocadTO.secretaria.secretaria}"
+									required="false" />	
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
 
-                            <h:outputText value="Secretaria: "/>
-                            <h:outputText value="#{autoCadSecBean.autocadTO.secretaria.secretaria}" styleClass="outputLabel"/>
+					<p:tab id="unidade" title="Unidade">
+						<p:panel header="Cadastrar Unidade">
+							<p:messages />
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Nome: " />
+								<p:inputText value="#{autoCadSecBean.autocadTO.unidade.nome}"
+									required="false" label="Nome Unidade" />
 
-                            <h:outputText value="Nome Unidade: "/>
-                            <h:outputText value="#{autoCadSecBean.autocadTO.unidade.nome}" styleClass="outputLabel"/>
-                            
-                            <h:outputText value="Contato:  "/>
-                            <h:outputText value="#{autoCadSecBean.autocadTO.unidade.endereco.cep}" styleClass="outputLabel"/>
-                            
-                            <h:outputText value="Endereço:  "/>
-                            <h:outputText value="#{autoCadSecBean.autocadTO.unidade.endereco.endereco}" styleClass="outputLabel"/>
-                            
-                            <h:outputText value="Número:  "/>
-                            <h:outputText value="#{autoCadSecBean.autocadTO.unidade.endereco.numero}" styleClass="outputLabel"/>
-                            
-                            <h:outputText value="UF:  "/>
-                            <h:outputText value="#{autoCadSecBean.autocadTO.unidade.endereco.uf}" styleClass="outputLabel"/>
-                            
-                            
-                        </h:panelGrid>
-                    </h:panelGrid>
-                </p:panel>
-               
-               	<h:panelGrid>
-                <p:commandButton value="Salvar" id="botaoSalvar" action="#{autoCadSecBean.salvar}" update="frmCadastro" process="@this" icon="pi pi-save"/>
-            	</h:panelGrid>
-            </p:tab>           
-        </p:wizard>
-    </h:form>
-</div>
-</ui:define>
+
+								<p:outputLabel for="cep" value="CEP" />
+								<h:panelGroup>
+									<p:inputMask id="cep" mask="99999-999" size="9"
+										value="#{autoCadSecBean.autocadTO.unidade.endereco.cep}"
+										required="false" validatorMessage="O cep é obrigatório." />
+
+									<p:spacer width="10px" />
+
+									<p:commandButton value="Pesquisar"
+										action="#{autoCadSecBean.buscaEnderecoPorCEP}"
+										update="cep endereco uf" process="@this cep" imadiate="true" />
+
+								</h:panelGroup>
+
+
+								<h:outputText value="Endereço: " for="endereco" />
+								<p:inputText id="endereco"
+									value="#{autoCadSecBean.autocadTO.unidade.endereco.endereco}"
+									required="false" label="Endereço" />
+
+								<h:outputText value="Número: " />
+								<p:inputText
+									value="#{autoCadSecBean.autocadTO.unidade.endereco.numero}"
+									required="false" label="Número" size="5" maxlength="8"
+									validatorMessage="O número é obrigatório." />
+
+
+								<h:outputText value="UF: " for="uf" />
+								<p:selectOneMenu id="uf"
+									value="#{autoCadSecBean.autocadTO.unidade.endereco.uf}"
+									required="false" label="Text 3">
+									<h:outputText value="UF: " />
+									<f:selectItem itemLabel="Selecione a UF:" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{autoCadSecBean.ufs}" var="uf"
+										itemLabel="#{uf}" itemValue="#{uf}" />
+								</p:selectOneMenu>
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="usuario" title="Usuário">
+						<p:panel header="Cadastrar Usuario">
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Usuário: " />
+								<p:inputText value="#{autoCadSecBean.autocadTO.usuario.nome}"
+									required="false" label="Usuário" />
+
+								<h:outputText value="Email: " />
+								<p:inputText value="#{autoCadSecBean.autocadTO.usuario.email}"
+									required="false" label="Email" />
+
+								<h:outputText value="Senha: " />
+								<p:password id="toggle"
+									value="#{autoCadSecBean.autocadTO.usuario.senha}"
+									toggleMask="true" redisplay="false" />
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="confirm" title="Confirmação">
+						<p:panel header="Confirmation">
+							<h:panelGrid id="confirmation" columns="3"
+								columnClasses="grid,grid,grid">
+								<h:panelGrid columns="2" columnClasses="label, value">
+									<h:outputText value="Nome Secretaria: " />
+									<h:outputText
+										value="#{autoCadSecBean.autocadTO.secretaria.tenant}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Secretaria: " />
+									<h:outputText
+										value="#{autoCadSecBean.autocadTO.secretaria.secretaria}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Nome Unidade: " />
+									<h:outputText value="#{autoCadSecBean.autocadTO.unidade.nome}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Contato:  " />
+									<h:outputText
+										value="#{autoCadSecBean.autocadTO.unidade.endereco.cep}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Endereço:  " />
+									<h:outputText
+										value="#{autoCadSecBean.autocadTO.unidade.endereco.endereco}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Número:  " />
+									<h:outputText
+										value="#{autoCadSecBean.autocadTO.unidade.endereco.numero}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="UF:  " />
+									<h:outputText
+										value="#{autoCadSecBean.autocadTO.unidade.endereco.uf}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Usuário: " />
+									<h:outputText value="#{autoCadSecBean.autocadTO.usuario.nome}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Email: " />
+									<h:outputText value="#{autoCadSecBean.autocadTO.usuario.email}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Senha: " />
+									<p:password id="toggleconfirm"
+										value="#{autoCadSecBean.autocadTO.usuario.senha}"
+										toggleMask="false" redisplay="true" disabled="true" />
+								</h:panelGrid>
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+				</p:wizard>
+			</h:form>
+		</div>
+	</ui:define>
 </ui:composition>
