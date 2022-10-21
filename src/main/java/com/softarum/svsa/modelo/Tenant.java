@@ -3,6 +3,8 @@ package com.softarum.svsa.modelo;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
+import com.softarum.svsa.modelo.enums.TipoUnidade;
 import com.softarum.svsa.service.s3.AmazonS3Keys;
 
 import lombok.EqualsAndHashCode;
@@ -26,7 +29,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Tenant.buscarTodos", query="select t from Tenant t")
+@NamedQuery(name="Tenant.buscarTodos", query="select t from Tenant t")
 	
 })
 public class Tenant implements Serializable {
@@ -44,6 +47,10 @@ public class Tenant implements Serializable {
 	private String secretaria = null;
 	
 	private String s3Key = null;
+	
+	@Enumerated(EnumType.STRING)
+	private TipoUnidade tipo;
+	
 	
 	@Transient
 	public String getUrlAnexo() {
