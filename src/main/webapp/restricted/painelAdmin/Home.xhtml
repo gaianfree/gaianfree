@@ -1,0 +1,76 @@
+<ui:composition template="/WEB-INF/template/LayoutLogin.xhtml" 
+      xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">SVSA</ui:define>	
+
+	<ui:define name="corpo">
+	
+		<style type="text/css">
+		    .product-item .product-item-content {
+		        border: 2px solid var(--surface-d);
+		        border-radius: 2px;
+		        margin: .3rem;
+		        text-align: center;
+		        padding: .5rem 0;
+		    }
+		
+		    .product-item .product-image {
+		        width: 40%;		       
+		   }
+		</style>
+		
+		<h:form id="formLogin">			
+			
+			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+			 <div class="product-item">
+                <div class="product-item-content">
+                    <div class="p-mb-3">
+				        <p:carousel value="#{homeBean.products}" var="logo" circular="true" autoplayInterval="5000"
+				                    responsiveOptions="#{homeBean.responsiveOptions}" numVisible="1" numScroll="1">		
+				            <div class="product-item">
+		                        <p:graphicImage library="imagens" name="#{logo.imagem}" styleClass="product-image"/>
+				            </div>
+				        </p:carousel>
+		        	</div>
+		        </div>				        
+		    </div>
+		    
+		   <!-- LOGIN  git commit -a -m 'Create new footer [issue 53]' -->
+			<div class="login">		
+				<div class="contact-container">			
+				  <h1><b>Bem-vindos ao SVSA!</b></h1>		  
+				</div>
+				<br/>							
+				<h:panelGrid style="margin: 0 auto;">					
+					<h:graphicImage library="imagens" name="login2.png" width="80" height="80 "/>
+					<p:button icon="pi pi-refresh" value="Login" outcome="/restricted/home/SvsaHome.xhtml"/>					
+	   			</h:panelGrid>	
+			</div>
+			<!-- FIM LOGIN -->
+			
+			<p:dock position="bottom">
+				<p:menuitem value="E-Mail" icon="/resources/imagens/email_t.png" 
+        			url="mailto:atendimento@gaian.com.br"/>        		
+        		<p:menuitem value="Facebook" icon="/resources/imagens/facebook_t.png" 
+        			url="https://www.facebook.com/GaianOficial"/>
+        		<p:menuitem value="Instagran" icon="/resources/imagens/instagran_t.png" 
+        			url="https://www.instagram.com/gaianoficial/"/>
+       			<p:menuitem value="Gaian.com.br" icon="/resources/imagens/whatsapp_t.png" 
+        			url="https://api.whatsapp.com/send?phone=5519992607200"/>       			
+        		<p:menuitem value="Gaian.com.br" icon="/resources/imagens/gaian_t.png" 
+        			url="https://gaian.com.br/"/>       		
+			</p:dock>
+		    
+		    <br/><br/><br/>
+        	<div>
+			    <h:graphicImage library="imagens" name="gaian_paleta.png" width="900" height="250" />
+			</div>
+		</h:form>
+	
+	</ui:define>
+</ui:composition>
