@@ -8,7 +8,7 @@
 }
 
 .divider {
-  border-left: 2px solid var(--colorItemsMenu);
+  border-left: 2px solid var(--colorHeaderDivider);
   height: 5px;
 }
 
@@ -24,7 +24,7 @@
 
 .navHomePage ul a {
   display: block;
-  color: var(--colorItemsMenu);
+  color: var(--colorHeaderMenuItems);
   font-size: 1.125rem;
   padding: .5rem;
 }
@@ -32,14 +32,14 @@
 .navHomePage ul a.btnLogin {
   display: flex;
   gap: .3125rem;
-  color: var(--colorBlue);
+  color: var(--colorHeaderButtonLogin);
 }
 
 #btnMobile{
   display: none;
 }
 
-#containerSocialNetwork {  /* Temporario */
+#containerSocialNetwork {
   display: block;
 }
 
@@ -57,15 +57,15 @@
 }
 
 a.iconFacebook i{
-  color: #3b5998;
+  color: var(--colorHeaderIconFacebook);
 }
 
 a.iconInstagram i{
-  color: #ff6eb4;
+  color: var(--colorHeaderIconInstagram);
 }
 
 a.iconYoutube i{
-  color: #ff0000;
+  color: var(--colorHeaderIconYouTube);
 }
 
 @media (max-width: 37.5rem){
@@ -74,7 +74,7 @@ a.iconYoutube i{
     font-size: 2rem;
     cursor: pointer;
 
-    color: var(--colorOrange);
+    color: var(--bgHeaderMenuMobile);
   }
 
   #menu{
@@ -83,7 +83,7 @@ a.iconYoutube i{
     width: 100%;
     top: 6rem;
     right: 0rem;
-    background: #f5f6f7;
+    background: var(--bgHeaderMenu);
     transition: .6s;
     z-index: 1000;
     height: 0rem;
@@ -100,7 +100,7 @@ a.iconYoutube i{
   #menu a {
     padding: 1rem 0;
     margin: 0 1rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--colorHeaderMenuLinks);
   }
 
   #containerSocialNetwork { 

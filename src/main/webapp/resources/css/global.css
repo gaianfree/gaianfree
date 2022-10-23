@@ -11,41 +11,96 @@ html {
 }
 
 :root{
-	--bgHeader: #ffffff;
-	--colorItemsMenu: #fad267;
-	--colorItemsMenuLogin: #00bce1;
-	--bgSobreSection: #dfe6ed;
-	--bgPorqueSection: #dfe6ed;
-	--bgPlanosSection: #96c3ec;
-	--bgTreinamentoSection: #fbe192;
-	--bgParceirosSection: #ffffff;
-	--bgPlanosTabela: #ffffff9d;
-	--borderPlanosTabela: #c3cfd9;
-	--bgPlanosButton: #f55d48;
-	--colorPlanosButton: #ffffff;
-	--borderPlanosButton: #be3a2b;
-	--bgTreinamentoButton: #ffffff;
-	--colorTreinamentoButton: #2e89d9;
-	--borderTreinamentoButton: #b0c1ab;
-	--bgFooter: #c4bdaf;
-	--bgContactButton: #e8833a;
-	--colorContactButton: #ffffff;
-	--colorInfoLinks: #7165ec;
-	--colorFacebookIcon: #1778f2;
-	--colorInstagramIcon: #f00075;
-	--colorYoutubeIcon: #ff0000;
+	/*Gaian Colors*/
 	--colorBlue: #00BCE1;
 	--colorOrange: #EB894C;
 	--colorYellow: #FAD267;
 	--colorGreen: #D4E5B3;
 	--colorBlack: #000000;
-	/*Cores da Pagina de Videos*/
-	--colorBorderDivider: #e5e5e5;
-	--colorPlaylistHover: #3c3c3ccc;
-	--colorBackgroundSection: #e2e2e65a;
-	--colorContainerVideosIntroTitle: #3c3c3ce6;
-	--colorVideosIntroButtonsBorder: #d1d1d1;
+	/*Header Variables*/
+	--bgHeader: #ffffff;
+	--colorHeaderDivider: #fad267;
+	--colorHeaderMenuItems: #fad267;
+	--colorHeaderButtonLogin: #00bce1;
+	--colorHeaderIconFacebook: #3b5998;
+	--colorHeaderIconInstagram: #ff6eb4;
+	--colorHeaderIconYouTube: #ff0000;
+	--bgHeaderMenuMobile: #eb894c;
+	--bgHeaderMenu: #f5f6f7;
+	--colorHeaderMenuLinks: #00000080;
+	/*Home Variables*/
+	--colorHomeTextSpan: #3c3c3cb3;
+	--colorHomeTextTitle: #213547;
+	--colorHomeTextSubtitle: #3c3c3cb3;
+	--bgHomeLinkBuySoftware: #00bce1;
+	--colorHomeLinkBuySoftware: #ffffffde;
+	--bgHomeLinkWhySoftware: #e5e5e5;
+	--colorHomeLinkWhySoftware: #213547;
+	--borderColorHomeLinkWhySoftware: #d1d1d1;
+	--bgHomeLinkWhySoftwareHover: #00bce1;
+	--colorHomeLinkWhySoftwareHover: #ffffffde;
+	--borderColorCardsArticle: #f9f9f9;
+	--bgHomeCardsArticle: #f9f9f9;
+	--bgHomeCardsArticlesIcon: #fad267;
+	--colorHomeCardsArticlesIcon: #e5e5e5;
+	--colorHomeCardsArticleTitle: #213547;
+	--colorHomeCardsArticleSubtitle: #3c3c3cb3;
+	--borderColorDividerSection: #e5e5e5;
+	--bgHomePricesSection: #d4e5b3;
+	--colorPricesSectionIcon: #00bce1;
+	--colorPricesSectionTitle: #3c3c3cb3;
+	--bgHomeTablesPlans: #ffffff9d;
+	--borderColorTablesPlans: #c3cfd9;
+	--borderColorTitleTablePlans: #000;
+	--bgHomeTablePlansLink: #eb894c;
+	--colorHomeTablePlansLink: #fff;
+	--colorHomePartnershipsTitle: #00bce1;
+	--colorHomePartnershipsSubtitle: #353535;
+	--colorModalInputForm: #333;
+	--borderColorModalInputForm: #ddd;
+	--bgModalButtonLogin: #1abc9c;
+	--bgModalButtonLoginHover: #109177;
+	--colorModalButtonLogin: #fff;
+	--borderColorButtonLogin: #16a085;
+	/*Error Page Variables*/
+	--colorErrorTitle: #eb894c;
+	--bgAccordionList: #00bce1;
+	--colorAccordionList: #444;
+	/*Footer Variables*/
+	--bgFooter: #212529;
+	--colorFooterTitleColumns: #fcc419;
+	--colorFooterParagraphColumns: #f0f8ff;
+	--colorFooterLinkColumns: #f5f6f7;
+	--bgFooterButtonCopyEmail: #2aaac4;
+	--colorFooterIconCopyEmail: #fff;
+	--colorFooterButtonText: #f8f9fa;
+	/*Videos Page Variables*/
+	--borderColorDivider: #e5e5e5;
+	--colorVideoSubtitle: #000;
+	--bgPlaylist: #d4e5b3;
+	--colorPlaylistText: #000;
+	--bgPlaylistLink: #d4e5b3;
+	--colorPlaylistLink: #000;
+	--colorPlaylistLinkHover: #3c3c3ccc;
+	--borderColorPlaylistDivider: #000;
+	--bgVideos: #e2e2e65a;
+	--colorVideosSubtitle: #3c3c3ce6;
+	--colorVideosLink: #000;
+	--borderColorVideosButtons: #d1d1d1;
+	--bgButtonIntro: #fad267;
 	--colorVideosIntroButtonsHover: #ffffff;
+	--bgSectionFunctions: #e2e2e65a;
+	--bgLowBarSection: #00bce1;
+	/*Toast Notification Variables*/
+	--bgToastNotification: #f2f2f2;
+	--boxShadowContainerToastNotification: #0000001a;
+	--borderLeftContainerToastNotification: #4070f4;
+	--bgIconsCheck: #4070f4;
+	--colorIconsCheck: #fff;
+	--colorText: #666666;
+	--colorTextTitle: #333;
+	--bgProgressContainer: #ddd;
+	--bgProgressContainerBefore: #4070f4;
 }
 
 body {

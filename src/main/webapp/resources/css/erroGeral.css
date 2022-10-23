@@ -8,7 +8,7 @@
   font-size: 1.75rem;
   font-weight: bold;
   margin-bottom: 1.25rem;
-  color: var(--colorOrange);
+  color: var(--colorErrorTitle);
 }
 
 .messageError {
@@ -20,7 +20,6 @@
 .messageError > span{
 	font-size: 1.125rem
 }
-
 
 .accordion {
   width: 100%;
@@ -34,9 +33,8 @@
   text-align: left;
   font-size: 1rem;
   transition: all 0.4s ease-in-out;
-
-  background-color: #00bce1;
-  color: #444;
+  background-color: var(--bgAccordionList);
+  color: var(--colorAccordionList);
 }
 
 .active,
@@ -47,7 +45,6 @@
 .panel {
   margin-left: 0.875rem;
   padding: 0;
-
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;

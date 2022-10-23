@@ -8,7 +8,7 @@
 }
 
 .dividerVideo{
-  border: 1px solid var(--colorBorderDivider);
+  border: 1px solid var(--borderColorDivider);
 }
 
 .videoText h1{
@@ -18,7 +18,7 @@
 .videoText p {
   margin: 1rem 0;
   font-size: 1.25rem;
-  color: var(--colorBlack);
+  color: var(--colorVideoSubtitle);
 }
 
 .playlistLink {
@@ -26,8 +26,8 @@
 }
 
 .playlistLink a {
-  background-color: var(--colorGreen);
-  color: var(--colorBlack);
+  background-color: var(--bgPlaylistLink);
+  color: var(--colorPlaylistLink);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +40,7 @@
 
 .playlistLink a:hover {
   transform: scale(0.9);
-  color: var(--colorPlaylistHover);
+  color: var(--colorPlaylistLinkHover);
 }
 
 @media (min-width: 992px) {
@@ -62,7 +62,7 @@
   }
 
   .dividerBottom{
-    border-bottom: 1px var(--colorBlack) solid;
+    border-bottom: 1px solid var(--borderColorPlaylistDivider);
   }
 
   .playlistLink{
@@ -80,8 +80,9 @@
 }
 
 #sectionVideosIntro {
-  background-color: var(--colorBackgroundSection);
+  background-color: var(--bgVideos);
 }
+
 .imageVideosIntro {
   margin-bottom: 1.25rem;
 }
@@ -99,11 +100,11 @@
 .contentVideosIntro h3 {
   padding: 0.75rem 0;
   font-size: 1.20rem;
-  color: var(--colorContainerVideosIntroTitle);
+  color: var(--colorVideosSubtitle);
 }
 
 .contentVideosIntro a {
-  color: var(--colorBlack);
+  color: var(--colorVideosLink);
   display: flex;
   justify-content: center;
   text-align: center;
@@ -118,11 +119,11 @@
 .videosIntroButtons .introButton {
   margin-bottom: 1.25rem;
   background-color: var(--colorBorderDivider);
-  border-color: var(--colorVideosIntroButtonsBorder);
+  border-color: var(--borderColorVideosButtons);
 }
 
 .videosIntroButtons .introButton:hover {
-  background-color: var(--colorYellow);
+  background-color: var(--bgButtonIntro);
   color: var(--colorVideosIntroButtonsHover);
 }
 
@@ -149,15 +150,15 @@
 }
 
 #sectionTecnico {
-  background-color: var(--colorBackgroundSection);
+  background-color: var(--bgSectionFunctions);
 }
 
 #sectionGestores {
-  background-color: var(--colorBackgroundSection);
+  background-color: var(--bgSectionFunctions);
 }
 
 #sectionEnd {
-  background-color: var(--colorBlue);
+  background-color: var(--bgLowBarSection);
 }
 
 .endText h3{
