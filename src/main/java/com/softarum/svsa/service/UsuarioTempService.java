@@ -20,6 +20,10 @@ public class UsuarioTempService {
         destinatario.add(email);
         EmailUtil.sendHtmlEmail("SSL",destinatario,"Confirmação de Cadastro",msgCorpo);
     }
+
+    public void envia(String nome, List<String> email, String token, String assunto, String corpo) {
+        EmailUtil.sendHtmlEmail("SSL", email, assunto, corpo);
+    }
     public Boolean verifyToken(UsuarioTemp usuarioTemp){
         if(usuarioTemp.getValidacao().equals(usuarioTemp.getToken())) {
             return true;
