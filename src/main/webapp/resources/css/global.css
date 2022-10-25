@@ -28,7 +28,9 @@ html {
 	--bgHeaderMenuMobile: #eb894c;
 	--bgHeaderMenu: #f5f6f7;
 	--colorHeaderMenuLinks: #00000080;
+	--colorIconSwitchTheme: #fad267;
 	/*Home Variables*/
+	--bgBody: #fff;
 	--colorHomeTextSpan: #3c3c3cb3;
 	--colorHomeTextTitle: #213547;
 	--colorHomeTextSubtitle: #3c3c3cb3;
@@ -84,13 +86,19 @@ html {
 	--colorPlaylistLinkHover: #3c3c3ccc;
 	--borderColorPlaylistDivider: #000;
 	--bgVideos: #e2e2e65a;
-	--colorVideosSubtitle: #3c3c3ce6;
-	--colorVideosLink: #000;
+	--colorVideosIntroTitle: #000;
+	--colorVideosIntroSubtitle: #3c3c3ce6;
+	--colorVideosIntroButtons: #000;
 	--borderColorVideosButtons: #d1d1d1;
-	--bgButtonIntro: #fad267;
+	--bgVideosIntroButton: #e5e5e5;
+	--bgVideosIntroButtonHover: #FAD267;
+	--borderVideosIntroButton:#d1d1d1;
+	--colorVideosIntroButtons: ;
 	--colorVideosIntroButtonsHover: #ffffff;
 	--bgSectionFunctions: #e2e2e65a;
+	--bgSectionFunctionsDark: #ffffff;
 	--bgLowBarSection: #00bce1;
+	--colorLowBarSectionTitle: #000;
 	/*Toast Notification Variables*/
 	--bgToastNotification: #f2f2f2;
 	--boxShadowContainerToastNotification: #0000001a;
@@ -107,10 +115,83 @@ body {
   font-size: 1rem;
   font-family: Gill Sans Extrabold, Trebuchet MS, sans-serif;
   font-weight: 400;
+  
+  background-color: var(--bgBody);
 }
 
 body.dark{
-	--bgHeader: #000;
+	/*Dark Colors Variables of Header*/
+	--bgHeader: #242424b3;
+	--colorHeaderDivider: #ffffffde;
+	--colorHeaderMenuItems: #ffffffde;
+	--colorHeaderIconFacebook: #ffffffde;
+	--colorHeaderIconInstagram: #ffffffde;
+	--colorHeaderIconYouTube: #ffffffde;
+	--bgHeaderMenuMobile: #00bce1;
+	--bgHeaderMenu: #242424b3;
+	--colorHeaderMenuLinks: #fff;
+	--colorIconSwitchTheme: #fad267;
+	/*Dark Colors Variables of Home*/
+	--bgBody: #262626;
+	--colorHomeTextTitle: #e6f7ff;
+	--colorHomeTextSubtitle: #f2f3f5;
+	--bgHomeLinkBuySoftware: #00bce1;
+	--colorHomeLinkBuySoftware: #ffffffde;
+	--bgHomeLinkWhySoftware: #00bce1;
+	--colorHomeLinkWhySoftware: #ffffffde;
+	--borderColorHomeLinkWhySoftware: #d1d1d1;
+	--bgHomeLinkWhySoftwareHover: #00bce1de;
+	--colorHomeLinkWhySoftwareHover: #ffffffde;
+	--borderColorCardsArticle: #f9f9f9;
+	--bgHomeCardsArticle: #282828;
+	--bgHomeCardsArticlesIcon: #4da6ff;
+	--colorHomeCardsArticlesIcon: #e5e5e5;
+	--colorHomeCardsArticleTitle: #f1f1f1;
+	--colorHomeCardsArticleSubtitle: #e6f9ff;
+	--borderColorDividerSection: #0099cc;
+	--bgHomePricesSection: #303030;
+	--colorPricesSectionIcon: #00bce1;
+	--colorPricesSectionTitle: #e3e3e3;
+	--bgHomeTablesPlans: #ffffff9d;
+	--borderColorTablesPlans: #c3cfd9;
+	--borderColorTitleTablePlans: #000;
+	--bgHomeTablePlansLink: #00bce1;
+	--colorHomeTablePlansLink: #fff;
+	--colorHomePartnershipsTitle: #00bce1;
+	--colorHomePartnershipsSubtitle: #e5e5e5;
+	--colorModalInputForm: #333;
+	--borderColorModalInputForm: #ddd;
+	--bgModalButtonLogin: #1abc9c;
+	--bgModalButtonLoginHover: #109177;
+	--colorModalButtonLogin: #fff;
+	--borderColorButtonLogin: #16a085;
+	/*Error Page Variables*/
+	--colorErrorTitle: #ffffffd0;
+	--bgAccordionList: #00bce1;
+	--colorAccordionList: #f2f2f2;
+	/*Dark Colors Variables of Videos Page*/
+	--borderColorDivider: #e5e5e5;
+	--colorVideoTitle: #ffffffd0;
+	--colorVideoSubtitle: #ddddddd0;
+	--colorPlaylistText: #000;
+	--bgPlaylistLink: #646cffd7;
+	--colorPlaylistLink: #000000da;
+	--colorPlaylistLinkHover: #ffffff;
+	--borderColorPlaylistDivider: #ffffff88;
+	--bgVideosIntro: #000;
+	--colorVideosIntroTitle:#ffffffd0; 
+	--colorVideosIntroSubtitle: #b9b9b9c4;
+	--colorVideosIntroButtons: #000;
+	--borderColorVideosButtons: #d1d1d1;
+	--bgVideosIntroButton: #8b8b8bab;
+	--bgVideosIntroButtonHover: #fffffff1;
+	--borderVideosIntroButton:#d1d1d1;
+	--colorVideosIntroButtons: #000;
+	--colorVideosIntroButtonsHover: #000;
+	--bgSectionFunctions: #000000e7;
+	--bgSectionFunctionsDark: #000;
+	--bgLowBarSection: #1a1a1adc;
+	--colorLowBarSectionTitle: #c7cdd0;
 }
 
 

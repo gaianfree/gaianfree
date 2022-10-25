@@ -1,4 +1,5 @@
 .sectionIntroduction {
+  background-color: var(--bgSection);
   width: 100%;
 }
 
