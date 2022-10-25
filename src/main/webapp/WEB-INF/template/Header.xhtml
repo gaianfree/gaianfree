@@ -11,7 +11,7 @@
     <ui:composition>
      	<div class="containerHeader">
 	        <div class="containerImg">
-	          <a href="/">
+	          <a href="#{request.contextPath}">
 	          	<h:graphicImage alt="Logo da SVSA" library="imagens" name="svsa_t.png"></h:graphicImage>
 	          </a>
 	        </div>
@@ -19,7 +19,7 @@
 	          <i id="btnMobile" class="pi pi-bars"></i>
 	          <ul id="menu">
 	            <li>
-	              <a href="#" aria-label="Abrir modal de login" class="btnLogin" onclick="PF('dlg2').show()">
+	              <a href="#{request.contextPath}/restricted/home/SvsaHome.xhtml" class="btnLogin">
 	                <i class="pi pi-user"></i>
 	                Login
 	              </a>
@@ -57,24 +57,15 @@
 	                    	<i class="pi pi-youtube"></i>
 	                    </a>
 	                  </li>
+	                  <li>
+	                  	<i class="pi pi-moon switchThemeIcon"></i>
+	                  </li>
 	                </ul>
 	              </div>
 	            </li>
 	          </ul>
 	        </nav>
       </div>
-    
-    	<p:dialog header="Formulário de Login" widgetVar="dlg2" height="400" width="700" showEffect="fade" modal="true">
-    		<h:form class="formModal">
-    			<div class="card">
-    				<fieldset class="fieldset">
-			            <input class="inputForm" type="text" name="username" placeholder="Digite seu nome" />
-			            <input class="inputForm" type="password" name="userPassword" placeholder="Digite sua senha" />
-			            <p:button class="btnSubmitLoginUser" value="Enviar" outcome="/restricted/home/SvsaHome.xhtml" />
-			        </fieldset>
-    			</div>
-    		</h:form>
-    	</p:dialog>
     </ui:composition>
   </body>
 </html>
