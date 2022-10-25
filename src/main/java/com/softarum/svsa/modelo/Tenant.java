@@ -45,7 +45,7 @@ public class Tenant implements Serializable {
 	
 	private String s3Key = null;
 	
-	private Boolean isFree;
+	private Boolean isFree = false;
 	
 	@Transient
 	public String getUrlAnexo() {

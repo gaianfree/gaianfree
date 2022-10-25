@@ -21,8 +21,8 @@ import com.softarum.svsa.util.jpa.Transactional;
  */
 public class UsuarioDAO implements Serializable {
 
+
 	private static final long serialVersionUID = 1L;
-	
 	@Inject
 	private EntityManager manager;
 	
@@ -213,7 +213,7 @@ public class UsuarioDAO implements Serializable {
 				.setParameter("tenantId", tenantId)
 				.getSingleResult();
 	}
-	
+	 
 	
 	
 	
