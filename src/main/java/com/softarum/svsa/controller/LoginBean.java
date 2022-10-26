@@ -140,11 +140,15 @@ public class LoginBean implements Serializable {
 			
 			// se usuario não está na sessao = não está logado
 			if(usuario == null) {
+
+				usuario = isValidUser();	// busca usuario no banco		
 				
-				usuario = isValidUser();	// busca usuario no banco				
 				
 				if(usuario != null) {
-					
+				    if(usuario.getTenant() == null){
+	                    return "/restricted/painelAdmin/PainelAdmin.xhtml";
+	                }
+				    
 					this.setUnidades(this.usuarioService.buscarUnidades(getTenantId()));					
 
 					log.info("unidade ORIGINAL do usuarioLogado (" + usuario.getNome() + ") : " + usuario.getUnidade().getNome());
@@ -156,7 +160,7 @@ public class LoginBean implements Serializable {
 					autenticado = true;
 				
 				} else {
-					return "/restricted/home/SvsaHome.xhtml";
+					return "restricted/usuario/CadastroUsuario.xhtml";
 				}
 			}
 		} catch (NoResultException e) {
