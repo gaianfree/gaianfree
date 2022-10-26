@@ -1,85 +1,71 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml"
- 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui">
-	
-	<body>
-		<ui:composition>	
-			
-			<header>					
-				<div class="card">
-					<h:form>											
-						<p:menubar styleClass="menubar"
-							model="#{menuBean.menu}">							
-							<f:facet name="options" >
-				               	<h:link outcome="/restricted/home/SvsaHome.xhtml">
-									<h:graphicImage width="80" height="26" library="imagens" name="svsa_t.png" title="Voltar para Home"/>
-								</h:link>									
-
-								<p:outputLabel value="v6.2.1" onmouseover="PF('dlg').show();" style="font-size: 0.625rem"/>
-
-           					</f:facet>							
-						</p:menubar>
-					
-					</h:form>					
-				</div>	
-				
-				<p:ajaxStatus styleClass="ajax-status">
-					<f:facet name="start">
-						<h:graphicImage library="imagens" name="carregando.gif" />
-					</f:facet>
-					<f:facet name="complete">
-						<h:outputText value="" />
-					</f:facet>
-				</p:ajaxStatus>
-				
-				<div style="clear: both"></div>
-			</header>
-			
-			<p:dialog header="Notas da Versão"
-				modal="true" 
-				resizable="true" 
-	       		widgetVar="dlg" 
-	       		dynamic="true" 
-	       		closeOnEscape="true"
-	       		position="center"
-	       		width="600" height="400"
-	       		hideEffect="explode">   		
-				<br/>
-				
-				<b><h:outputText value="Versão 6.2.1"/></b> <br/>
-				<h:outputText value="RMA Pop." /> <br/>
-				<b><h:outputText value="Versão 6.2.0"/></b> <br/>
-				<h:outputText value="Geração de lista de presença de SCFV sem os inscritos cancelados." /> <br/>
-				<h:outputText value="Encerramento da situação de violência (data de encerramento)." /> <br/>
-				<h:outputText value="Criação do Registro de Abordagem Social (POP/CREAS)." /> <br/>
-				<h:outputText value="Criação do Relatório de Abordagem Social (POP/CREAS)." /> <br/>
-				<h:outputText value="Integrada a resposta de ofício ao receber ofício." /> <br/>
-				<h:outputText value="Criação de relatórios de Prontuários criados pelo CCI." /> <br/>
-				<h:outputText value="Criação de relatórios de Pessoas criadas pelo CCI." /> <br/>
-				<h:outputText value="Criação de Unidade Vinculada para unidades tipo CREAS (CCI)." /> <br/>
-				<b><h:outputText value="Versão 6.1.0"/></b> <br/>
-				<h:outputText value="Ajustes na criação do RMA do CREAS." /> <br/>
-				<h:outputText value="Registro do técnico que criou o prontuário." /> <br/>
-				<h:outputText value="Criação de unidades da rede que atendem SCFV (CCI)." /> <br/>
-				<h:outputText value="Registro da unidade executora no servico criado pelo CCI." /> <br/>
-				<h:outputText value="Registro da unidade criadora no prontuario criado pelo CCI." /> <br/>
-				<h:outputText value="Consulta de prontuários criados pela dataEntrada não mais pela dataCricação." /> <br/>			
-				
-								
-		   		<center> 
-		   			<p:spacer height="20px" />  
-		   			<p:button value="Ok" 
-		        		onclick="PF('dlg').hide(); return false;" />
-	       		</center>
-	       		
-	        </p:dialog>	
-		
-		</ui:composition>
-		
-	</body>
-
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <body>
+    <ui:composition>
+     	<div class="containerHeader">
+	        <div class="containerImg">
+	          <a href="#{request.contextPath}">
+	          	<h:graphicImage alt="Logo da SVSA" library="imagens" name="svsa_t.png"></h:graphicImage>
+	          </a>
+	        </div>
+	        <nav class="navHomePage" id="nav">
+	          <i id="btnMobile" class="pi pi-bars"></i>
+	          <ul id="menu">
+	            <li>
+	              <a href="#{request.contextPath}/restricted/home/SvsaHome.xhtml" class="btnLogin">
+	                <i class="pi pi-user"></i>
+	                Login
+	              </a>
+	            </li>
+	            <li>
+	              <span class="divider"></span>
+	            </li>
+	            <li>
+	              <a href="#" aria-label="Ir para pagina de cadastro de municipio"> Cadastro de Município </a>
+	            </li>
+	            <li>
+	              <span class="divider"></span>
+	            </li>
+	            <li>
+	              <a href="#" aria-label="Ir para pagina de auto cadastro">Auto Cadastro</a>
+	            </li>
+	            <li>
+	              <span class="divider"></span>
+	            </li>
+	            <li>
+	              <div id="containerSocialNetwork">
+	                <ul>
+	                  <li>
+	                    <a href="https://www.facebook.com/GaianOficial/" class="iconFacebook" aria-label="Ir para a pagina do Facebook"
+	                      ><i class="pi pi-facebook"></i
+	                    ></a>
+	                  </li>
+	                  <li>
+	                    <a href="https://www.instagram.com/gaianoficial/" class="iconInstagram" aria-label="Ir para a pagina do Instagram"
+	                      ><i class="pi pi-instagram"></i
+	                    ></a>
+	                  </li>
+	                  <li>
+	                    <a href="https://www.youtube.com/channel/UCtDRtIaNumFjnO9DTvYDODw" class="iconYoutube" aria-label="Ir para o canal do YouTube">
+	                    	<i class="pi pi-youtube"></i>
+	                    </a>
+	                  </li>
+	                  <li>
+	                  	<i class="pi pi-moon switchThemeIcon"></i>
+	                  </li>
+	                </ul>
+	              </div>
+	            </li>
+	          </ul>
+	        </nav>
+      </div>
+    </ui:composition>
+  </body>
 </html>

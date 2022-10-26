@@ -16,7 +16,7 @@
 		<poi.version>5.0.0</poi.version> <!--  4.1.2 -->
 		<hibernate.version>5.6.8.Final</hibernate.version>
 	</properties>
-	
+
 
 	<build>
 		<finalName>svsafree</finalName>
@@ -24,13 +24,13 @@
 			<plugin>
 				<!-- para compilar o codigo java -->
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.10.1</version>				
+				<version>3.10.1</version>
 				<configuration>
 					<!-- versão do java -->
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>			
+			</plugin>
 			<plugin>
 				<!-- para rodar os testes unitarios java -->
 				<groupId>org.apache.maven.plugins</groupId>
@@ -39,6 +39,11 @@
 				<configuration>
 					<skipTests>true</skipTests>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.1</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -314,9 +319,19 @@
 	         <artifactId>layout</artifactId>         
 	         <version>${itext.version}</version>
 	      </dependency>
-	  
-	   	
-	</dependencies>
+
+	      <dependency>
+	      	<groupId>org.mockito</groupId>
+	      	<artifactId>mockito-inline</artifactId>
+	      	<version>4.8.0</version>
+	      </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 	
 	
 

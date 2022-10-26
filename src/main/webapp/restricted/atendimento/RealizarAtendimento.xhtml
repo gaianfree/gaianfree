@@ -1,352 +1,483 @@
-<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
- 	xmlns:h="http://xmlns.jcp.org/jsf/html"
- 	xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:o="http://omnifaces.org/ui">
+<ui:composition
+  template="/WEB-INF/template/LayoutPadrao.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:o="http://omnifaces.org/ui"
+>
+  <ui:define name="titulo">Realizar Atendimento Individualizado</ui:define>
 
-    <ui:define name="titulo">Realizar Atendimento Individualizado</ui:define>
-    
-    <ui:define name="corpo">
-    	<h2>Realizar Atendimento Individualizado</h2>
-    	
-    	<h:form id="frmPesquisa">
-    	
-    		<p:growl id="growl" showDetail="false"> 
-    		</p:growl> 
-			<p:messages id="message" showDetail="false" closable="true"/>
-			
-			<p:toolbar id="toolbar">
-				<f:facet name="left">	
-				
-	            	<p:commandButton icon="pi pi-user" value="Atender" title="Realizar o atendimento"
-		            	disabled="#{not realizarAtendimentoBean.itemSelecionado}"
-		            	actionListener="#{realizarAtendimentoBean.startPoll}"
-		            	oncomplete="PF('atendDialogWidgetVar').show()"
-		            	update="atendDialog toolbar" 
-		            	process="@this">
-		            	<p:resetInput target="atendDialog" />	
-	            	</p:commandButton>	            	
-	            	
-	            	<span class="ui-separator">
-		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
-		            </span>
-		            
-		            <p:commandButton icon="pi pi-user" value="Situação de Violência" title="Registrar Situação de Violência"
-		            	disabled="#{not realizarAtendimentoBean.itemSelecionado}"
-		            	actionListener="#{realizarAtendimentoBean.carregarSituacoesViolencia}"
-		            	oncomplete="PF('violenciaWidgetDialog').show()"
-		            	update="violenciaDialog listaDataTable toolbar" 
-		            	process="@this">
-		            	<p:resetInput target="violenciaDialog" />	
-	            	</p:commandButton>
-	            	
-	            	<span class="ui-separator">
-		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
-		            </span>
-		            
-		            <p:commandButton icon="pi pi-chart-line" value="Indicador de Proteção" title="Indicadores de proteção e desproteção social"
-		            	disabled="#{not realizarAtendimentoBean.itemSelecionado}"
-		            	actionListener="#{realizarAtendimentoBean.carregarIndicadores}"
-		            	oncomplete="PF('indWidgetDialog').show()"
-		            	update="indDialog toolbar" 
-		            	process="@this">
-		            	<p:resetInput target="indDialog" />	
-	            	</p:commandButton>
-	            	
-	            	<span class="ui-separator">
-		                <span class="ui-icon ui-icon-grip-dotted-vertical" />
-		            </span>	
-		            
-            		<p:button outcome="/restricted/prontuario/CondicaoIndividual.xhtml" icon="pi pi-external-link"
-            			disabled="#{not realizarAtendimentoBean.itemSelecionado}" 
-            			value="Ir para Condição Individual"/>	            	
- 	            	
-				</f:facet>
-			</p:toolbar>
-				    	    
-		    <!--  Lista de itens de atendimento -->
-			<p:dataTable id="listaDataTable"  value="#{realizarAtendimentoBean.listaAtendimentos}" var="item"
-	    		style="margin-top: 20px" emptyMessage="Nenhuma pessoa agendada para atendimento." rows="10" 
-	    		rowsPerPageTemplate="10,15,20"
-	    		paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
-	    		selectionMode="single" selection="#{realizarAtendimentoBean.item}" rowKey="#{item.codigo}"
-	    		rowStyleClass="#{item.pessoa.familia.prontuario.status eq 'INATIVO' or item.pessoa.status eq 'INATIVO'? 'inativo' : null}">
-	    		
-	    		<p:ajax event="rowSelect" update="frmPesquisa:toolbar" />			
-				<p:ajax event="rowUnselect" update="frmPesquisa:toolbar" />
-		    		
-		    	<p:column headerText="Agendado" style="width: 30px; text-align: center"
-		    		sortBy="#{item.dataAgendamento}" >
-	    			<h:outputText value="#{item.dataAgendamento}">
-	    				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-	    			</h:outputText>
-	    		</p:column>
-		    		   
-		    	<p:column headerText="Pront. Código" style="width: 10px; text-align: center">
-	    			<h:outputText value="#{item.pessoa.familia.prontuario.codigo}" />
-	    		</p:column>
-	    		
-	    		<p:column headerText="Código" style="width: 8px; text-align: center">
-	    			<h:outputText value="#{item.pessoa.codigo}" />
-	    		</p:column>
-	    		 				    		
-	    		<p:column headerText="Nome Pessoa" style="width: 100px; text-align: center"
-	    			filterBy="#{item.pessoa.nome}"
-	    			footerText="contains" filterMatchMode="contains">
-	    			<h:outputText value="#{item.pessoa.nome}" />
-	    		</p:column>
-	    		
-	    		<p:column headerText="Nome Social" style="width: 80px; text-align: center">
-	    			<h:outputText value="#{item.pessoa.nomeSocial}" />
-	    		</p:column>
-	    		
-	    		<p:column headerText="Telefone" style="width: 30px; text-align: center">
-	    			<h:outputText value="#{item.pessoa.telefone}" />
-	    		</p:column>
-	    		
-	    		<p:column headerText="Técnico" style="width: 100px; text-align: center"
-	    			filterBy="#{item.tecnico.nome}"
-	    			footerText="contains" filterMatchMode="contains">
-	    			<h:outputText value="#{item.tecnico.nome}" />
-	    		</p:column>    		
-    		
-    			<p:column headerText="Perfil" style="width: 50px; text-align: center">
-	    			<h:outputText value="#{item.role}" />
-	    		</p:column> 
-	    		
-	    		<p:column headerText="Operações" style="width: 20px; text-align: center">
-	    			<p:commandButton title="Evolução" icon="pi pi-history"	
-	            		rendered="#{not realizarAtendimentoBean.cadastrador}"		            	
-		            	oncomplete="PF('consultaDialogWidgetVar').show()"
-		            	update="frmPesquisa:consultaDialog frmPesquisa:toolbar" 
-		            	process="@this">
-  						<f:setPropertyActionListener target="#{evolucaoUIBean.pessoa}"
-							value="#{item.pessoa}" /> 								                
-	            	</p:commandButton>
-	            	<p:commandButton title="Faltas pessoa" icon="pi pi-thumbs-down"
-	            		rendered="#{not realizarAtendimentoBean.cadastrador}"      	
-		            	actionListener="#{realizarAtendimentoBean.consultaFaltas}" 
-		            	oncomplete="PF('faltasDialogWidgetVar').show()"
-		            	update="frmPesquisa:faltasDialog frmPesquisa:toolbar" 
-		            	process="@this">
-		            	<p:resetInput target="frmPesquisa:faltasDialog" />	
-	            	</p:commandButton>
-	    		</p:column>
-		   	</p:dataTable>
-		   	
-			
-			<p:dialog id="atendDialog" header="Atendimento" widgetVar="atendDialogWidgetVar"
-				modal="true" resizable="true" closeOnEscape="true"
-				showEffect="explode" hideEffect="explode" 
-				width="100%" position="center top" maximizable="true"
-				height="70%" fitViewport="true" responsive="true">	
-				
-				<p:ajax event="close" update="frmPesquisa" listener="#{realizarAtendimentoBean.stopPoll}" />
-				      
-    			<p:growl id="atendGrowl" showDetail="true" />    
-    						
-						
-				<!--  Atendimento -->
-				<p:panelGrid columns="1" id="resumoPanelGrid" 					
-					layout="grid" styleClass="showcase-text-align-center">	
-					
-	    			<h:outputText id="pront" value="PRONTUÁRIO: #{realizarAtendimentoBean.item.pessoa.familia.prontuario.codigo}" />	
-					
-	    			<h:outputText id="nomeAtendido" value="PESSOA: #{realizarAtendimentoBean.item.pessoa.nome}" />	
-	    			
-	    			<p:spacer height="3px" />	
-	    			
-	    			<p:outputLabel value="CÓDIGO AUXILIAR DE ATENDIMENTO" for="aux" />
-		    		<p:selectOneMenu id="aux" 
-		    			required="true" 
-		    			value="#{realizarAtendimentoBean.item.codigoAuxiliar}"
-		    		    validatorMessage="O código auxiliar de atendimento é obrigatório.">
-		    		    <p:ajax event="valueChange" process="@this"
-							update="af20 af21 an20 an21"
-							listener="#{realizarAtendimentoBean.verificaAuxilio}" />
-		    			<f:selectItem itemLabel="Selecione o código auxiliar" />
-		    			<f:selectItems value="#{realizarAtendimentoBean.codigosAuxiliares}" var="codAux" 
-							itemLabel="#{codAux}" itemValue="#{codAux}"/>
-		    		</p:selectOneMenu>
-					
-			    	<h:panelGroup>
-			    		<p:outputLabel value="(Em caso de benefício)" 
-			    			disabled="#{not realizarAtendimentoBean.auxilioFuneral}"/><p:spacer width="10px" />	
-			    		<p:outputLabel id="af20" value="CPF do falecido" for="af21"
-							disabled="#{not realizarAtendimentoBean.auxilioFuneral}"/><p:spacer width="10px" />							
-						<p:inputMask id="af21" size="18" maxlength="14"
-							mask="999.999.999-99"
-							disabled="#{not realizarAtendimentoBean.auxilioFuneral}"
-							value="#{realizarAtendimentoBean.beneficio.cpfFalecido}"/>
-							
-						<p:spacer width="10px" /> 
-				
-						<p:outputLabel id="an20" value="Nr Registro de Nascimento" for="an21"
-							disabled="#{not realizarAtendimentoBean.auxilioNatalidade}" />
-						<p:spacer width="10px" />
-						<p:inputText id="an21" size="18" maxlength="20"
-							disabled="#{not realizarAtendimentoBean.auxilioNatalidade}"
-							value="#{realizarAtendimentoBean.beneficio.registroNascimento}"/>
-		    		
-		    		</h:panelGroup>
-		    		
-		    		<p:spacer height="3px" />		    		
-		    		
-	    			<p:outputLabel value="DATA PARA O ATENDIMENTO" for="dataAtendimento" />
-					<p:calendar id="dataAtendimento" size="30"	
-						required="true"	
-						showOn="button" 								
-						value="#{realizarAtendimentoBean.item.dataAtendimento}"
-						pattern="dd/MM/yyyy HH:mm"
-						mask="99/99/9999 99:99"/> 
-						
-					<p:spacer height="3px" />				
-		    		
-	    			<p:outputLabel value="TÉCNICOS ADICIONAIS" for="pickList"/>
-	    			<p:pickList id="pickList"
-	    				responsive="true"	    				
-	    				converter="pickListTecConverter"
-	    				value="#{realizarAtendimentoBean.tecnicos}" 
-	    				var="tecnico" 
-	    				itemValue="#{tecnico}" itemLabel="#{tecnico.nome}">
-	    				
-	    				<f:facet name="sourceCaption">Disponíveis</f:facet>
-        				<f:facet name="targetCaption">Selecionados</f:facet>
-			        </p:pickList> 
-		
-    				<p:spacer height="3px" />			
-		    		    		
-		    		<p:outputLabel value="DESCRIÇÃO DO ATENDIMENTO" for="editor"/>
-		    		<h:panelGroup>
-			    		<p:textEditor 
-			    			id="editor"  
-			    			widgetVar="editor" 
-			    			required="true" 
-			    			value="#{realizarAtendimentoBean.item.resumoAtendimento}" 
-			    			height="300" 			    			
-			    			style="margin-bottom:10px"
-			    			placeholder="Descreva o resumo do atendimento. (Auto gravação a cada 2 minutos)">			    			
-					        <f:facet name="toolbar">
-					             <span class="ql-formats">
-					                <button class="ql-bold"></button>
-					                <button class="ql-italic"></button>
-					                <button class="ql-underline"></button>
-					                <button class="ql-strike"></button>
-					            </span>
-					            <span class="ql-formats">
-						            <button class="ql-clean" />
-						        </span>
-					            <span class="ql-formats">
-					                <select class="ql-font"></select>
-					                <select class="ql-size"></select>
-					            </span>
-					            <span class="ql-formats">
-						            <button class="ql-script" value="sub" />
-						            <button class="ql-script" value="super" />
-						        </span>						        
-						        <span class="ql-formats">
-						            <button class="ql-list" value="ordered" />
-						            <button class="ql-list" value="bullet" />
-						            <button class="ql-indent" value="-1" />
-						            <button class="ql-indent" value="+1" />
-						        </span>
-						        <span class="ql-formats">
-						            <button class="ql-direction" value="rtl" />
-						            <select class="ql-align" />
-						        </span>						        
-					        </f:facet>					           
-					    </p:textEditor>
-		    			<p:poll id="idPoll" interval="120" listener="#{realizarAtendimentoBean.autoSave}" 		    				
-		    				stop="#{realizarAtendimentoBean.statusPoll}"
-		    				update="resumoPanelGrid atendGrowl" process="atendDialog"/>
-		    		</h:panelGroup>	
-    				
-		    		<h:outputLabel />		    		
-		    		
-		    		<h:panelGroup>
-						<p:commandButton icon="pi pi-save" id="salvarResumoButton" value="Encerrar atendimento"  
-							title="Grava o resumo do atendimento"
-							actionListener="#{realizarAtendimentoBean.encerrar}"
-							oncomplete="if (!args.validationFailed) PF('atendDialogWidgetVar').hide()" 
-							update="resumoPanelGrid idPoll :frmPesquisa:listaDataTable message growl"						
-							process="resumoPanelGrid">
-						</p:commandButton>						
-						
-						<p:spacer width="10px" />
-							
-						<p:commandButton icon="pi pi-thumbs-up" value="Sair" 
-						    update="frmPesquisa"
-							onclick="PF('atendDialogWidgetVar').hide();"
-							actionListener="#{realizarAtendimentoBean.atualizarDataTable}"
-							process="@this"/>
-					</h:panelGroup>					
-						
-				</p:panelGrid>
-				
-			</p:dialog>	
-			
-			
-			<p:dialog id="faltasDialog" header="Faltas" widgetVar="faltasDialogWidgetVar"
-				modal="true" resizable="true" closeOnEscape="true"
-				showEffect="explode" hideEffect="explode" 
-				width="100%" position="center top" maximizable="true"
-				height="70%" fitViewport="true" responsive="true">	
-			
-				<p:dataTable id="faltasTable"  value="#{realizarAtendimentoBean.faltas}" var="item"
-		    		style="margin-top: 20px" emptyMessage="Nenhuma falta apontada para a pessoa.">
-		    		
-		    		<f:facet name="header">
-			            Lista de Ausências
-			        </f:facet>
-		    					    		
-			    	<p:column headerText="Data" style="width: 60px; text-align: center"
-			    		sortBy="#{item.dataAgendamento}" >		    		
-			    		<h:outputText value="#{item.dataAgendamento}">
-		    				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-		    			</h:outputText>	    		
-		    		</p:column>	
-		    		
-		    		<p:column headerText="Codigo Pessoa" style="width: 30px; text-align: center">
-		    			<h:outputText value="#{item.pessoa.codigo}" />
-		    		</p:column> 
-		    		 				    		
-		    		<p:column headerText="Nome Pessoa" style="width: 100px; text-align: center">
-		    			<h:outputText value="#{item.pessoa.nome}" />
-		    		</p:column> 
-		    		
-		    		<p:column headerText="Motivo" style="width: 100px; text-align: center">		    		
-		    			<p:textEditor  			    			
-			    			value="#{item.resumoAtendimento}" 			    					    			
-			    			readonly="true">
-			    			<f:facet name="toolbar"> 
-			    				<span class="ql-formats"> </span>						            
-			    			</f:facet>
-					    </p:textEditor>
-		    		</p:column>		
-		    		  		
-		    		<p:column headerText="Unidade atendimento" style="width: 50px; text-align: center">
-		    			<h:outputText value="#{item.unidade.nome}" />
-		    		</p:column> 
-	    		
-			   	</p:dataTable>
-		   	
-			</p:dialog>	
-			
-			
-			
-			<!--  Reuso de componente  -->
-			
-			<ui:include src="/compositions/EvolucaoUI.xhtml">
-                <ui:param name="pessoa" value="#{evolucaoUIBean.pessoa}" />                
-            </ui:include>
-			<ui:include  src="/compositions/IndProtecaoDesprotecao.xhtml"/>
-			<ui:include  src="/compositions/IndSituacaoViolencia.xhtml"/>
-			
-			
-			
-			
-    	</h:form>
-    </ui:define>
+  <ui:define name="corpo">
+    <h2>Realizar Atendimento Individualizado</h2>
+
+    <h:form id="frmPesquisa">
+      <p:growl id="growl" showDetail="false"> </p:growl>
+      <p:messages id="message" showDetail="false" closable="true" />
+
+      <p:toolbar id="toolbar">
+        <f:facet name="left">
+          <p:commandButton
+            icon="pi pi-user"
+            value="Atender"
+            title="Realizar o atendimento"
+            disabled="#{not realizarAtendimentoBean.itemSelecionado}"
+            actionListener="#{realizarAtendimentoBean.startPoll}"
+            oncomplete="PF('atendDialogWidgetVar').show()"
+            update="atendDialog toolbar"
+            process="@this"
+          >
+            <p:resetInput target="atendDialog" />
+          </p:commandButton>
+
+          <span class="ui-separator">
+            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+          </span>
+
+          <p:commandButton
+            icon="pi pi-user"
+            value="Situação de Violência"
+            title="Registrar Situação de Violência"
+            disabled="#{not realizarAtendimentoBean.itemSelecionado}"
+            actionListener="#{realizarAtendimentoBean.carregarSituacoesViolencia}"
+            oncomplete="PF('violenciaWidgetDialog').show()"
+            update="violenciaDialog listaDataTable toolbar"
+            process="@this"
+          >
+            <p:resetInput target="violenciaDialog" />
+          </p:commandButton>
+
+          <span class="ui-separator">
+            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+          </span>
+
+          <p:commandButton
+            icon="pi pi-chart-line"
+            value="Indicador de Proteção"
+            title="Indicadores de proteção e desproteção social"
+            disabled="#{not realizarAtendimentoBean.itemSelecionado}"
+            actionListener="#{realizarAtendimentoBean.carregarIndicadores}"
+            oncomplete="PF('indWidgetDialog').show()"
+            update="indDialog toolbar"
+            process="@this"
+          >
+            <p:resetInput target="indDialog" />
+          </p:commandButton>
+
+          <span class="ui-separator">
+            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+          </span>
+
+          <p:button
+            outcome="/restricted/prontuario/CondicaoIndividual.xhtml"
+            icon="pi pi-external-link"
+            disabled="#{not realizarAtendimentoBean.itemSelecionado}"
+            value="Ir para Condição Individual"
+          />
+        </f:facet>
+      </p:toolbar>
+
+      <!--  Lista de itens de atendimento -->
+      <p:dataTable
+        id="listaDataTable"
+        value="#{realizarAtendimentoBean.listaAtendimentos}"
+        var="item"
+        style="margin-top: 20px"
+        emptyMessage="Nenhuma pessoa agendada para atendimento."
+        rows="10"
+        rowsPerPageTemplate="10,15,20"
+        paginator="true"
+        paginatorAlwaysVisible="true"
+        paginatorPosition="bottom"
+        selectionMode="single"
+        selection="#{realizarAtendimentoBean.item}"
+        rowKey="#{item.codigo}"
+        rowStyleClass="#{item.pessoa.familia.prontuario.status eq 'INATIVO' or item.pessoa.status eq 'INATIVO'? 'inativo' : null}"
+      >
+        <p:ajax event="rowSelect" update="frmPesquisa:toolbar" />
+        <p:ajax event="rowUnselect" update="frmPesquisa:toolbar" />
+
+        <p:column
+          headerText="Agendado"
+          style="width: 30px; text-align: center"
+          sortBy="#{item.dataAgendamento}"
+        >
+          <h:outputText value="#{item.dataAgendamento}">
+            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+          </h:outputText>
+        </p:column>
+
+        <p:column
+          headerText="Pront. Código"
+          style="width: 10px; text-align: center"
+        >
+          <h:outputText value="#{item.pessoa.familia.prontuario.codigo}" />
+        </p:column>
+
+        <p:column headerText="Código" style="width: 8px; text-align: center">
+          <h:outputText value="#{item.pessoa.codigo}" />
+        </p:column>
+
+        <p:column
+          headerText="Nome Pessoa"
+          style="width: 100px; text-align: center"
+          filterBy="#{item.pessoa.nome}"
+          footerText="contains"
+          filterMatchMode="contains"
+        >
+          <h:outputText value="#{item.pessoa.nome}" />
+        </p:column>
+
+        <p:column
+          headerText="Nome Social"
+          style="width: 80px; text-align: center"
+        >
+          <h:outputText value="#{item.pessoa.nomeSocial}" />
+        </p:column>
+
+        <p:column headerText="Telefone" style="width: 30px; text-align: center">
+          <h:outputText value="#{item.pessoa.telefone}" />
+        </p:column>
+
+        <p:column
+          headerText="Técnico"
+          style="width: 100px; text-align: center"
+          filterBy="#{item.tecnico.nome}"
+          footerText="contains"
+          filterMatchMode="contains"
+        >
+          <h:outputText value="#{item.tecnico.nome}" />
+        </p:column>
+
+        <p:column headerText="Perfil" style="width: 50px; text-align: center">
+          <h:outputText value="#{item.role}" />
+        </p:column>
+
+        <p:column
+          headerText="Operações"
+          style="width: 20px; text-align: center"
+        >
+          <p:commandButton
+            title="Evolução"
+            icon="pi pi-history"
+            rendered="#{not realizarAtendimentoBean.cadastrador}"
+            oncomplete="PF('consultaDialogWidgetVar').show()"
+            update="frmPesquisa:consultaDialog frmPesquisa:toolbar"
+            process="@this"
+          >
+            <f:setPropertyActionListener
+              target="#{evolucaoUIBean.pessoa}"
+              value="#{item.pessoa}"
+            />
+          </p:commandButton>
+          <p:commandButton
+            title="Faltas pessoa"
+            icon="pi pi-thumbs-down"
+            rendered="#{not realizarAtendimentoBean.cadastrador}"
+            actionListener="#{realizarAtendimentoBean.consultaFaltas}"
+            oncomplete="PF('faltasDialogWidgetVar').show()"
+            update="frmPesquisa:faltasDialog frmPesquisa:toolbar"
+            process="@this"
+          >
+            <p:resetInput target="frmPesquisa:faltasDialog" />
+          </p:commandButton>
+        </p:column>
+      </p:dataTable>
+
+      <p:dialog
+        id="atendDialog"
+        header="Atendimento"
+        widgetVar="atendDialogWidgetVar"
+        modal="true"
+        resizable="true"
+        closeOnEscape="true"
+        showEffect="explode"
+        hideEffect="explode"
+        width="100%"
+        position="center top"
+        maximizable="true"
+        height="70%"
+        fitViewport="true"
+        responsive="true"
+      >
+        <p:ajax
+          event="close"
+          update="frmPesquisa"
+          listener="#{realizarAtendimentoBean.stopPoll}"
+        />
+
+        <p:growl id="atendGrowl" showDetail="true" />
+
+        <!--  Atendimento -->
+        <p:panelGrid
+          columns="1"
+          id="resumoPanelGrid"
+          layout="grid"
+          styleClass="showcase-text-align-center"
+        >
+          <h:outputText
+            id="pront"
+            value="PRONTUÁRIO: #{realizarAtendimentoBean.item.pessoa.familia.prontuario.codigo}"
+          />
+
+          <h:outputText
+            id="nomeAtendido"
+            value="PESSOA: #{realizarAtendimentoBean.item.pessoa.nome}"
+          />
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel value="CÓDIGO AUXILIAR DE ATENDIMENTO" for="aux" />
+          <p:selectOneMenu
+            id="aux"
+            required="true"
+            value="#{realizarAtendimentoBean.item.codigoAuxiliar}"
+            validatorMessage="O código auxiliar de atendimento é obrigatório."
+          >
+            <p:ajax
+              event="valueChange"
+              process="@this"
+              update="af20 af21 an20 an21"
+              listener="#{realizarAtendimentoBean.verificaAuxilio}"
+            />
+            <f:selectItem itemLabel="Selecione o código auxiliar" />
+            <f:selectItems
+              value="#{realizarAtendimentoBean.codigosAuxiliares}"
+              var="codAux"
+              itemLabel="#{codAux}"
+              itemValue="#{codAux}"
+            />
+          </p:selectOneMenu>
+
+          <h:panelGroup>
+            <p:outputLabel
+              value="(Em caso de benefício)"
+              disabled="#{not realizarAtendimentoBean.auxilioFuneral}"
+            /><p:spacer width="10px" />
+            <p:outputLabel
+              id="af20"
+              value="CPF do falecido"
+              for="af21"
+              disabled="#{not realizarAtendimentoBean.auxilioFuneral}"
+            /><p:spacer width="10px" />
+            <p:inputMask
+              id="af21"
+              size="18"
+              maxlength="14"
+              mask="999.999.999-99"
+              disabled="#{not realizarAtendimentoBean.auxilioFuneral}"
+              value="#{realizarAtendimentoBean.beneficio.cpfFalecido}"
+            />
+
+            <p:spacer width="10px" />
+
+            <p:outputLabel
+              id="an20"
+              value="Nr Registro de Nascimento"
+              for="an21"
+              disabled="#{not realizarAtendimentoBean.auxilioNatalidade}"
+            />
+            <p:spacer width="10px" />
+            <p:inputText
+              id="an21"
+              size="18"
+              maxlength="20"
+              disabled="#{not realizarAtendimentoBean.auxilioNatalidade}"
+              value="#{realizarAtendimentoBean.beneficio.registroNascimento}"
+            />
+          </h:panelGroup>
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel
+            value="DATA PARA O ATENDIMENTO"
+            for="dataAtendimento"
+          />
+          <p:calendar
+            id="dataAtendimento"
+            size="30"
+            required="true"
+            showOn="button"
+            value="#{realizarAtendimentoBean.item.dataAtendimento}"
+            pattern="dd/MM/yyyy HH:mm"
+            mask="99/99/9999 99:99"
+          />
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel value="TÉCNICOS ADICIONAIS" for="pickList" />
+          <p:pickList
+            id="pickList"
+            responsive="true"
+            converter="pickListTecConverter"
+            value="#{realizarAtendimentoBean.tecnicos}"
+            var="tecnico"
+            itemValue="#{tecnico}"
+            itemLabel="#{tecnico.nome}"
+          >
+            <f:facet name="sourceCaption">Disponíveis</f:facet>
+            <f:facet name="targetCaption">Selecionados</f:facet>
+          </p:pickList>
+
+          <p:spacer height="3px" />
+
+          <p:outputLabel value="DESCRIÇÃO DO ATENDIMENTO" for="editor" />
+          <h:panelGroup>
+            <p:textEditor
+              id="editor"
+              widgetVar="editor"
+              required="true"
+              value="#{realizarAtendimentoBean.item.resumoAtendimento}"
+              height="300"
+              style="margin-bottom: 10px"
+              placeholder="Descreva o resumo do atendimento. (Auto gravação a cada 2 minutos)"
+            >
+              <f:facet name="toolbar">
+                <span class="ql-formats">
+                  <button class="ql-bold"></button>
+                  <button class="ql-italic"></button>
+                  <button class="ql-underline"></button>
+                  <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-clean" />
+                </span>
+                <span class="ql-formats">
+                  <select class="ql-font"></select>
+                  <select class="ql-size"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-script" value="sub" />
+                  <button class="ql-script" value="super" />
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered" />
+                  <button class="ql-list" value="bullet" />
+                  <button class="ql-indent" value="-1" />
+                  <button class="ql-indent" value="+1" />
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-direction" value="rtl" />
+                  <select class="ql-align" />
+                </span>
+              </f:facet>
+            </p:textEditor>
+            <p:poll
+              id="idPoll"
+              interval="120"
+              listener="#{realizarAtendimentoBean.autoSave}"
+              stop="#{realizarAtendimentoBean.statusPoll}"
+              update="resumoPanelGrid atendGrowl"
+              process="atendDialog"
+            />
+          </h:panelGroup>
+
+          <h:outputLabel />
+
+          <h:panelGroup>
+            <p:commandButton
+              icon="pi pi-save"
+              id="salvarResumoButton"
+              value="Encerrar atendimento"
+              title="Grava o resumo do atendimento"
+              actionListener="#{realizarAtendimentoBean.encerrar}"
+              oncomplete="if (!args.validationFailed) PF('atendDialogWidgetVar').hide()"
+              update="resumoPanelGrid idPoll :frmPesquisa:listaDataTable message growl"
+              process="resumoPanelGrid"
+            >
+            </p:commandButton>
+
+            <p:spacer width="10px" />
+
+            <p:commandButton
+              icon="pi pi-thumbs-up"
+              value="Sair"
+              update="frmPesquisa"
+              onclick="PF('atendDialogWidgetVar').hide();"
+              actionListener="#{realizarAtendimentoBean.atualizarDataTable}"
+              process="@this"
+            />
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:dialog>
+
+      <p:dialog
+        id="faltasDialog"
+        header="Faltas"
+        widgetVar="faltasDialogWidgetVar"
+        modal="true"
+        resizable="true"
+        closeOnEscape="true"
+        showEffect="explode"
+        hideEffect="explode"
+        width="100%"
+        position="center top"
+        maximizable="true"
+        height="70%"
+        fitViewport="true"
+        responsive="true"
+      >
+        <p:dataTable
+          id="faltasTable"
+          value="#{realizarAtendimentoBean.faltas}"
+          var="item"
+          style="margin-top: 20px"
+          emptyMessage="Nenhuma falta apontada para a pessoa."
+        >
+          <f:facet name="header"> Lista de Ausências </f:facet>
+
+          <p:column
+            headerText="Data"
+            style="width: 60px; text-align: center"
+            sortBy="#{item.dataAgendamento}"
+          >
+            <h:outputText value="#{item.dataAgendamento}">
+              <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
+          </p:column>
+
+          <p:column
+            headerText="Codigo Pessoa"
+            style="width: 30px; text-align: center"
+          >
+            <h:outputText value="#{item.pessoa.codigo}" />
+          </p:column>
+
+          <p:column
+            headerText="Nome Pessoa"
+            style="width: 100px; text-align: center"
+          >
+            <h:outputText value="#{item.pessoa.nome}" />
+          </p:column>
+
+          <p:column
+            headerText="Motivo"
+            style="width: 100px; text-align: center"
+          >
+            <p:textEditor value="#{item.resumoAtendimento}" readonly="true">
+              <f:facet name="toolbar">
+                <span class="ql-formats"> </span>
+              </f:facet>
+            </p:textEditor>
+          </p:column>
+
+          <p:column
+            headerText="Unidade atendimento"
+            style="width: 50px; text-align: center"
+          >
+            <h:outputText value="#{item.unidade.nome}" />
+          </p:column>
+        </p:dataTable>
+      </p:dialog>
+
+      <!--  Reuso de componente  -->
+
+      <ui:include src="/compositions/EvolucaoUI.xhtml">
+        <ui:param name="pessoa" value="#{evolucaoUIBean.pessoa}" />
+      </ui:include>
+      <ui:include src="/compositions/IndProtecaoDesprotecao.xhtml" />
+      <ui:include src="/compositions/IndSituacaoViolencia.xhtml" />
+    </h:form>
+  </ui:define>
 </ui:composition>
