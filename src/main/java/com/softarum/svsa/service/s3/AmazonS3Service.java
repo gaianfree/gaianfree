@@ -155,7 +155,8 @@ public class AmazonS3Service implements Serializable {
 	}
 	
 	/* retorna o imputstream do objeto */
-	public InputStream downloadObject(String nomeArquivo) throws NegocioException {		
+	@SuppressWarnings("null")
+    public InputStream downloadObject(String nomeArquivo) throws NegocioException {		
 		
 		S3Object s3Object = null;
 		
@@ -169,7 +170,7 @@ public class AmazonS3Service implements Serializable {
     			s3Object = s3Client.getObject(new GetObjectRequest(AmazonS3Keys.NOME_BUCKET, nomeArquivo));  
     		}   		
     		
-			log.info("Arquivo lido de: " + nomeArquivo.toLowerCase());
+			log.info("Arquivo lido de: " + nomeArquivo);
 			
 			return (InputStream) s3Object.getObjectContent();    		
 		

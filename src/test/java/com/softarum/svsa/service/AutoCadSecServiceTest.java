@@ -1,13 +1,10 @@
 package com.softarum.svsa.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.softarum.svsa.dao.AutoCadSecDAO;
@@ -16,9 +13,6 @@ import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.enums.Grupo;
 import com.softarum.svsa.modelo.enums.Role;
 
-import lombok.extern.log4j.Log4j;
-
-@Log4j
 @TestInstance(Lifecycle.PER_CLASS)
 
 class AutoCadSecServiceTest {
