@@ -16,7 +16,8 @@ import java.io.Serializable;
 @Named
 @SessionScoped
 public class UsuarioTempBean implements Serializable {
-    // FacesContext
+
+    private static final long serialVersionUID = 1L;
     private UsuarioTemp usuarioTemp;
     private UsuarioTempService usuarioTempService;
 

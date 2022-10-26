@@ -1,5 +1,4 @@
 package com.softarum.svsa.service;
-
 import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -26,6 +25,8 @@ import com.softarum.svsa.util.NegocioException;
  *
  */
 public class UsuarioService implements Serializable {
+	
+	
 
 	private static final long serialVersionUID = 1L;
 	
@@ -46,19 +47,16 @@ public class UsuarioService implements Serializable {
 		verificaAgendamentos(usuario, tenantId);
 		
 		
-		
-		if (usuario.getRole() == null) 
-			throw new NegocioException("O papel (role) é obrigatório.");
-		if (usuario.getGrupo() == null) 
-			throw new NegocioException("O grupo é obrigatório.");
-		if (usuario.getStatus() == null) 
-			throw new NegocioException("O status é obrigatório.");
+		if (this.usuarioDAO.verificaUsuarioFreePeloTenant(tenantId) && this.usuarioDAO.encontrarQuantidadeDeUsuarios(tenantId) > 2) 
+			throw new NegocioException("Usuários da tier free são limitados a 3 cadastros");
 		
 		
 		if(usuario.getSenha() == null || usuario.getSenha().equals(""))
-			usuario.setSenha(BCrypt.hashpw("123456", BCrypt.gensalt()));		
+			usuario.setSenha(BCrypt.hashpw("123456", BCrypt.gensalt()));	
 		
-					
+
+		
+						
 		this.usuarioDAO.salvar(usuario);
 	}
 			
@@ -106,7 +104,7 @@ public class UsuarioService implements Serializable {
 	public Usuario buscarPeloEmail(String email) throws NoResultException {
 		return usuarioDAO.buscarPeloEmail(email);
 	}
-
+	
 	public void trocarSenha(Usuario usuario, String senhaAntiga) throws NegocioException, PersistenceException {
 					
 		Usuario u = buscarPeloEmail(usuario.getEmail());

@@ -2,7 +2,6 @@ package com.softarum.svsa.util.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
 import com.softarum.svsa.util.jobs.RmaCronTrigger;
 
