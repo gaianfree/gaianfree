@@ -107,7 +107,6 @@
 		    <version>3.0.0</version>
 		</dependency>
 
-
 		<!-- https://mvnrepository.com/artifact/org.primefaces.themes/cupertino - themes -->
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>

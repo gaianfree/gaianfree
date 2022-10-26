@@ -21,8 +21,8 @@ import com.softarum.svsa.util.jpa.Transactional;
  */
 public class UsuarioDAO implements Serializable {
 
+
 	private static final long serialVersionUID = 1L;
-	
 	@Inject
 	private EntityManager manager;
 	
@@ -207,6 +207,13 @@ public class UsuarioDAO implements Serializable {
 				.getSingleResult();
 	}
 	
+	// verifica se o usuario é free pelo tenantId
+	public boolean verificaUsuarioFreePeloTenant(Long tenantId) {
+		return manager.createQuery("select t.isFree from Tenant t where t.codigo = :tenantId", Boolean.class)
+				.setParameter("tenantId", tenantId)
+				.getSingleResult();
+	}
+	 
 	
 	
 	

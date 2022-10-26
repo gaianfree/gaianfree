@@ -47,10 +47,11 @@ public class Tenant implements Serializable {
 	private String secretaria = null;
 	
 	private String s3Key = null;
-	
+
+	private Boolean isFree = false;
+  
 	@Enumerated(EnumType.STRING)
 	private TipoUnidade tipo;
-	
 	
 	@Transient
 	public String getUrlAnexo() {
