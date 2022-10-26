@@ -23,7 +23,6 @@ import com.softarum.svsa.modelo.enums.Uf;
 import com.softarum.svsa.modelo.to.AutoCadSecTO;
 import com.softarum.svsa.modelo.to.EnderecoTO;
 import com.softarum.svsa.service.AutoCadSecService;
-import com.softarum.svsa.service.UnidadeService;
 import com.softarum.svsa.service.rest.BuscaCEPService;
 import com.softarum.svsa.util.MessageUtil;
 import com.softarum.svsa.util.NegocioException;

@@ -2,17 +2,14 @@ package com.softarum.svsa.dao;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
-import org.hibernate.mapping.Set;
-
-import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.EsqueciSenha;
+import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.util.NegocioException;
 import com.softarum.svsa.util.jpa.Transactional;
 

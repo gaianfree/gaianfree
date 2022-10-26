@@ -109,9 +109,9 @@ public class LoginBean implements Serializable {
 				String pwDigitada = senha;					
 				String pwRecuperada = usuario.getSenha();
 				
-//				if(!BCrypt.checkpw(pwDigitada, pwRecuperada)) {						
-//					throw new NegocioException("Senha inválida!");
-//				}
+				if(!BCrypt.checkpw(pwDigitada, pwRecuperada)) {						
+					throw new NegocioException("Senha inválida!");
+				}
 				
 				// troca para o tema do usuario, se houver
 				if(usuario.getTheme() != null) {
