@@ -4,7 +4,6 @@
 		<grupo value="ADMINISTRATIVOS"></grupo>
 		<menuitem value="Avisos" outcome="/restricted/home/SvsaHome.xhtml"></menuitem>
 		<menuitem value="Indicadores" outcome="/restricted/home/DashBoard.xhtml"></menuitem>
-		<menuitem value="Auto Cadastro" outcome="/restricted/autocad/AutoCadSec.xhtml"></menuitem>
 	</submenu>	
 	
 	<submenu label="Agendamento" icon="pi pi-clock">

@@ -27,18 +27,23 @@
     />
     <title>SVSA - Gaian.com.br</title>
     <h:outputStylesheet library="css" name="global.css" />
-    <h:outputStylesheet library="css" name="templates/header.css" />
-    <h:outputStylesheet library="css" name="sistema.css" /> 
+    <h:outputStylesheet library="css" name="templates/headerHome.css" />
+    <h:outputStylesheet library="css" name="home.css" />
     <h:outputStylesheet library="css" name="templates/footer.css" />
+    <h:outputStylesheet library="css" name="sistema.css" /> 
   </h:head>
   <body>
-    <ui:include src="Header.xhtml" />
+    <header class="header" id="header">
+      <ui:include src="HeaderHome.xhtml" />
+    </header>
     <main class="card" id="conteudo">
       <ui:insert name="corpo" />
     </main>
     <footer class="footer" id="footer">
       <ui:include src="Footer.xhtml" />
     </footer>
+    <h:outputScript library="js" name="initMenuMobile.js"></h:outputScript>
     <h:outputScript library="js" name="initCopyEmail.js"></h:outputScript>
+    <h:outputScript library="js" name="initSwitchTheme.js"></h:outputScript>
   </body>
 </html>
