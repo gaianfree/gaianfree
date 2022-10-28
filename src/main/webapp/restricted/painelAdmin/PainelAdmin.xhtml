@@ -19,6 +19,12 @@
 			lazy="false" id="tabelaUnidades" widgetVar="tabelaUnidades"
 			emptyMessage="Sem resultados"  
 			selection="#{painelAdminBean.unidades}">
+				<p:column headerText="Código" filterBy="#{unidade.codigo}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.codigo}"/>
+				</p:column>
+				<p:column headerText="Tenant ID" filterBy="#{unidade.tenant_id}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.tenant_id}"/>
+				</p:column>
 				<p:column headerText="Nome" filterBy="#{unidade.nome}" filterMatchMode="contains">
 					<h:outputText value="#{unidade.nome}"/>
 				</p:column>
@@ -30,6 +36,15 @@
 				</p:column>
 				<p:column headerText="Contato" filterBy="#{unidade.contato}" filterMatchMode="contains">
 					<h:outputText value="#{unidade.contato}"/>
+				</p:column>
+				<p:column headerText="Unidade Vinculada" filterBy="#{unidade.unidadeVinculada}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.unidadeVinculada}"/>
+				</p:column>
+				<p:column headerText="Data Criação" filterBy="#{unidade.dataCriacao}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.dataCriacao}"/>
+				</p:column>
+				<p:column headerText="Data Modificação" filterBy="#{unidade.dataModificacao}" filterMatchMode="contains">
+					<h:outputText value="#{unidade.dataModificacao}"/>
 				</p:column>
 			</p:dataTable>
     	</h:form>
