@@ -40,10 +40,10 @@ jobs:
           from: /tmp/workspace/revision.zip
           to: 's3://gaianfreebucket'
       - aws-code-deploy/deploy-bundle:
-          application-name: codeDeply-SangueTeste
+          application-name: GaianCodeDeployAPP
           bundle-bucket: gaianfreebucket
           bundle-key: revision
-          deployment-group: Ec2Sangue
+          deployment-group: GaianDeploymentGroup
 
 workflows:
   deploy-pipeline:
