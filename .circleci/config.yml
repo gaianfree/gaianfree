@@ -50,9 +50,10 @@ workflows:
     jobs:
       - build
       - deploy:
-          branch: 
-            only:
-            - CI-CD
-            - develop
+          filters:
+            branches: 
+              only: 
+                - CI-CD
+                - develop
           requires:
             - build
