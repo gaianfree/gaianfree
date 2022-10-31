@@ -1,0 +1,40 @@
+version: 0.0
+os: linux
+files:
+  - source: / 
+    destination: /testedeploy
+permissions:
+  - object: /testedeploy/scripts
+    pattern: '*'
+    owner: ec2-user 
+    group: ec2-user
+    mode: 4777
+  - object: /testedeploy
+    pattern: '*'
+    owner: ec2-user
+    group: ec2-user
+    mode: 4777
+hooks:
+  ApplicationStop:
+    - location: scripts/stop-tomcat.sh
+      timeout: 30
+      runas: root
+  BeforeInstall:
+    - location: scripts/hello.sh
+      timeout: 30
+      runas: root
+  ApplicationStart:
+    - location: scripts/move-war.sh
+      timeout: 30
+      runas: root
+    - location: scripts/start-tomcat.sh
+      timeout: 30
+      runas: root
+    - location: scripts/hello.sh
+      timeout: 30
+      runas: root
+  ValidateService:
+    - location: scripts/status-tomcat.sh
+      timeout: 30
+      runas: root
+  

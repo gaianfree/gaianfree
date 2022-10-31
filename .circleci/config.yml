@@ -1,0 +1,58 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@3.1.3
+  aws-code-deploy: circleci/aws-code-deploy@2.0.0
+  aws-s3: circleci/aws-s3@3.0.0
+
+# references:
+#   workspace_root: &workspace_root
+#     /tmp/workspace
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:18.0.2
+    steps:
+      - checkout
+      - run:
+          name: Unittest
+          command: mvn test
+      - run:
+          name: Build
+          command: mvn -B -DskipTests clean package
+      - run:
+          name: Zip
+          command: |
+            chmod +x ./scripts/to-zip.sh
+            ./scripts/to-zip.sh
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - revision.zip
+  deploy:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - aws-s3/copy:
+          from: /tmp/workspace/revision.zip
+          to: 's3://gaianfreebucket'
+      - aws-code-deploy/deploy-bundle:
+          application-name: codeDeply-SangueTeste
+          bundle-bucket: gaianfreebucket
+          bundle-key: revision
+          deployment-group: Ec2Sangue
+
+workflows:
+  deploy-pipeline:
+    jobs:
+      - build
+      - deploy:
+          branch: 
+            only:
+            - CI-CD
+            - develop
+          requires:
+            - build

@@ -3,3 +3,4 @@
 /.apt_generated_tests/
 .idea
 svsafree.iml
+*.zip
