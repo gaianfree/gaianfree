@@ -3,9 +3,5 @@
 /.apt_generated_tests/
 .idea
 svsafree.iml
-/.idea/
-/.metadata/
-/.settings/
-/.vscode/
+*.zip
 /src/main/resources/META-INF/
-/.settings
