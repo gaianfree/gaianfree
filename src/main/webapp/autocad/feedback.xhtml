@@ -1,0 +1,81 @@
+<ui:composition template="/WEB-INF/template/LayoutLogin.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Confirmação de Email</ui:define>
+    <ui:define name="corpo">
+
+        <h:form id="formLogin">
+            <p:dialog
+                    id="janela"
+                    header="Cadastro Gaian:"
+                    widgetVar="CadastroWidgetVar"
+                    visible="true"
+                    resizable="false"
+                    closable="false"
+            >
+                <p:growl id="growl" sticky="false" showDetail="true" life="2000" />
+
+                <div class="card">
+                    <p:splitter style="height: 380px" styleClass="p-mb-5">
+                        <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
+                            <div class="contact-container">
+                                <br /><br /><br /><br />
+                                <h:graphicImage
+                                        library="imagens"
+                                        name="logo_Gaian_baixa_RGB.png"
+                                        width="150"
+                                />
+                                <br /><br /><br />
+                                <h1>Bem-vindo!</h1>
+                            </div>
+                        </p:splitterPanel>
+
+                        <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
+                            <h:panelGrid
+                                    id="terminar"
+                                    columns="1"
+                                    cellpadding="10"
+                                    style="margin: 0 auto"
+                            >
+                                <h:panelGroup>
+                                    <h:outputLabel value="Chave de acesso:" />
+                                    <h:inputText
+                                            value="#{usuarioTempBean.usuarioTemp.token}"
+                                            h:placeholder="Digite aqui a chave de acesso"
+                                            required="true"
+                                            validatorMessage="primeiro nome deve conter entre 2 e 30 caracteres."
+                                            requiredMessage="é necessário que você informe sua chave de acesso."
+                                            size="33">
+                                        <f:validateLength minimum="2" maximum="30" />
+                                    </h:inputText>
+                                </h:panelGroup>
+                                <div class="col-sm-offset-3 col-sm-10">
+                                    <h:commandButton
+                                            id="bt2"
+                                            value="Verificar"
+                                            styleClass="p-mr-2"
+                                            icon="pi pi-check"
+                                            action="#{usuarioTempBean.verificaToken()}"
+                                    />
+                                </div>
+                            </h:panelGrid>
+                        </p:splitterPanel>
+                    </p:splitter>
+                </div>
+            </p:dialog>
+            <div>
+                <h:graphicImage
+                        library="imagens"
+                        name="gaian_paleta_esquerda.png"
+                        width="250"
+                        height="900"
+                />
+            </div>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

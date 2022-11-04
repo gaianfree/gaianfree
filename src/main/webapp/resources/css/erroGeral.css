@@ -1,0 +1,64 @@
+.containerAccordionList {
+  width: 90%;
+  margin: 0 auto;
+  padding: 1.25rem 1.5625rem;
+}
+
+.titleMessageError {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.25rem;
+  color: var(--colorErrorTitle);
+}
+
+.messageError {
+  font-size: 1.25rem;
+  margin-left: 0.625rem;
+  margin-bottom: 1.25rem;
+}
+
+.messageError > span{
+	font-size: 1.125rem
+}
+
+.accordion {
+  width: 100%;
+  margin-left: 0.625rem;
+  padding: 1.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  font-size: 1rem;
+  transition: all 0.4s ease-in-out;
+  background-color: var(--bgAccordionList);
+  color: var(--colorAccordionList);
+}
+
+.active,
+.accordion:hover {
+  filter: opacity(0.7);
+}
+
+.panel {
+  margin-left: 0.875rem;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.panel p {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+@media screen and (min-width: 48rem) {
+  .panel p {
+    font-size: 1rem;
+  }
+}

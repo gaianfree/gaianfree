@@ -36,7 +36,7 @@ public class PainelEmailService implements Serializable {
 		return unidadeService.buscarTodos(tenantId);
 	}
 	
-	private List<Usuario> getUsuariosByUnidade(Unidade unidade, Long tenantId) {		
+	public List<Usuario> getUsuariosByUnidade(Unidade unidade, Long tenantId) {		
 		return usuarioService.buscarUsuarios(unidade, tenantId);
 	}
 	
