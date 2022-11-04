@@ -6,9 +6,9 @@
 
 .toast{
 	display: none;
-	position: absolute;
-	top: 227%;
-	right: 1.875rem;
+	position: fixed;
+	top: 0%;
+	right: 0;
 	border-radius: 0.875rem;
 	background: var(--bgToastNotification);
 	padding: 1.25rem 2.1875rem 1.25rem 1.5625rem;
@@ -17,6 +17,7 @@
 	overflow: hidden;
 	transform: translateX(calc(100% + 1.875rem));
 	transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+	z-index: 5;
 }
 
 .toast.activeToast{

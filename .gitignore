@@ -5,3 +5,4 @@
 svsafree.iml
 *.zip
 /src/main/resources/META-INF/
+/.settings
