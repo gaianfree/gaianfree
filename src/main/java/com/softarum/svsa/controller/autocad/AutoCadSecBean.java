@@ -1,10 +1,14 @@
 package com.softarum.svsa.controller.autocad;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.NavigationHandler;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -74,12 +78,12 @@ public class AutoCadSecBean implements Serializable {
 			
 			Tenant secretaria = this.autocadService.salvarTenant(autocadTO.getSecretaria());
 			autocadTO.setSecretaria(secretaria);
-			MessageUtil.sucesso("Secretaria salva com sucesso!");
+			
 			
 			
 		} catch (NegocioException e) {
 			e.printStackTrace();
-			MessageUtil.erro(e.getMessage());
+
 		}
 
 	}
@@ -95,12 +99,8 @@ public class AutoCadSecBean implements Serializable {
 			autocadTO.setUnidade(unidade);
 			
 			
-			MessageUtil.sucesso("Unidade Salva com sucesso!");
-			
-			
 		} catch (NegocioException e) {
 			e.printStackTrace();
-			MessageUtil.erro(e.getMessage());
 		}
 
 	}
@@ -116,12 +116,12 @@ public class AutoCadSecBean implements Serializable {
 			autocadTO.getUsuario().setGrupo(Grupo.COORDENADORES);
 			Usuario usuario = this.autocadService.salvarUsuario(autocadTO.getUsuario());
 			autocadTO.setUsuario(usuario);
-			MessageUtil.sucesso("Usuario salvo com sucesso!");
+		
 			
 			
 		} catch (NegocioException e) {
 			e.printStackTrace();
-			MessageUtil.erro(e.getMessage());
+			
 		}
 
 	}
@@ -139,31 +139,41 @@ public class AutoCadSecBean implements Serializable {
 		autocadTO.setUsuario(new Usuario());
 	}
 
-	public boolean isSkip() {
-		return skip;
-	}
-
-	public void setSkip(boolean skip) {
-		this.skip = skip;
-	}
+	
+	/*public String confirmar() {
+	    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	    try {
+	        this.limpar();
+	        ec.redirect(ec.getRequestContextPath() + "/restricted/home/SvsaHome.xhtml");
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("/svsafree/autocad/AutoCadSec.xhtml");
+	        log.info("Retorno?" + ec);
+            
+	    } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+	   return "/restricted/home/SvsaHome.xhtml";
+	    
+	}*/
 
 	public String onFlowProcess(FlowEvent event) {
 
 			if (event.getOldStep().equals("secretaria")){
-	            log.info(event.getNewStep());
+	            log.info(event.getOldStep());
 				this.salvarTenant();
+				MessageUtil.sucesso("Secretaria salva com sucesso!");
 	           
 	        }
 			else if (event.getOldStep().equals("unidade")){
 				this.salvarUnidade();
-				
+				MessageUtil.sucesso("Unidade salva com sucesso!");
 			}
 			
-			else {
+			else  {
 				this.salvarUsuario();
-				
+				MessageUtil.sucesso("Usuário salvo com sucesso!");
 			}
-				
+			
 			
 			return event.getNewStep();
 	}
