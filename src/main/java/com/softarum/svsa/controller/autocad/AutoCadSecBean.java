@@ -9,13 +9,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.softarum.svsa.modelo.*;
 import org.primefaces.event.FlowEvent;
 
 import com.softarum.svsa.controller.LoginBean;
-import com.softarum.svsa.modelo.Endereco;
-import com.softarum.svsa.modelo.Tenant;
-import com.softarum.svsa.modelo.Unidade;
-import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.enums.Grupo;
 import com.softarum.svsa.modelo.enums.Role;
 import com.softarum.svsa.modelo.enums.TipoUnidade;
@@ -52,7 +49,7 @@ public class AutoCadSecBean implements Serializable {
 	private AutoCadSecService autocadService;
 	private LoginBean usuarioLogado;
 	private Long tenantId;
-
+	private UsuarioTemp usuarioTemp;
 	@Inject
 	private BuscaCEPService buscaCEPService;
 
@@ -64,9 +61,12 @@ public class AutoCadSecBean implements Serializable {
 
 		this.limpar();
 		this.ufs = Arrays.asList(Uf.values());
+		log.info("usuarioTemp" + usuarioTemp);
 
 	}
 
+	public AutoCadSecBean() {
+	}
 
 	public void salvarTenant() {
 
@@ -137,6 +137,8 @@ public class AutoCadSecBean implements Serializable {
 		
 		//TODO setar o usuario recebido
 		autocadTO.setUsuario(new Usuario());
+		autocadTO.getUsuario().setNome(usuarioTemp.getNome());
+		autocadTO.getUsuario().setEmail(usuarioTemp.getEmail());
 	}
 
 	public boolean isSkip() {
@@ -150,21 +152,21 @@ public class AutoCadSecBean implements Serializable {
 	public String onFlowProcess(FlowEvent event) {
 
 			if (event.getOldStep().equals("secretaria")){
-	            log.info(event.getNewStep());
+	            log.info(event.getOldStep());
 				this.salvarTenant();
-	           
+
 	        }
 			else if (event.getOldStep().equals("unidade")){
 				this.salvarUnidade();
-				
+
 			}
-			
+
 			else {
 				this.salvarUsuario();
-				
+
 			}
-				
-			
+
+
 			return event.getNewStep();
 	}
 
@@ -189,5 +191,4 @@ public class AutoCadSecBean implements Serializable {
 			MessageUtil.erro(e.getMessage());
 		}
 	}
-
 }
