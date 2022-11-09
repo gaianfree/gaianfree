@@ -2,27 +2,17 @@ package com.softarum.svsa.controller;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.primefaces.PrimeFaces;
 
 import com.softarum.svsa.service.EsqueciSenhaService;
 import com.softarum.svsa.util.MessageUtil;
 import com.softarum.svsa.util.NegocioException;
 
-import lombok.extern.log4j.Log4j;
-import java.lang.*;
-
-@Log4j
 @Named
 @SessionScoped
 public class EsqueciSenhaBean implements Serializable {
@@ -58,7 +48,7 @@ public class EsqueciSenhaBean implements Serializable {
 	}
 
 	public void esqueciSenhaEnviar() throws NegocioException, NoResultException {
-		FacesMessage message = null;
+
 		try {
 			esqueciSenhaService.novoToken(this.email);
 			MessageUtil.sucesso("Verifique sua caixa de entrada.");
@@ -88,7 +78,7 @@ public class EsqueciSenhaBean implements Serializable {
 	}
 
 	public void enviar() throws NegocioException {
-		FacesMessage message = null;
+
 		try {
 			if (novaSenha1.compareTo(this.novaSenha2) == 0) {
 				if(esqueciSenhaService.esqueciSenhaValidar(token)) {

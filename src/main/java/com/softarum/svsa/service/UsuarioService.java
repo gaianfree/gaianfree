@@ -23,7 +23,7 @@ import com.softarum.svsa.modelo.enums.Status;
 import com.softarum.svsa.util.MessageUtil;
 import com.softarum.svsa.util.NegocioException;
 
-import com.softarum.svsa.util.EmailUtil;
+
 import lombok.extern.log4j.Log4j;
 
 /**

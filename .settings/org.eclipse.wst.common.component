@@ -138,6 +138,40 @@
         
         
         
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+                                                                                                                                                                                                                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
                                                                                                                                                                                                         
@@ -165,12 +199,42 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
-                
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-                        
+                                                                                                                                                                                                                                                                                        
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <property name="java-output-path" value="/svsa-web/target/classes"/>
         <property name="context-root" value="svsafree"/>
-        <property name="java-output-path" value="/svsafree/target/classes"/>
                                                                                                                                                                                                                                                                                     
     
     

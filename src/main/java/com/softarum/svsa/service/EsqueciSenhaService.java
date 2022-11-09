@@ -1,15 +1,10 @@
 package com.softarum.svsa.service;
 
 import java.io.Serializable;
-import java.net.UnknownHostException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
-
-import com.softarum.svsa.controller.EsqueciSenhaBean;
-import com.softarum.svsa.dao.EsqueciSenhaDAO;
-import com.softarum.svsa.dao.UsuarioDAO;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -17,14 +12,15 @@ import javax.persistence.PersistenceException;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.softarum.svsa.dao.EsqueciSenhaDAO;
+import com.softarum.svsa.dao.UsuarioDAO;
 import com.softarum.svsa.modelo.EsqueciSenha;
 import com.softarum.svsa.modelo.Usuario;
+import com.softarum.svsa.util.DateUtils;
+import com.softarum.svsa.util.EmailUtil;
 import com.softarum.svsa.util.NegocioException;
 
-import com.softarum.svsa.util.EmailUtil;
 import lombok.extern.log4j.Log4j;
-
-import com.softarum.svsa.util.DateUtils;
 
 @Log4j
 public class EsqueciSenhaService implements Serializable{
@@ -45,14 +41,14 @@ public class EsqueciSenhaService implements Serializable{
 	public void novoToken(String email) throws PersistenceException, NegocioException {
 		try {this.usuarioDAO.buscarPeloEmail(email);}
 		catch(NoResultException e) {
-			throw new NegocioException("Email invÃ¡lido.");
+			throw new NegocioException("Email inválido.");
 		}
 		
 		try {
 			log.info("aqui");
 			EsqueciSenha esqc = esqueciSenhaDAO.buscarEsqueciSenhaPeloEmail(email);
 			if(this.verificaTokenValido(esqc)) {
-				throw new NegocioException("JÃ¡ existe um token vÃ¡lido para este email, verifique sua caixa de entrada.");
+				throw new NegocioException("Já existe um token válido para este email, verifique sua caixa de entrada.");
 			}else {
 				this.criaTokenMandaEmail(esqc);
 			}
@@ -66,14 +62,14 @@ public class EsqueciSenhaService implements Serializable{
 	}
 	
 	public void criaTokenMandaEmail(EsqueciSenha esqc) throws PersistenceException, NegocioException {
-		log.info("MÃ‰TODO DE ENVIAR EMAILS.");
+		log.info("MÉTODO DE ENVIAR EMAILS.");
 		UUID token = UUID.randomUUID();
 		esqc.setToken(token.toString());
 		esqc.setIsExpired(false);
 		this.esqueciSenhaDAO.salvar(esqc);
-		EmailUtil.sendEmail("TLS", esqc.getEmail(), "Redefinir senha", "OlÃ¡, vocÃª solicitou a redefiniÃ§Ã£o de senha \n"
-				+ "Link para redefiniÃ§Ã£o de senha: http://localhost:8080/svsafree/unrestricted/home/ResetSenha.xhtml?token="
-				+ esqc.getToken() + "\n\nO link de acesso Ã© vÃ¡lido por 15 minutos.");
+		EmailUtil.sendEmail("TLS", esqc.getEmail(), "Redefinir senha", "Olá, você solicitou a redefinição de senha \n"
+				+ "Link para redefinição de senha: http://localhost:8080/svsafree/unrestricted/home/ResetSenha.xhtml?token="
+				+ esqc.getToken() + "\n\nO link de acesso é válido por 15 minutos.");
 		
 	}
 	
@@ -83,7 +79,7 @@ public class EsqueciSenhaService implements Serializable{
 	}
 	
 	public Boolean verificaTokenValido(EsqueciSenha esqc) {
-		log.info("ESTÃ� EXPIRADO? " + esqc.getIsExpired() + "TEMPO VALIDO?: " + (this.calcularMinutos(DateUtils.asLocalDateTime(esqc.getDataReferencia())) < 15) );
+		log.info("ESTÁ EXPIRADO? " + esqc.getIsExpired() + "TEMPO VALIDO?: " + (this.calcularMinutos(DateUtils.asLocalDateTime(esqc.getDataReferencia())) < 15) );
 		if ((esqc.getIsExpired() == false) && (this.calcularMinutos(DateUtils.asLocalDateTime(esqc.getDataReferencia())) < 15)) {
 			return true;
 		}
