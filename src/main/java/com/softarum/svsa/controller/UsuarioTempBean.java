@@ -12,6 +12,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.naming.NamingException;
+
 import java.io.Serializable;
 
 @Log4j
@@ -36,7 +38,7 @@ public class UsuarioTempBean implements Serializable {
 
         return "feedback.xhtml?faces-redirect=true";
     }
-    public String verificaToken(){
+    public String verificaToken() throws NamingException{
         if(usuarioTempService.verifyToken(usuarioTemp)){
             passaParametros();
             return "confirmado.xhtml?faces-redirect=true";
@@ -46,7 +48,8 @@ public class UsuarioTempBean implements Serializable {
         }
     }
 
-    public void passaParametros() {
+    
+    public void passaParametros() throws NamingException {
 
         autoCadSecBean = new AutoCadSecBean();
         autoCadSecBean.setUsuarioTemp(usuarioTemp);

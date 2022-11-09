@@ -3,16 +3,22 @@ package com.softarum.svsa.controller.autocad;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import com.softarum.svsa.modelo.*;
 import org.primefaces.event.FlowEvent;
 
 import com.softarum.svsa.controller.LoginBean;
+import com.softarum.svsa.controller.UsuarioTempBean;
 import com.softarum.svsa.modelo.enums.Grupo;
 import com.softarum.svsa.modelo.enums.Role;
 import com.softarum.svsa.modelo.enums.TipoUnidade;
@@ -74,7 +80,7 @@ public class AutoCadSecBean implements Serializable {
 			
 			Tenant secretaria = this.autocadService.salvarTenant(autocadTO.getSecretaria());
 			autocadTO.setSecretaria(secretaria);
-			MessageUtil.sucesso("Secretaria salva com sucesso!");
+			
 			
 			
 		} catch (NegocioException e) {
@@ -95,7 +101,7 @@ public class AutoCadSecBean implements Serializable {
 			autocadTO.setUnidade(unidade);
 			
 			
-			MessageUtil.sucesso("Unidade Salva com sucesso!");
+			
 			
 			
 		} catch (NegocioException e) {
@@ -116,7 +122,6 @@ public class AutoCadSecBean implements Serializable {
 			autocadTO.getUsuario().setGrupo(Grupo.COORDENADORES);
 			Usuario usuario = this.autocadService.salvarUsuario(autocadTO.getUsuario());
 			autocadTO.setUsuario(usuario);
-			MessageUtil.sucesso("Usuario salvo com sucesso!");
 			
 			
 		} catch (NegocioException e) {
@@ -129,16 +134,21 @@ public class AutoCadSecBean implements Serializable {
 
 	public void limpar() {
 		this.autocadTO = new AutoCadSecTO();
-
+		
 		autocadTO.setSecretaria(new Tenant());
 
 		autocadTO.setUnidade(new Unidade());
 		autocadTO.getUnidade().setEndereco(new Endereco());
 		
 		//TODO setar o usuario recebido
+		
+		
+	
+		
 		autocadTO.setUsuario(new Usuario());
-		autocadTO.getUsuario().setNome(usuarioTemp.getNome());
-		autocadTO.getUsuario().setEmail(usuarioTemp.getEmail());
+		//autocadTO.getUsuario().setNome(usuarioTemp.getNome());
+		//autocadTO.getUsuario().setEmail(usuarioTemp.getEmail());
+		
 	}
 
 	public boolean isSkip() {
@@ -148,22 +158,24 @@ public class AutoCadSecBean implements Serializable {
 	public void setSkip(boolean skip) {
 		this.skip = skip;
 	}
+               
 
 	public String onFlowProcess(FlowEvent event) {
 
 			if (event.getOldStep().equals("secretaria")){
 	            log.info(event.getOldStep());
 				this.salvarTenant();
+				MessageUtil.sucesso("Secretaria salva com sucesso!");
 
 	        }
 			else if (event.getOldStep().equals("unidade")){
 				this.salvarUnidade();
-
+				MessageUtil.sucesso("Unidade Salva com sucesso!");
 			}
 
 			else {
 				this.salvarUsuario();
-
+				MessageUtil.sucesso("Usuario salvo com sucesso!");
 			}
 
 
