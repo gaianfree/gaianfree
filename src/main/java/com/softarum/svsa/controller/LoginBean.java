@@ -144,6 +144,9 @@ public class LoginBean implements Serializable {
 				usuario = isValidUser();	// busca usuario no banco				
 				
 				if(usuario != null) {
+					 if(usuario.getTenant() == null){
+		                    return "/restricted/painelAdmin/PainelAdmin.xhtml";
+		                }
 					
 					this.setUnidades(this.usuarioService.buscarUnidades(getTenantId()));					
 
