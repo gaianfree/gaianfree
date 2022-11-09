@@ -1,18 +1,25 @@
 package com.softarum.svsa.controller.autocad;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.NavigationHandler;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.softarum.svsa.modelo.*;
 import org.primefaces.event.FlowEvent;
 
 import com.softarum.svsa.controller.LoginBean;
+import com.softarum.svsa.modelo.Endereco;
+import com.softarum.svsa.modelo.Tenant;
+import com.softarum.svsa.modelo.Unidade;
+import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.enums.Grupo;
 import com.softarum.svsa.modelo.enums.Role;
 import com.softarum.svsa.modelo.enums.TipoUnidade;
@@ -49,7 +56,7 @@ public class AutoCadSecBean implements Serializable {
 	private AutoCadSecService autocadService;
 	private LoginBean usuarioLogado;
 	private Long tenantId;
-	private UsuarioTemp usuarioTemp;
+
 	@Inject
 	private BuscaCEPService buscaCEPService;
 
@@ -61,71 +68,64 @@ public class AutoCadSecBean implements Serializable {
 
 		this.limpar();
 		this.ufs = Arrays.asList(Uf.values());
-		log.info("usuarioTemp" + usuarioTemp);
 
 	}
 
-	public AutoCadSecBean() {
-	}
 
 	public void salvarTenant() {
 
 		try {
-			
+
 			Tenant secretaria = this.autocadService.salvarTenant(autocadTO.getSecretaria());
 			autocadTO.setSecretaria(secretaria);
-			MessageUtil.sucesso("Secretaria salva com sucesso!");
-			
-			
+
+
+
 		} catch (NegocioException e) {
 			e.printStackTrace();
-			MessageUtil.erro(e.getMessage());
+
 		}
 
 	}
-	
-	
+
+
 	public void salvarUnidade() {
 
 		try {
-			
+
 			autocadTO.getUnidade().setTenant_id(autocadTO.getSecretaria().getCodigo());
 			autocadTO.getUnidade().setTipo(TipoUnidade.CRAS);
-			Unidade unidade = this.autocadService.salvarUnidade(autocadTO.getUnidade());			
+			Unidade unidade = this.autocadService.salvarUnidade(autocadTO.getUnidade());
 			autocadTO.setUnidade(unidade);
-			
-			
-			MessageUtil.sucesso("Unidade Salva com sucesso!");
-			
-			
+
+
 		} catch (NegocioException e) {
 			e.printStackTrace();
-			MessageUtil.erro(e.getMessage());
 		}
 
 	}
-	
-	
+
+
 	public void salvarUsuario() {
 
 		try {
-			
+
 			autocadTO.getUsuario().setUnidade(autocadTO.getUnidade());
 			autocadTO.getUsuario().setTenant(autocadTO.getSecretaria());
 			autocadTO.getUsuario().setRole(Role.ASSISTENTE_SOCIAL);
 			autocadTO.getUsuario().setGrupo(Grupo.COORDENADORES);
 			Usuario usuario = this.autocadService.salvarUsuario(autocadTO.getUsuario());
 			autocadTO.setUsuario(usuario);
-			MessageUtil.sucesso("Usuario salvo com sucesso!");
-			
-			
+
+
+
 		} catch (NegocioException e) {
 			e.printStackTrace();
-			MessageUtil.erro(e.getMessage());
+
 		}
 
 	}
-	
+
 
 	public void limpar() {
 		this.autocadTO = new AutoCadSecTO();
@@ -134,36 +134,44 @@ public class AutoCadSecBean implements Serializable {
 
 		autocadTO.setUnidade(new Unidade());
 		autocadTO.getUnidade().setEndereco(new Endereco());
-		
+
 		//TODO setar o usuario recebido
 		autocadTO.setUsuario(new Usuario());
-		autocadTO.getUsuario().setNome(usuarioTemp.getNome());
-		autocadTO.getUsuario().setEmail(usuarioTemp.getEmail());
 	}
 
-	public boolean isSkip() {
-		return skip;
-	}
 
-	public void setSkip(boolean skip) {
-		this.skip = skip;
-	}
+	/*public String confirmar() {
+	    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	    try {
+	        this.limpar();
+	        ec.redirect(ec.getRequestContextPath() + "/restricted/home/SvsaHome.xhtml");
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("/svsafree/autocad/AutoCadSec.xhtml");
+	        log.info("Retorno?" + ec);
+
+	    } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+	   return "/restricted/home/SvsaHome.xhtml";
+
+	}*/
 
 	public String onFlowProcess(FlowEvent event) {
 
 			if (event.getOldStep().equals("secretaria")){
 	            log.info(event.getOldStep());
 				this.salvarTenant();
+				MessageUtil.sucesso("Secretaria salva com sucesso!");
 
 	        }
 			else if (event.getOldStep().equals("unidade")){
 				this.salvarUnidade();
-
+				MessageUtil.sucesso("Unidade salva com sucesso!");
 			}
 
-			else {
+			else  {
 				this.salvarUsuario();
-
+				MessageUtil.sucesso("Usuário salvo com sucesso!");
 			}
 
 
@@ -182,7 +190,7 @@ public class AutoCadSecBean implements Serializable {
 			autocadTO.getUnidade().getEndereco()
 					.setEndereco(enderecoTO.getTipoLogradouro().concat(" ").concat(enderecoTO.getLogradouro()));
 			autocadTO.getUnidade().getEndereco().setUf(enderecoTO.getEstado());
-			
+
 			if (enderecoTO.getResultado() != 1) {
 				MessageUtil.erro("Endereço não encontrado para o CEP fornecido.");
 			}
@@ -191,4 +199,5 @@ public class AutoCadSecBean implements Serializable {
 			MessageUtil.erro(e.getMessage());
 		}
 	}
+
 }

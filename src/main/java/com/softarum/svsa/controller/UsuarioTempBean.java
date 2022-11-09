@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j;
 import org.apache.commons.mail.EmailException;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
@@ -23,7 +22,7 @@ public class UsuarioTempBean implements Serializable {
     // FacesContext
     private UsuarioTemp usuarioTemp;
     private UsuarioTempService usuarioTempService;
-    private AutoCadSecBean autoCadSecBean;
+    // private AutoCadSecBean autoCadSecBean;
 
     @PostConstruct
     public void init() {
@@ -38,7 +37,7 @@ public class UsuarioTempBean implements Serializable {
     }
     public String verificaToken(){
         if(usuarioTempService.verifyToken(usuarioTemp)){
-            passaParametros();
+            // passaParametros();
             return "confirmado.xhtml?faces-redirect=true";
         }
         else{
@@ -46,7 +45,8 @@ public class UsuarioTempBean implements Serializable {
         }
     }
 
-    public void passaParametros() {
+    // Essa função passaria os parâmetros da UsuarioTempBean para a AutoCadSecBean
+    /*public void passaParametros() {
 
         autoCadSecBean = new AutoCadSecBean();
         autoCadSecBean.setUsuarioTemp(usuarioTemp);
@@ -55,5 +55,5 @@ public class UsuarioTempBean implements Serializable {
         log.info("E-mail UsuarioTemp: " + usuarioTemp.getEmail());
         log.info("E-mail AutoCadBean: " + autoCadSecBean.getUsuarioTemp().getEmail());
         autoCadSecBean.inicializar();
-    }
+    }*/
 }
