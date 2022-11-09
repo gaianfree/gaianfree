@@ -6,4 +6,5 @@
 /.metadata/
 /.vscode/
 *.zip
-/.settings/
+.settings/
+/src/main/resources/META-INF/
