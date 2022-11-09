@@ -1,10 +1,9 @@
 /target/
 /.apt_generated/
 /.apt_generated_tests/
-.idea
-svsafree.iml
+/.classpath
 /.idea/
 /.metadata/
-/.settings/
 /.vscode/
-/src/main/resources/META-INF/
+*.zip
+/.settings

@@ -8,6 +8,7 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+@SuppressWarnings("rawtypes")
 @FacesValidator("requiredCheckboxValidator")
 public class RequiredCheckboxValidator implements Validator {
 

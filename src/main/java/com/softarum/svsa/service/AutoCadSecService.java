@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import com.softarum.svsa.dao.AutoCadSecDAO;
-import com.softarum.svsa.dao.UnidadeDAO;
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
 import com.softarum.svsa.modelo.Usuario;

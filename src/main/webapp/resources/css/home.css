@@ -31,7 +31,6 @@
 
 .containerText span {
   font-size: 2.25rem;
-  font-family: 'Gill';
   font-weight: 700;
   color: var(--colorHomeTextSpan);
   display: none;
@@ -39,9 +38,7 @@
 
 .containerText h1 {
   font-size: 2.75rem;
-  font-family: 'Gill';
   font-weight: 900;
-
   color: var(--colorHomeTextTitle);
 }
 

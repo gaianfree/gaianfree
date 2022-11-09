@@ -73,6 +73,7 @@
 									process="autenticar" />
 
 								<p:button value="Esqueci minha senha"
+									rendered="#{not loginBean.autenticado}"
 									outcome="/unrestricted/home/EsqueciSenha.xhtml" />
 							</h:panelGrid>
 

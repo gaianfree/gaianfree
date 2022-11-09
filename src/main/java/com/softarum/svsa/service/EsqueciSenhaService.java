@@ -1,15 +1,10 @@
 package com.softarum.svsa.service;
 
 import java.io.Serializable;
-import java.net.UnknownHostException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
-
-import com.softarum.svsa.controller.EsqueciSenhaBean;
-import com.softarum.svsa.dao.EsqueciSenhaDAO;
-import com.softarum.svsa.dao.UsuarioDAO;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -17,14 +12,16 @@ import javax.persistence.PersistenceException;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.softarum.svsa.dao.EsqueciSenhaDAO;
+import com.softarum.svsa.dao.UsuarioDAO;
 import com.softarum.svsa.modelo.EsqueciSenha;
 import com.softarum.svsa.modelo.Usuario;
+import com.softarum.svsa.util.DateUtils;
+import com.softarum.svsa.util.EmailUtil;
 import com.softarum.svsa.util.NegocioException;
 
 import com.softarum.svsa.util.EmailUtil;
 import lombok.extern.log4j.Log4j;
-
-import com.softarum.svsa.util.DateUtils;
 
 @Log4j
 public class EsqueciSenhaService implements Serializable{
