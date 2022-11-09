@@ -48,7 +48,12 @@ jobs:
 workflows:
   deploy-pipeline:
     jobs:
-      - build
+      - build:
+          filters:
+            branches: 
+              only: 
+                - CI-CD
+                - develop
       - deploy:
           filters:
             branches: 
