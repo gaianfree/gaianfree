@@ -18,6 +18,7 @@ import com.softarum.svsa.modelo.Endereco;
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
 import com.softarum.svsa.modelo.Usuario;
+import com.softarum.svsa.modelo.UsuarioTemp;
 import com.softarum.svsa.modelo.enums.Grupo;
 import com.softarum.svsa.modelo.enums.Role;
 import com.softarum.svsa.modelo.enums.TipoUnidade;
@@ -48,11 +49,10 @@ public class AutoCadSecBean implements Serializable {
 
     private AutoCadSecTO autocadTO;
     private EnderecoTO enderecoTO;
-
+    private UsuarioTemp usuarioTemp;
+    
     @Inject
     private AutoCadSecService autocadService;
-    private LoginBean usuarioLogado;
-    private Long tenantId;
 
     @Inject
     private BuscaCEPService buscaCEPService;
