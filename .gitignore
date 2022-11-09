@@ -4,9 +4,4 @@
 .idea
 svsafree.iml
 *.zip
-/.idea/
-/.metadata/
-/.settings/
-/.vscode/
 /src/main/resources/META-INF/
-/.settings
