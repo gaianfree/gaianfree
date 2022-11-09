@@ -38,7 +38,7 @@ public class UsuarioTempBean implements Serializable {
 
         return "feedback.xhtml?faces-redirect=true";
     }
-    public String verificaToken() throws NamingException{
+    public String verificaToken() {
         if(usuarioTempService.verifyToken(usuarioTemp)){
             passaParametros();
             return "confirmado.xhtml?faces-redirect=true";
@@ -49,7 +49,7 @@ public class UsuarioTempBean implements Serializable {
     }
 
     
-   public void passaParametros() throws NamingException {
+   public void passaParametros() {
 
         autoCadSecBean = new AutoCadSecBean();
         autoCadSecBean.setUsuarioTemp(usuarioTemp);
