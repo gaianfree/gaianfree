@@ -3,7 +3,6 @@ package com.softarum.svsa.modelo;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Setter
 @Getter
 public class UsuarioTemp {
