@@ -1,19 +1,16 @@
 package com.softarum.svsa.controller.autocad;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.FlowEvent;
 
-import com.softarum.svsa.controller.LoginBean;
 import com.softarum.svsa.modelo.Endereco;
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;

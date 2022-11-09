@@ -1,20 +1,21 @@
 package com.softarum.svsa.controller;
 
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+import org.apache.commons.mail.EmailException;
+
 import com.softarum.svsa.controller.autocad.AutoCadSecBean;
 import com.softarum.svsa.modelo.UsuarioTemp;
 import com.softarum.svsa.service.UsuarioTempService;
 import com.softarum.svsa.util.GenerateValidation;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.mail.EmailException;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.naming.NamingException;
-
-import java.io.Serializable;
 
 @Log4j
 @Getter
@@ -22,7 +23,10 @@ import java.io.Serializable;
 @Named
 @SessionScoped
 public class UsuarioTempBean implements Serializable {
-    // FacesContext
+
+	private static final long serialVersionUID = 1L;
+
+	// FacesContext
     private UsuarioTemp usuarioTemp;
     private UsuarioTempService usuarioTempService;
     private AutoCadSecBean autoCadSecBean;

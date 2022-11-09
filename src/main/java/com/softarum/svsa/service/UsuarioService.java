@@ -1,5 +1,4 @@
 package com.softarum.svsa.service;
-import org.apache.log4j.Logger;
 import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -13,18 +12,13 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import com.softarum.svsa.dao.AgendamentoIndividualDAO;
 import com.softarum.svsa.dao.UsuarioDAO;
-import com.softarum.svsa.dao.EsqueciSenhaDAO;
 import com.softarum.svsa.modelo.ListaAtendimento;
 import com.softarum.svsa.modelo.Unidade;
 import com.softarum.svsa.modelo.Usuario;
-import com.softarum.svsa.modelo.EsqueciSenha;
 import com.softarum.svsa.modelo.enums.Role;
 import com.softarum.svsa.modelo.enums.Status;
 import com.softarum.svsa.util.MessageUtil;
 import com.softarum.svsa.util.NegocioException;
-
-import com.softarum.svsa.util.EmailUtil;
-import lombok.extern.log4j.Log4j;
 
 /**
  * @author murakamiadmin
@@ -38,8 +32,6 @@ public class UsuarioService implements Serializable {
 	
 	private Logger log = Logger.getLogger(UsuarioService.class);
 	
-	@Inject
-	private EsqueciSenhaService esqueciSenhaService;
 	@Inject
 	private UsuarioDAO usuarioDAO;
 	@Inject
