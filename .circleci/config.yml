@@ -53,12 +53,12 @@ workflows:
             branches: 
               only: 
                 - CI-CD
-                - develop
+                - main
       - deploy:
           filters:
             branches: 
               only: 
                 - CI-CD
-                - develop
+                - main
           requires:
             - build
