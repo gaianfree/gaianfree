@@ -1,25 +1,35 @@
 package com.softarum.svsa.controller;
 
-import com.softarum.svsa.modelo.UsuarioTemp;
-import com.softarum.svsa.service.UsuarioTempService;
-import com.softarum.svsa.util.GenerateValidation;
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.commons.mail.EmailException;
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import java.io.Serializable;
 
+import org.apache.commons.mail.EmailException;
+
+import com.softarum.svsa.controller.autocad.AutoCadSecBean;
+import com.softarum.svsa.modelo.UsuarioTemp;
+import com.softarum.svsa.service.UsuarioTempService;
+import com.softarum.svsa.util.GenerateValidation;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Getter
 @Setter
 @Named
 @SessionScoped
 public class UsuarioTempBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
+
+	// FacesContext
     private UsuarioTemp usuarioTemp;
     private UsuarioTempService usuarioTempService;
+    private AutoCadSecBean autoCadSecBean;
 
     @PostConstruct
     public void init() {
@@ -32,12 +42,25 @@ public class UsuarioTempBean implements Serializable {
 
         return "feedback.xhtml?faces-redirect=true";
     }
-    public String verificaToken(){
+    public String verificaToken() {
         if(usuarioTempService.verifyToken(usuarioTemp)){
+            passaParametros();
             return "confirmado.xhtml?faces-redirect=true";
         }
         else{
             return "naoconfirmado.xhtml?faces-redirect=true";
         }
+    }
+
+    
+   public void passaParametros() {
+
+        autoCadSecBean = new AutoCadSecBean();
+        autoCadSecBean.setUsuarioTemp(usuarioTemp);
+        log.info("Nome UsuarioTemp: " + usuarioTemp.getNome());
+        log.info("Nome AutoCadBean: " + autoCadSecBean.getUsuarioTemp().getNome());
+        log.info("E-mail UsuarioTemp: " + usuarioTemp.getEmail());
+        log.info("E-mail AutoCadBean: " + autoCadSecBean.getUsuarioTemp().getEmail());
+        autoCadSecBean.inicializar();
     }
 }

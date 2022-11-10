@@ -20,9 +20,6 @@
 	padding: 4px;
 }
 
-.grid {
-	width: 100%;
-}
 
 .error {
 	color: red;
@@ -33,7 +30,7 @@
 }
 
 .grid {
-	width: 33%;
+	width: 28%;
 	padding: 4px;
 }
 </style>
@@ -50,12 +47,12 @@
 								<h:outputText value="Município: " />
 								<p:inputText
 									value="#{autoCadSecBean.autocadTO.secretaria.tenant}"
-									required="false" />
+									required="true" validatorMessage="A Secretaria é obrigatória." />
 									
 								<h:outputText value="Secretaria: " />
 								<p:inputText
 									value="#{autoCadSecBean.autocadTO.secretaria.secretaria}"
-									required="false" />	
+									required="true" />	
 							</h:panelGrid>
 						</p:panel>
 					</p:tab>
@@ -66,14 +63,14 @@
 							<h:panelGrid columns="2" columnClasses="label, value">
 								<h:outputText value="Nome: " />
 								<p:inputText value="#{autoCadSecBean.autocadTO.unidade.nome}"
-									required="false" label="Nome Unidade" />
+									required="true" label="Nome Unidade" />
 
 
 								<p:outputLabel for="cep" value="CEP" />
 								<h:panelGroup>
 									<p:inputMask id="cep" mask="99999-999" size="9"
 										value="#{autoCadSecBean.autocadTO.unidade.endereco.cep}"
-										required="false" validatorMessage="O cep é obrigatório." />
+										required="true" validatorMessage="O cep é obrigatório." />
 
 									<p:spacer width="10px" />
 
@@ -87,19 +84,19 @@
 								<h:outputText value="Endereço: " for="endereco" />
 								<p:inputText id="endereco"
 									value="#{autoCadSecBean.autocadTO.unidade.endereco.endereco}"
-									required="false" label="Endereço" />
+									required="true" label="Endereço" />
 
 								<h:outputText value="Número: " />
 								<p:inputText
 									value="#{autoCadSecBean.autocadTO.unidade.endereco.numero}"
-									required="false" label="Número" size="5" maxlength="8"
+									required="true" label="Número" size="5" maxlength="8"
 									validatorMessage="O número é obrigatório." />
 
 
 								<h:outputText value="UF: " for="uf" />
 								<p:selectOneMenu id="uf"
 									value="#{autoCadSecBean.autocadTO.unidade.endereco.uf}"
-									required="false" label="Text 3">
+									required="true" label="Text 3">
 									<h:outputText value="UF: " />
 									<f:selectItem itemLabel="Selecione a UF:" itemValue=""
 										noSelectionOption="true" />
@@ -115,16 +112,16 @@
 							<h:panelGrid columns="2" columnClasses="label, value">
 								<h:outputText value="Usuário: " />
 								<p:inputText value="#{autoCadSecBean.autocadTO.usuario.nome}"
-									required="false" label="Usuário" />
+									required="true" label="Usuário" />
 
 								<h:outputText value="Email: " />
 								<p:inputText value="#{autoCadSecBean.autocadTO.usuario.email}"
-									required="false" label="Email" />
+									required="true" label="Email" />
 
 								<h:outputText value="Senha: " />
 								<p:password id="toggle"
 									value="#{autoCadSecBean.autocadTO.usuario.senha}"
-									toggleMask="true" redisplay="false" />
+									toggleMask="true" redisplay="false" required="true" />
 							</h:panelGrid>
 						</p:panel>
 					</p:tab>
@@ -180,6 +177,8 @@
 									<p:password id="toggleconfirm"
 										value="#{autoCadSecBean.autocadTO.usuario.senha}"
 										toggleMask="false" redisplay="true" disabled="true" />
+										
+									<p:button value="Confirmar"  href="#{request.contextPath}/restricted/home/SvsaHome.xhtml" icon="pi pi-check" iconPos="right"/>	
 								</h:panelGrid>
 							</h:panelGrid>
 						</p:panel>

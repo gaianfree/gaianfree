@@ -105,6 +105,21 @@ public class UsuarioService implements Serializable {
 		return usuarioDAO.buscarPeloEmail(email);
 	}
 	
+//	public void trocarSenha(String email, String novaSenha) throws NegocioException, PersistenceException {
+//		Usuario u = buscarPeloEmail(email);
+//		if (u == null) {
+//			throw new NegocioException("Email inválido.");
+//		}
+//		if(this.esqueciSenhaService.verificaTokenValido(this.esqueciSenhaDA)) {
+//			u.setSenha(BCrypt.hashpw(novaSenha, BCrypt.gensalt()));
+//			this.usuarioDAO.salvar(u);
+//		} else {
+//			throw new NegocioException("Token inválido");
+//		}
+//		
+//		
+//	}
+	
 	public void trocarSenha(Usuario usuario, String senhaAntiga) throws NegocioException, PersistenceException {
 					
 		Usuario u = buscarPeloEmail(usuario.getEmail());
