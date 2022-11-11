@@ -1,6 +1,7 @@
 package com.softarum.svsa.controller;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Map;
 
 import javax.enterprise.context.SessionScoped;
@@ -8,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletRequest;
 
 import com.softarum.svsa.service.EsqueciSenhaService;
 import com.softarum.svsa.util.MessageUtil;
@@ -97,6 +99,13 @@ public class EsqueciSenhaBean implements Serializable {
 			MessageUtil.erro(e.getMessage());
 					
 		}
+	}
+	public String pegarDomainInstancia() {
+		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String url = origRequest.getScheme() + "://" + origRequest.getServerName() + ":" + origRequest.getServerPort();
+				
+//		String url = (String) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		return url;
 	}
 
 	public String getNovaSenha1() {

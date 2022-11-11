@@ -11,7 +11,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.omnifaces.util.Faces;
 
+import com.softarum.svsa.controller.EsqueciSenhaBean;
 import com.softarum.svsa.dao.EsqueciSenhaDAO;
 import com.softarum.svsa.dao.UsuarioDAO;
 import com.softarum.svsa.modelo.EsqueciSenha;
@@ -33,6 +35,8 @@ public class EsqueciSenhaService implements Serializable{
 	private EsqueciSenhaDAO esqueciSenhaDAO;
 	@Inject 
 	private UsuarioDAO usuarioDAO;
+	@Inject
+	private EsqueciSenhaBean esqueciSenhaBean;
 	
 	public void salvar(EsqueciSenha esqueciSenha) throws NegocioException, SQLIntegrityConstraintViolationException{
 		this.esqueciSenhaDAO.salvar(esqueciSenha);
@@ -68,7 +72,7 @@ public class EsqueciSenhaService implements Serializable{
 		esqc.setIsExpired(false);
 		this.esqueciSenhaDAO.salvar(esqc);
 		EmailUtil.sendEmail("TLS", esqc.getEmail(), "Redefinir senha", "Olá, você solicitou a redefinição de senha \n"
-				+ "Link para redefinição de senha: http://localhost:8080/svsafree/unrestricted/home/ResetSenha.xhtml?token="
+				+ "Link para redefinição de senha: " + this.esqueciSenhaBean.pegarDomainInstancia() + "/svsafree/unrestricted/home/ResetSenha.xhtml?token="
 				+ esqc.getToken() + "\n\nO link de acesso é válido por 15 minutos.");
 		
 	}
