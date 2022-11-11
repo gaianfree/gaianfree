@@ -145,6 +145,7 @@ public class LoginBean implements Serializable {
 				
 				if(usuario != null) {
 					 if(usuario.getTenant() == null){
+							session.setAttribute("usuario", usuario);
 		                    return "/restricted/painelAdmin/PainelAdmin.xhtml";
 		                }
 					
