@@ -15,6 +15,8 @@
     			<p:autoUpdate />
     		</p:growl>
     		
+			<p:button value="Painel Admin" outcome="/restricted/painelAdmin/PainelAdmin.xhtml"/>
+    		
 			<div style="margin-left: 1rem; margin-bottom: 2rem; display: flex; flex-direction: row; justify-content: center">
 				<div>
 					<h2>Painel de envio de e-mails</h2>
@@ -49,7 +51,7 @@
 						required="true"
 						validatorMessage="O município é obrigatório"
 					>
-		                <p:ajax event="itemSelect" actionListener="#{painelEmailBean.atualizaUnidadesByMunicipio}" />
+		                <p:ajax event="change" listener="#{painelEmailBean.atualizaUnidadesByMunicipio}" update="unidade" />
 		                <f:selectItems
 		                	value="#{painelEmailBean.municipios}"
 		                	var="municipio" itemLabel="#{municipio.secretaria}" itemValue="#{municipio}"

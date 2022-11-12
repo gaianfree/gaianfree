@@ -6,9 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.event.SelectEvent;
 
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
@@ -47,18 +51,20 @@ public class PainelEmailBean implements Serializable {
 	
 	@PostConstruct
 	public void inicializar() {
-		this.setMunicipios(painelEmailService.getMunicipios());		
+		List<Tenant> municipios = painelEmailService.getMunicipios();
+		this.setMunicipios(municipios);		
 		
 		this.setUnidades(
-				painelEmailService.getUnidadesByMunicipio(loginBean.getTenantId())
+				painelEmailService.getUnidadesByMunicipio(municipios.get(0).getCodigo())
 		);
 		
 		this.setGrupos(Arrays.asList(Grupo.values()));
 	}
 	
-	public void atualizaUnidadesByMunicipio() {
+	public void atualizaUnidadesByMunicipio(final AjaxBehaviorEvent event) {
+		Tenant municipioSelecionado = (Tenant) ((SelectOneMenu) event.getSource()).getValue();
 		this.setUnidades(painelEmailService.getUnidadesByMunicipio(
-				this.getMunicipioSelecionado().getCodigo())
+				municipioSelecionado.getCodigo())
 		);
 	}
 	
