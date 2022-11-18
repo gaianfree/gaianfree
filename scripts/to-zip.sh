@@ -1,2 +1,2 @@
 #!/bin/bash
-zip -r revision.zip scripts ./target/svsafree.war appspec.yml
+zip -r svsafree.zip scripts ./target/svsafree.war appspec.yml

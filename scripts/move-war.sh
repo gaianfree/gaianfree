@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /testedeploy
+cd /svsafreedeploy
 cp -v ./target/svsafree.war /usr/share/tomcat/webapps

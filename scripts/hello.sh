@@ -1,4 +1,4 @@
 #!/bin/bash
-cd /testedeploy
+cd /svsafreedeploy
 echo "Data da geração desse documento : $(date) 
 Executado pelo usuário : $(whoami)" >> hello
