@@ -38,10 +38,10 @@ jobs:
           at: /tmp/workspace
       - aws-s3/copy:
           from: /tmp/workspace/svsafree.zip
-          to: 's3://bucket-gaian-free/deploy/'
+          to: 's3://bucket-gaian-free'
       - aws-code-deploy/deploy-bundle:
           application-name: gaian-free
-          bundle-bucket: bucket-gaian-free/deploy
+          bundle-bucket: bucket-gaian-free
           bundle-key: svsafree
           deployment-group: deployment-group-gaian-free
 
