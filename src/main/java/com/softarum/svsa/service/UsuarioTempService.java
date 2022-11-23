@@ -1,17 +1,23 @@
 package com.softarum.svsa.service;
 
+import com.softarum.svsa.dao.UsuarioTempDAO;
 import com.softarum.svsa.modelo.UsuarioTemp;
+import com.softarum.svsa.util.NegocioException;
 import org.apache.commons.mail.EmailException;
 import com.softarum.svsa.util.EmailUtil;
 import com.softarum.svsa.util.AutoCadHtmlUtil;
 
 import lombok.Setter;
 
+import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Setter
-public class UsuarioTempService {
+public class UsuarioTempService implements Serializable {
+
+    UsuarioTempDAO usuarioTempDAO = new UsuarioTempDAO();
 
     public void envia(UsuarioTemp usuarioTemp) throws EmailException {
         String msgCorpo = AutoCadHtmlUtil.sendHtml(usuarioTemp.getValidacao());
@@ -20,9 +26,14 @@ public class UsuarioTempService {
         destinatario.add(email);
         EmailUtil.sendHtmlEmail("SSL",destinatario,"Confirmação de Cadastro",msgCorpo);
     }
-
     public void envia(String nome, List<String> email, String token, String assunto, String corpo) {
         EmailUtil.sendHtmlEmail("SSL", email, assunto, corpo);
+    }
+    public void enviaBanco(UsuarioTemp usuarioTemp) throws NegocioException{
+        salvar(usuarioTemp);
+    }
+    public void salvar(UsuarioTemp usuarioTemp) throws NegocioException {
+        usuarioTempDAO.salvar(usuarioTemp);
     }
     public Boolean verifyToken(UsuarioTemp usuarioTemp){
         if(usuarioTemp.getValidacao().equals(usuarioTemp.getToken())) {

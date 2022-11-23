@@ -64,6 +64,19 @@
                                         <f:validateLength minimum="2" maximum="30" />
                                     </h:inputText>
                                 </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <h:outputLabel value="Senha:" />
+                                    <p:password
+                                            value="#{usuarioTempBean.password}"
+                                            h:placeholder="Digite aqui sua senha"
+                                            required="true"
+                                            validatorMessage="nome deve conter entre 6 e 30 caracteres."
+                                            requiredMessage="é necessário que você informe sua senha."
+                                            size="33">
+                                        <f:validateLength minimum="6" maximum="30" />
+                                    </p:password>
+                                </h:panelGroup>
                             </h:panelGrid>
                             <h:outputLabel>
                                 <h:selectBooleanCheckbox
