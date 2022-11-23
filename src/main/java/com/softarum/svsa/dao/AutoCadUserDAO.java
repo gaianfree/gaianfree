@@ -13,7 +13,7 @@ import com.softarum.svsa.util.jpa.Transactional;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
-public class UsuarioTempDAO implements Serializable {
+public class AutoCadUserDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Inject
@@ -41,8 +41,6 @@ public class UsuarioTempDAO implements Serializable {
             throw new NegocioException("Não foi possível executar a operação.");
         }
     }
-
-    /*
     @Transactional
     public void excluir(UsuarioTemp usuarioTemp) throws NegocioException {
 
@@ -62,5 +60,4 @@ public class UsuarioTempDAO implements Serializable {
             throw new NegocioException("Não foi possível executar a operação.");
         }
     }
-    */
 }

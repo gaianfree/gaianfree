@@ -11,7 +11,7 @@ import org.apache.commons.mail.EmailException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.softarum.svsa.modelo.UsuarioTemp;
-import com.softarum.svsa.service.UsuarioTempService;
+import com.softarum.svsa.service.AutoCadUserService;
 import com.softarum.svsa.util.GenerateValidation;
 import com.softarum.svsa.util.NegocioException;
 
@@ -24,13 +24,13 @@ import lombok.extern.log4j.Log4j;
 @Setter
 @Named
 @SessionScoped
-public class UsuarioTempBean implements Serializable {
+public class AutoCadUserBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
     private UsuarioTemp usuarioTemp;
     
     @Inject
-    private UsuarioTempService usuarioTempService;
+    private AutoCadUserService autoCadUserService;
     private String password;
 
     @PostConstruct
@@ -39,19 +39,19 @@ public class UsuarioTempBean implements Serializable {
         usuarioTemp.setValidacao(GenerateValidation.keyValidation());
     }
     public String enviaEmail() throws EmailException {
-        usuarioTempService.envia(usuarioTemp);
+        autoCadUserService.envia(usuarioTemp);
 
         return "feedback.xhtml?faces-redirect=true";
     }
 
     public String verificaToken() throws NegocioException {
-        if (usuarioTempService.verifyToken(usuarioTemp)) {
+        if (autoCadUserService.verifyToken(usuarioTemp)) {
         	
         	usuarioTemp.setSenha(BCrypt.hashpw(password, BCrypt.gensalt()));
         	
         	log.info("bean " + usuarioTemp.getEmail());
-        	log.info("bean -> service " + usuarioTempService);
-            usuarioTempService.salvar(usuarioTemp);
+        	log.info("bean -> service " + autoCadUserService);
+            autoCadUserService.salvar(usuarioTemp);
             
             return "confirmado.xhtml?faces-redirect=true";
         } else {

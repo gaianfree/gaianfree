@@ -19,12 +19,12 @@
                         <h:panelGrid columns="2" columnClasses="label, value">
                             <h:outputText value="Nome: " />
                             <h:outputText
-                                    value="#{usuarioTempBean.usuarioTemp.nome}"
+                                    value="#{autoCadUserBean.usuarioTemp.nome}"
                                     styleClass="outputLabel" />
 
                             <h:outputText value="Email: " />
                             <h:outputText
-                                    value="#{usuarioTempBean.usuarioTemp.email}"
+                                    value="#{autoCadUserBean.usuarioTemp.email}"
                                     styleClass="outputLabel" />
                         </h:panelGrid>
                     </h:panelGrid>
@@ -33,7 +33,6 @@
 
             <!--  -->
             <p:button id="bt2"
-                      action="#{usuarioTempBean.setSenha}"
                       value="Continuar"
                       styleClass="p-mr-2"
                       icon="pi pi-check"
