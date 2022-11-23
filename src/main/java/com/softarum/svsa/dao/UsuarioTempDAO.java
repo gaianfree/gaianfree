@@ -1,14 +1,18 @@
 package com.softarum.svsa.dao;
 
-import com.mysql.cj.xdevapi.SessionImpl;
+import java.io.Serializable;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+
 import com.softarum.svsa.modelo.UsuarioTemp;
 import com.softarum.svsa.util.NegocioException;
 import com.softarum.svsa.util.jpa.Transactional;
 
-import javax.inject.Inject;
-import javax.persistence.*;
-import java.io.Serializable;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class UsuarioTempDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,7 +22,11 @@ public class UsuarioTempDAO implements Serializable {
     @Transactional
     public void salvar(UsuarioTemp usuarioTemp) throws PersistenceException, NegocioException {
         try {
-            manager.merge(usuarioTemp);
+        	log.info("service " + usuarioTemp.getEmail());
+        	log.info("dao -> entitymanager " + manager);
+            UsuarioTemp user = manager.merge(usuarioTemp);
+            log.info("usuariotemp gravado = " + user.getEmail());
+            
         } catch (PersistenceException e) {
             e.printStackTrace();
             throw e;
@@ -34,6 +42,7 @@ public class UsuarioTempDAO implements Serializable {
         }
     }
 
+    /*
     @Transactional
     public void excluir(UsuarioTemp usuarioTemp) throws NegocioException {
 
@@ -53,4 +62,5 @@ public class UsuarioTempDAO implements Serializable {
             throw new NegocioException("Não foi possível executar a operação.");
         }
     }
+    */
 }
