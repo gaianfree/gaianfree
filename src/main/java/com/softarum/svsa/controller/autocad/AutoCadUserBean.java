@@ -6,7 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
 
+import com.softarum.svsa.util.MessageUtil;
 import org.apache.commons.mail.EmailException;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -51,11 +53,31 @@ public class AutoCadUserBean implements Serializable {
         	
         	log.info("bean " + usuarioTemp.getEmail());
         	log.info("bean -> service " + autoCadUserService);
-            autoCadUserService.salvar(usuarioTemp);
-            
+
+            verificarEmail();
             return "confirmado.xhtml?faces-redirect=true";
         } else {
             return "naoconfirmado.xhtml?faces-redirect=true";
+        }
+    }
+
+    public void verificarEmail() {
+        try {
+
+            log.info("Usuario a ser armazenado:\nEmail: " + usuarioTemp.getEmail());
+            log.info("Nome: " + usuarioTemp.getNome());
+            autoCadUserService.salvar(usuarioTemp);
+            MessageUtil.sucesso("Usuario salvo com sucesso!");
+
+        } catch (PersistenceException e) {
+            MessageUtil.erro("E-mail já cadastrado! Tente outro. O sistema não permite e-mails repetidos.");
+            e.printStackTrace();
+        } catch (NegocioException e) {
+            e.printStackTrace();
+            MessageUtil.erro(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageUtil.erro("Erro desconhecido. Contatar o administrador");
         }
     }
 }

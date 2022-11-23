@@ -90,8 +90,6 @@ public class CadastroUsuarioBean implements Serializable {
 			e.printStackTrace();
 			MessageUtil.erro("Erro desconhecido. Contatar o administrador"); 
 		}
-		
-		
 	}
 	
 	public void limpar() {
