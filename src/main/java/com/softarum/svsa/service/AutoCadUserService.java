@@ -47,4 +47,7 @@ public class AutoCadUserService implements Serializable {
             return false;
         }
     }
+    public Long updateId(UsuarioTemp usuarioTemp) {
+        return autoCadUserDAO.updateId(usuarioTemp);
+    }
 }

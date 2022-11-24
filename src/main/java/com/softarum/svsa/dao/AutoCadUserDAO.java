@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
+import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.UsuarioTemp;
 import com.softarum.svsa.util.NegocioException;
 import com.softarum.svsa.util.jpa.Transactional;
@@ -24,23 +25,42 @@ public class AutoCadUserDAO implements Serializable {
     @Inject
     private EntityManager manager;
 
-    public Boolean buscaEmail (UsuarioTemp usuarioTemp) {
+    public Boolean buscaEmail (UsuarioTemp tempUser) {
 
-        UsuarioTemp usuario;
+        UsuarioTemp usuarioTemp;
         try {
-            usuario = (manager.createQuery("SELECT u"
+            usuarioTemp = manager.createQuery("SELECT u"
                             + " from UsuarioTemp u"
                             + " WHERE u.email = :email", UsuarioTemp.class)
-                    .setParameter("email", usuarioTemp.getEmail())
-                    .getSingleResult());
-            if (usuario != null) {
+                    .setParameter("email", tempUser.getEmail())
+                    .getSingleResult();
+            if (usuarioTemp != null) {
                 setAchouEmail(true);
             }
-        } catch (PersistenceException e){
+        } catch (PersistenceException e1) {
+
+            Usuario usuario;
+            try {
+                usuario = manager.createNamedQuery("Usuario.buscarPorEmail", Usuario.class)
+                        .setParameter("email", tempUser.getEmail())
+                        .getSingleResult();
+                if (usuario != null) {
+                    setAchouEmail(true);
+                }
+            } catch (PersistenceException e2) {
                 setAchouEmail(false);
+            }
         }
 
         return achouEmail;
+    }
+    public Long updateId (UsuarioTemp usuarioTemp) {
+
+        return manager.createQuery("SELECT u.id"
+                            + " from UsuarioTemp u"
+                            + " WHERE u.email = :email", Long.class)
+                    .setParameter("email", usuarioTemp.getEmail())
+                    .getSingleResult();
     }
     @Transactional
     public void salvar(UsuarioTemp usuarioTemp) throws PersistenceException, NegocioException {

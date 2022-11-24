@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.PersistenceException;
 
 import com.softarum.svsa.util.MessageUtil;
 import org.apache.commons.mail.EmailException;
@@ -59,18 +58,23 @@ public class AutoCadUserBean implements Serializable {
         	log.info("bean " + usuarioTemp.getEmail());
         	log.info("bean -> service " + autoCadUserService);
 
-            verificarEmail();
+            salvarEmail();
             return "confirmado.xhtml?faces-redirect=true";
         } else {
             return "naoconfirmado.xhtml?faces-redirect=true";
         }
     }
 
-    public void verificarEmail() throws NegocioException {
+    public void salvarEmail() throws NegocioException {
 
         log.info("Usuario a ser armazenado:\nEmail: " + usuarioTemp.getEmail());
         log.info("Nome: " + usuarioTemp.getNome());
         autoCadUserService.salvar(usuarioTemp);
+        log.info("Before TempUser Id update: " + usuarioTemp.getId());
+        log.info("Loading update...");
+        usuarioTemp.setId(autoCadUserService.updateId(usuarioTemp));
+        log.info("Update completed.");
+        log.info("After TempUser Id update: " + usuarioTemp.getId());
         MessageUtil.sucesso("Usuario salvo com sucesso!");
     }
 }
