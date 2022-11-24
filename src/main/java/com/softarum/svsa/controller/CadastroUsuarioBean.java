@@ -65,7 +65,6 @@ public class CadastroUsuarioBean implements Serializable {
 		this.unidades = this.unidadeService.buscarTodos(loginBean.getTenantId());
 		
 		this.limpar();
-		
 	}	
 
 	public void salvar() {

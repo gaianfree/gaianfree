@@ -25,6 +25,10 @@ public class AutoCadUserService implements Serializable {
 	@Inject
 	private AutoCadUserDAO autoCadUserDAO;
 
+    public Boolean buscaEmail(UsuarioTemp usuarioTemp) {
+        return autoCadUserDAO.buscaEmail(usuarioTemp);
+    }
+
     public void envia(UsuarioTemp usuarioTemp) throws EmailException {
         String msgCorpo = AutoCadHtmlUtil.sendHtml(usuarioTemp.getValidacao());
         String email = usuarioTemp.getEmail();
@@ -33,8 +37,6 @@ public class AutoCadUserService implements Serializable {
         EmailUtil.sendHtmlEmail("SSL",destinatario,"Confirmação de Cadastro",msgCorpo);
     }
     public void salvar(UsuarioTemp usuarioTemp) throws NegocioException {
-    	log.info("service " + usuarioTemp.getEmail());
-    	log.info("service -> dao " + autoCadUserDAO);
         autoCadUserDAO.salvar(usuarioTemp);
     }
     public Boolean verifyToken(UsuarioTemp usuarioTemp){

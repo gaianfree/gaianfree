@@ -41,9 +41,14 @@ public class AutoCadUserBean implements Serializable {
         usuarioTemp.setValidacao(GenerateValidation.keyValidation());
     }
     public String enviaEmail() throws EmailException {
-        autoCadUserService.envia(usuarioTemp);
 
-        return "feedback.xhtml?faces-redirect=true";
+        if(autoCadUserService.buscaEmail(usuarioTemp)) {
+            MessageUtil.alerta("E-mail já cadastrado! Tente outro. O sistema não permite e-mails repetidos.");
+            return "";
+        } else {
+            autoCadUserService.envia(usuarioTemp);
+            return "feedback.xhtml?faces-redirect=true";
+        }
     }
 
     public String verificaToken() throws NegocioException {
@@ -61,23 +66,11 @@ public class AutoCadUserBean implements Serializable {
         }
     }
 
-    public void verificarEmail() {
-        try {
+    public void verificarEmail() throws NegocioException {
 
-            log.info("Usuario a ser armazenado:\nEmail: " + usuarioTemp.getEmail());
-            log.info("Nome: " + usuarioTemp.getNome());
-            autoCadUserService.salvar(usuarioTemp);
-            MessageUtil.sucesso("Usuario salvo com sucesso!");
-
-        } catch (PersistenceException e) {
-            MessageUtil.erro("E-mail já cadastrado! Tente outro. O sistema não permite e-mails repetidos.");
-            e.printStackTrace();
-        } catch (NegocioException e) {
-            e.printStackTrace();
-            MessageUtil.erro(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageUtil.erro("Erro desconhecido. Contatar o administrador");
-        }
+        log.info("Usuario a ser armazenado:\nEmail: " + usuarioTemp.getEmail());
+        log.info("Nome: " + usuarioTemp.getNome());
+        autoCadUserService.salvar(usuarioTemp);
+        MessageUtil.sucesso("Usuario salvo com sucesso!");
     }
 }
