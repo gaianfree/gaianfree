@@ -29,7 +29,6 @@ public class AutoCadUserBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
     private UsuarioTemp usuarioTemp;
-    
     @Inject
     private AutoCadUserService autoCadUserService;
     private String password;
@@ -42,7 +41,7 @@ public class AutoCadUserBean implements Serializable {
     public String enviaEmail() throws EmailException {
 
         if(autoCadUserService.buscaEmail(usuarioTemp)) {
-            MessageUtil.alerta("E-mail já cadastrado! Tente outro. O sistema não permite e-mails repetidos.");
+            MessageUtil.alerta("E-mail já está cadastrado. Use um e-mail diferente para se cadastrar.");
             return "";
         } else {
             autoCadUserService.envia(usuarioTemp);
@@ -61,7 +60,8 @@ public class AutoCadUserBean implements Serializable {
             salvarEmail();
             return "confirmado.xhtml?faces-redirect=true";
         } else {
-            return "naoconfirmado.xhtml?faces-redirect=true";
+            MessageUtil.alerta("A chave de acesso inserida é inválida. Tente novamente.");
+            return "";
         }
     }
 
@@ -70,11 +70,13 @@ public class AutoCadUserBean implements Serializable {
         log.info("Usuario a ser armazenado:\nEmail: " + usuarioTemp.getEmail());
         log.info("Nome: " + usuarioTemp.getNome());
         autoCadUserService.salvar(usuarioTemp);
+
         log.info("Before TempUser Id update: " + usuarioTemp.getId());
         log.info("Loading update...");
         usuarioTemp.setId(autoCadUserService.updateId(usuarioTemp));
         log.info("Update completed.");
         log.info("After TempUser Id update: " + usuarioTemp.getId());
+
         MessageUtil.sucesso("Usuario salvo com sucesso!");
     }
 }
