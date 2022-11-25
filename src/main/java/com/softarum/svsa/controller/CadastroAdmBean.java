@@ -45,6 +45,7 @@ public class CadastroAdmBean implements Serializable {
 	
 	private List<Grupo> grupos;
 	private List<Unidade> unidades;
+	private long tenant = 4;
 	
 	@Inject
 	private UsuarioService usuarioService;
@@ -57,12 +58,11 @@ public class CadastroAdmBean implements Serializable {
 	
 	@PostConstruct
 	public void inicializar() {		
-		
 		this.grupos = Arrays.asList(Grupo.values());
 		this.roles = Arrays.asList(Role.values());
 		this.status = Arrays.asList(Status.values());
 		this.unidade = loginBean.getUsuario().getUnidade();
-		this.unidades = this.unidadeService.buscarCRAS(); //Botei o buscar cras pq nao precisa de tenant id mas n sei se vai ser esse, na vdd n sei nem se vai precisar de unidade
+		this.unidades = this.unidadeService.buscarTodos(loginBean.getTenantId()); 
 		
 		this.limpar();
 		
@@ -70,11 +70,13 @@ public class CadastroAdmBean implements Serializable {
 
 	public void salvar() {
 		try {	
-			
 			log.info("unidade usuario" + usuario.getUnidade().getCodigo());
-			log.info("unidade logado" + unidade.getCodigo());							
+			log.info("unidade logado" + unidade.getCodigo());
 			
-			this.usuarioService.salvar(usuario, null);				
+			usuario.setUnidade(loginBean.getUsuario().getUnidade());
+			usuario.setRole(loginBean.getUsuario().getRole());
+			usuario.setGrupo(loginBean.getUsuario().getGrupo());
+			this.usuarioService.salvar(usuario, tenant);				
 			
 			MessageUtil.sucesso("Usuario salvo com sucesso!");
 			

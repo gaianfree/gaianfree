@@ -43,7 +43,8 @@ public class PesquisaAdmBean implements Serializable{
 	private List<Usuario> usuarios = new ArrayList<>();
 	private List<Unidade> unidades = new ArrayList<>();
 	private Unidade unidade;
-	
+	private long tenant;
+
 	@Inject
 	private TenantService tenantService;
 	@Inject
@@ -55,8 +56,9 @@ public class PesquisaAdmBean implements Serializable{
 	
 	@PostConstruct
 	public void inicializar() {
-		usuarios = usuarioService.buscarUsuarios(loginBean.getUsuario().getUnidade(), null);
-		tenants = tenantService.buscarTodos();
+		tenant = 4;
+		usuarios = usuarioService.buscarUsuarios(loginBean.getUsuario().getUnidade(), tenant);
+		log.info(usuarios);
 	}
 	public void setUsuarioSelecionadoExcluir(Usuario usuarioSelecionadoExcluir) {
 		this.usuarioSelecionadoExcluir = usuarioSelecionadoExcluir;

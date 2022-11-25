@@ -36,7 +36,6 @@
         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
         rowsPerPageTemplate="10,15,{ShowAll|'All'}"
-        lazy="true"
         rowStyleClass="#{usuario.status eq 'INATIVO' ? 'inativo' : null}"
       >
       <p:column headerText="Código" style="width: 40px; text-align: center">
@@ -60,19 +59,7 @@
         <p:column headerText="E-mail" style="width: 150px; text-align: center">
           <h:outputText value="#{usuario.email}" />
         </p:column>
-        <p:column headerText="Perfil" style="width: 90px; text-align: center">
-          <h:outputText value="#{usuario.role}" />
-        </p:column>
-        <p:column
-          headerText="Unidade"
-          style="width: 80px; text-align: center"
-          sortBy="#{usuario.unidade.nome}"
-        >
-          <h:outputText value="#{usuario.unidade.nome}" />
-        </p:column>
-        <p:column headerText="Grupo" style="width: 90px; text-align: center">
-          <h:outputText value="#{usuario.grupo}" />
-        </p:column>
+        
         <p:column headerText="Status" style="width: 30px; text-align: center">
           <h:outputText value="#{usuario.status}" />
         </p:column>
@@ -82,7 +69,7 @@
           style="width: 40px; text-align: center"
         >
           <p:button
-            outcome="CadastroUsuario"
+            outcome="CadastroAdm"
             icon="pi pi-pencil"
             title="Editar"
           >
