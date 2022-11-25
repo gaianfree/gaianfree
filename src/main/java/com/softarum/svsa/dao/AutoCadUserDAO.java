@@ -22,12 +22,13 @@ public class AutoCadUserDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Boolean achouEmail;
+    private UsuarioTemp usuarioTemp;
+    private Usuario usuario;
     @Inject
     private EntityManager manager;
 
     public Boolean buscaEmail (UsuarioTemp tempUser) {
 
-        UsuarioTemp usuarioTemp;
         try {
             usuarioTemp = manager.createQuery("SELECT u"
                             + " from UsuarioTemp u"
@@ -39,7 +40,6 @@ public class AutoCadUserDAO implements Serializable {
             }
         } catch (PersistenceException e1) {
 
-            Usuario usuario;
             try {
                 usuario = manager.createNamedQuery("Usuario.buscarPorEmail", Usuario.class)
                         .setParameter("email", tempUser.getEmail())
@@ -54,19 +54,19 @@ public class AutoCadUserDAO implements Serializable {
 
         return achouEmail;
     }
-    public Long updateId (UsuarioTemp usuarioTemp) {
+    public Long atualizarId(UsuarioTemp tempUser) {
 
         return manager.createQuery("SELECT u.id"
                             + " from UsuarioTemp u"
                             + " WHERE u.email = :email", Long.class)
-                    .setParameter("email", usuarioTemp.getEmail())
+                    .setParameter("email", tempUser.getEmail())
                     .getSingleResult();
     }
     @Transactional
-    public void salvar(UsuarioTemp usuarioTemp) throws PersistenceException, NegocioException {
+    public void salvar(UsuarioTemp tempUser) throws PersistenceException, NegocioException {
         try {
-            UsuarioTemp user = manager.merge(usuarioTemp);
-            log.info("usuariotemp gravado = " + user.getEmail());
+            usuarioTemp = manager.merge(tempUser);
+            log.info("usuariotemp gravado = " + usuarioTemp.getEmail());
             
         } catch (PersistenceException e) {
             e.printStackTrace();
@@ -77,21 +77,13 @@ public class AutoCadUserDAO implements Serializable {
         }
     }
     @Transactional
-    public void excluir(UsuarioTemp usuarioTemp) throws NegocioException {
+    public void excluir(UsuarioTemp tempUser) throws NegocioException {
 
         try {
-            manager.merge(usuarioTemp);
+            manager.merge(tempUser);
         } catch (Exception | Error e) {
             e.printStackTrace();
             throw new NegocioException("Não foi possível executar a operação.");
         }
-    }
-    public UsuarioTemp buscaUsuarioTemp(UsuarioTemp usuarioTemp) {
-
-        return manager.createQuery("SELECT u"
-                        + " from UsuarioTemp u"
-                        + " WHERE u.id = :id", UsuarioTemp.class)
-                .setParameter("id", usuarioTemp.getId())
-                .getSingleResult();
     }
 }

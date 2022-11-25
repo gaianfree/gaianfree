@@ -24,28 +24,28 @@ public class AutoCadUserService implements Serializable {
 	
 	@Inject
 	private AutoCadUserDAO autoCadUserDAO;
+    String msgCorpo;
+    String email;
+    List<String> destinatario = new ArrayList<>();
 
     public Boolean buscaEmail(UsuarioTemp usuarioTemp) {
         return autoCadUserDAO.buscaEmail(usuarioTemp);
     }
 
     public void envia(UsuarioTemp usuarioTemp) throws EmailException {
-        String msgCorpo = AutoCadHtmlUtil.sendHtml(usuarioTemp.getValidacao());
-        String email = usuarioTemp.getEmail();
-        List<String> destinatario=new ArrayList<>();
+        msgCorpo = AutoCadHtmlUtil.sendHtml(usuarioTemp.getValidacao());
+        email = usuarioTemp.getEmail();
         destinatario.add(email);
         EmailUtil.sendHtmlEmail("SSL",destinatario,"Confirmação de Cadastro",msgCorpo);
     }
-    public void salvar(UsuarioTemp usuarioTemp) throws NegocioException {
-        autoCadUserDAO.salvar(usuarioTemp);
-    }
-    public Boolean verifyToken(UsuarioTemp usuarioTemp){
+    public Boolean verificaToken(UsuarioTemp usuarioTemp){
         return usuarioTemp.getValidacao().equals(usuarioTemp.getToken());
     }
-    public Long updateId(UsuarioTemp usuarioTemp) {
-        return autoCadUserDAO.updateId(usuarioTemp);
+    public void salva(UsuarioTemp usuarioTemp) throws NegocioException {
+        autoCadUserDAO.salvar(usuarioTemp);
     }
-    public UsuarioTemp buscaUsuarioTemp(UsuarioTemp usuarioTemp) {
-        return autoCadUserDAO.buscaUsuarioTemp(usuarioTemp);
+    public Long atualizaId(UsuarioTemp usuarioTemp) {
+        return autoCadUserDAO.atualizarId(usuarioTemp);
     }
+
 }

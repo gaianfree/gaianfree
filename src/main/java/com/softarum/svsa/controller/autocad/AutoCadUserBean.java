@@ -52,7 +52,7 @@ public class AutoCadUserBean implements Serializable {
     }
 
     public String verificaToken() throws NegocioException {
-        if (autoCadUserService.verifyToken(usuarioTemp)) {
+        if (autoCadUserService.verificaToken(usuarioTemp)) {
         	
         	usuarioTemp.setSenha(BCrypt.hashpw(password, BCrypt.gensalt()));
         	
@@ -71,10 +71,10 @@ public class AutoCadUserBean implements Serializable {
 
         log.info("Usuario a ser armazenado:\nEmail: " + usuarioTemp.getEmail());
         log.info("Nome: " + usuarioTemp.getNome());
-        autoCadUserService.salvar(usuarioTemp);
+        autoCadUserService.salva(usuarioTemp);
         log.info("Before TempUser Id update: " + usuarioTemp.getId());
         log.info("Loading update...");
-        usuarioTemp.setId(autoCadUserService.updateId(usuarioTemp));
+        usuarioTemp.setId(autoCadUserService.atualizaId(usuarioTemp));
         log.info("Update completed.");
         log.info("After TempUser Id update: " + usuarioTemp.getId());
         MessageUtil.sucesso("Usuario salvo com sucesso!");
