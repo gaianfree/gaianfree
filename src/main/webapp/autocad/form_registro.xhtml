@@ -42,19 +42,19 @@
                             >
                                 <h:panelGroup>
                                     <h:outputLabel value="E-mail:" />
-                                    <h:inputText
+                                    <p:inputText
                                             value="#{autoCadUserBean.usuarioTemp.email}"
                                             p:placeholder="Digite aqui seu email"
                                             validatorMessage="email inválido."
                                             requiredMessage="é necessário que você informe seu email."
                                             size="33">
                                         <f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
-                                    </h:inputText>
+                                    </p:inputText>
                                 </h:panelGroup>
 
                                 <h:panelGroup>
                                     <h:outputLabel value="Nome:" />
-                                    <h:inputText
+                                    <p:inputText
                                             value="#{autoCadUserBean.usuarioTemp.nome}"
                                             h:placeholder="Digite aqui seu Nome"
                                             required="true"
@@ -62,7 +62,7 @@
                                             requiredMessage="é necessário que você informe seu nome."
                                             size="33">
                                         <f:validateLength minimum="2" maximum="30" />
-                                    </h:inputText>
+                                    </p:inputText>
                                 </h:panelGroup>
 
                                 <h:panelGroup>
@@ -85,7 +85,7 @@
                                     <f:validator validatorId="requiredCheckboxValidator" />
                                     <f:ajax event="blur" render="m_terms" />
                                 </h:selectBooleanCheckbox>
-                                Concordo com os <h:outputLink value="#">termos de serviço</h:outputLink> do Gaianfree.
+                                Concordo com a <h:outputLink value="https://gaian.com.br/politica-de-privacidade/">política de privacidade</h:outputLink> do Gaianfree.
                             </h:outputLabel>
                             <br></br>
                             <br></br>

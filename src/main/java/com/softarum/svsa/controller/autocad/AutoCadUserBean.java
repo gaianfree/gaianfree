@@ -38,6 +38,7 @@ public class AutoCadUserBean implements Serializable {
     public void init() {
         usuarioTemp = new UsuarioTemp();
         usuarioTemp.setValidacao(GenerateValidation.keyValidation());
+        log.info("Token gerado: " + usuarioTemp.getValidacao());
     }
     public String enviaEmail() throws EmailException {
 
@@ -61,7 +62,8 @@ public class AutoCadUserBean implements Serializable {
             salvarEmail();
             return "confirmado.xhtml?faces-redirect=true";
         } else {
-            return "naoconfirmado.xhtml?faces-redirect=true";
+            MessageUtil.alerta("Chave de acesso inserida é inválida! Tente novamente.");
+            return "";
         }
     }
 
