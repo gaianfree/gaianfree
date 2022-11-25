@@ -103,54 +103,6 @@
           />
         </h:panelGroup>
 
-        <p:outputLabel value="Perfil" for="role" />
-        <p:selectOneMenu
-          id="role"
-          required="true"
-          value="#{cadastroAdmBean.usuario.role}"
-          validatorMessage="O perfil é obrigatório."
-        >
-          <f:selectItem itemLabel="Selecione o perfil" />
-          <f:selectItems
-            value="#{cadastroAdmBean.roles}"
-            var="role"
-            itemLabel="#{role}"
-            itemValue="#{role}"
-          />
-        </p:selectOneMenu>
-
-        <p:outputLabel value="Unidade" for="unid" />
-        <p:selectOneMenu
-          id="unid"
-          required="true"
-          value="#{cadastroAdmBean.usuario.unidade}"
-          validatorMessage="A unidade é obrigatória."
-        >
-          <f:selectItem itemLabel="Selecione a unidade" />
-          <f:selectItems
-            value="#{cadastroAdmBean.unidades}"
-            var="unid"
-            itemLabel="#{unid.nome}"
-            itemValue="#{unid}"
-          />
-        </p:selectOneMenu>
-
-        <p:outputLabel value="Grupo" for="grupo" />
-        <p:selectOneMenu
-          id="grupo"
-          required="true"
-          value="#{cadastroAdmBean.usuario.grupo}"
-          validatorMessage="O grupo é obrigatório."
-        >
-          <f:selectItem itemLabel="Selecione o grupo" />
-          <f:selectItems
-            value="#{cadastroAdmBean.grupos}"
-            var="grupo"
-            itemLabel="#{grupo}"
-            itemValue="#{grupo}"
-          />
-        </p:selectOneMenu>
-
         <p:outputLabel value="Ativo" for="status" />
         <p:selectOneMenu
           id="status"

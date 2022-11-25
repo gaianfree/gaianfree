@@ -19,12 +19,19 @@
       
       <p:toolbar style="margin-top: 20px">
         <p:toolbarGroup>
+        <p:commandButton
+            icon="pi pi-angle-left"
+            value="Voltar"
+            id="botaoVoltar"
+            action="/restricted/painelAdmin/PainelAdmin.xhtml"
+          />
           <p:commandButton
             icon="pi pi-plus"
             value="Novo"
             id="botaoNovo"
             action="/restricted/adm/CadastroAdm.xhtml"
           />
+           
         </p:toolbarGroup>
       </p:toolbar>    
       <p:dataTable

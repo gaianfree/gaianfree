@@ -46,9 +46,10 @@ public class UsuarioService implements Serializable {
 		 */		
 		verificaAgendamentos(usuario, tenantId);
 		
-		// Comentado para o funcionamento do cadastro de adm
-//		if (this.usuarioDAO.verificaUsuarioFreePeloTenant(tenantId) && this.usuarioDAO.encontrarQuantidadeDeUsuarios(tenantId) > 2) 
-//			throw new NegocioException("Usuários da tier free são limitados a 3 cadastros");
+		if (tenantId != 4) {
+			if (this.usuarioDAO.verificaUsuarioFreePeloTenant(tenantId) && this.usuarioDAO.encontrarQuantidadeDeUsuarios(tenantId) > 2) 
+				throw new NegocioException("Usuários da tier free são limitados a 3 cadastros");
+		}
 		
 		
 		if(usuario.getSenha() == null || usuario.getSenha().equals(""))
@@ -158,7 +159,7 @@ public class UsuarioService implements Serializable {
 		
 		return unidadeService.buscarTodos(tenantId);
 	}
-	
+
 	/*
 	private void verificarEmail(Usuario usuario) throws NegocioException {
 		
@@ -169,5 +170,4 @@ public class UsuarioService implements Serializable {
 		}
 	}
 	*/
-	
 }
