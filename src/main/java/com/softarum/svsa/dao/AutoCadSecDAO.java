@@ -5,10 +5,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
+import com.softarum.svsa.modelo.EsqueciSenha;
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
+import com.softarum.svsa.modelo.UserTemp;
 import com.softarum.svsa.modelo.Usuario;
 import com.softarum.svsa.modelo.enums.TipoUnidade;
 import com.softarum.svsa.modelo.to.AutoCadSecTO;
@@ -116,6 +121,24 @@ public class AutoCadSecDAO implements Serializable {
 			throw new NegocioException("Não foi possível executar a operação.");
 		}
 	}
+	
+
+	
+	 public UserTemp buscarEmailUserTemp(String email) throws NoResultException {
+		 return manager.createQuery("UserTemp.buscarPorEmail", UserTemp.class)
+					.setParameter("email", email)
+					.getSingleResult();
+	 }
+	 
+	 public UserTemp buscarPeloCodigoUserTemp(Long codigo) {
+			return manager.find(UserTemp.class, codigo);
+		}
+	 
+	 
+		
+
+
+	
 
 	/*
 	 * @Transactional public void excluir(Unidade unidade) throws NegocioException {
@@ -138,6 +161,8 @@ public class AutoCadSecDAO implements Serializable {
 	public Tenant buscarPeloCodigo(Long codigo) {
 		return manager.find(Tenant.class, codigo);
 	}
+	
+	
 
 	// acrescentei para mandar o id do tenant na coluna tenantid da tabela unidade
 	@SuppressWarnings("unchecked")
