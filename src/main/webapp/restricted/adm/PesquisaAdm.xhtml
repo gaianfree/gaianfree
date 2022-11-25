@@ -86,18 +86,8 @@
           <p:commandButton
             icon="pi pi-refresh"
             title="Reset de senha"
+            rendered="#{pesquisaAdmBean.coordenador}"
             onclick="PF('confirmacaoReset').show();"
-            process="@this"
-          >
-            <f:setPropertyActionListener
-              target="#{pesquisaAdmBean.usuarioSelecionadoExcluir}"
-              value="#{usuario}"
-            />
-          </p:commandButton>
-          <p:commandButton
-            icon="pi pi-trash"
-            title="Excluir usuario"
-            onclick="PF('confirmacaoExclusao').show();"
             process="@this"
           >
             <f:setPropertyActionListener
