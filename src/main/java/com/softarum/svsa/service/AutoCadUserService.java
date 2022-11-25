@@ -40,14 +40,12 @@ public class AutoCadUserService implements Serializable {
         autoCadUserDAO.salvar(usuarioTemp);
     }
     public Boolean verifyToken(UsuarioTemp usuarioTemp){
-        if(usuarioTemp.getValidacao().equals(usuarioTemp.getToken())) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return usuarioTemp.getValidacao().equals(usuarioTemp.getToken());
     }
     public Long updateId(UsuarioTemp usuarioTemp) {
         return autoCadUserDAO.updateId(usuarioTemp);
+    }
+    public UsuarioTemp buscaUsuarioTemp(UsuarioTemp usuarioTemp) {
+        return autoCadUserDAO.buscaUsuarioTemp(usuarioTemp);
     }
 }

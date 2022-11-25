@@ -71,13 +71,7 @@ public class AutoCadUserDAO implements Serializable {
         } catch (PersistenceException e) {
             e.printStackTrace();
             throw e;
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new NegocioException("Não foi possível executar a operação.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new NegocioException("Não foi possível executar a operação.");
-        } catch (Error e) {
+        } catch (Error | Exception e) {
             e.printStackTrace();
             throw new NegocioException("Não foi possível executar a operação.");
         }
@@ -87,18 +81,17 @@ public class AutoCadUserDAO implements Serializable {
 
         try {
             manager.merge(usuarioTemp);
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-            throw new NegocioException("Não foi possível executar a operação.");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new NegocioException("Não foi possível executar a operação.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new NegocioException("Não foi possível executar a operação.");
-        } catch (Error e) {
+        } catch (Exception | Error e) {
             e.printStackTrace();
             throw new NegocioException("Não foi possível executar a operação.");
         }
+    }
+    public UsuarioTemp buscaUsuarioTemp(UsuarioTemp usuarioTemp) {
+
+        return manager.createQuery("SELECT u"
+                        + " from UsuarioTemp u"
+                        + " WHERE u.id = :id", UsuarioTemp.class)
+                .setParameter("id", usuarioTemp.getId())
+                .getSingleResult();
     }
 }
