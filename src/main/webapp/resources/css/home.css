@@ -234,7 +234,7 @@
 
 .cardPrices {
   flex: 1;
-  border: 4px solid white;
+  border: 4px solid var(--borderPriceCards);
   padding: 20px;
   margin: 10px;
   min-width: 260px;
@@ -242,7 +242,7 @@
 
 .cardPrices h2 {
   font-size: 3rem;
-  color: #a4a4a4;
+  color: var(--colorPriceCardTitle);
   text-align: center;
   margin-top: 20px;
 }
@@ -252,11 +252,11 @@
   margin: 20px auto;
   display: block;
   font-size: 3rem;
+  color: var(--colorPriceCardCost);
   text-align: center;
   font-weight: bold;
   padding: 10px 0 5px 0;
-  border-top: 4px solid white;
-  border-top: 4px solid white;
+  border-top: 4px solid var(--borderPriceCardsSpan);
 }
 
 .cardPrices sup {
@@ -268,7 +268,6 @@
   margin: 20px auto;
   font-size: 1.25rem;
   font-style: italic;
-  color: #7c7c7c;
 }
 
 .cardPrices li {
@@ -276,6 +275,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
+  color: var(--colorPriceCardItens);
 }
 
 .cardPrices li::after {
@@ -283,21 +283,29 @@
   display: block;
   width: 6px;
   height: 6px;
-  background: #2c70ff;
+  background: var(--bgPriceCardItensAfter);
   border-radius: 3px;
 }
 
 .cardPrices a {
-  max-width: 300px;
+  background-color: var(--bgPriceCardButton);
+  color: var(--colorPriceCardButtonText);
+  max-width: 18.75rem;
   display: block;
-  margin: 20px auto;
-  border: 4px solid;
-  color: #222222;
+  margin: 1.25rem auto;
+  border: 2px solid var(--bgPriceCardButton);
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 2.25rem;
-  padding: 15px 0;
+  font-size: 1.75rem;
+  padding: 0.625rem 0;
   text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.cardPrices a:hover{
+	background-color: transparent;
+	border: 4px solid var(--bgPriceCardButton);
+	color: var(--bgPriceCardButton);
 }
 
 @media (min-width: 992px) {
