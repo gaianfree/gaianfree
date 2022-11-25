@@ -224,49 +224,88 @@
   color: var(--colorPricesSectionTitle);
 }
 
-.containerTable {
-  background-color: transparent;
+.containerPrices{
+	background: transparent;
+	padding: 10px 60px 20px 60px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
 }
 
-.tablePlans {
-  border-collapse: separate;
-  border-spacing: 0;
+.cardPrices {
+  flex: 1;
+  border: 4px solid var(--borderPriceCards);
+  padding: 20px;
+  margin: 10px;
+  min-width: 260px;
 }
 
-.tablePlans,
-.tablePlans th,
-.tablePlans td {
-  background-color: var(--bgHomeTablesPlans);
-  border: 1px solid var(--borderColorTablesPlans);
+.cardPrices h2 {
+  font-size: 3rem;
+  color: var(--colorPriceCardTitle);
   text-align: center;
+  margin-top: 20px;
 }
 
-.tablePlans th,
-.tablePlans td {
-  padding: 0.5rem;
+.cardPrices span {
+  max-width: 300px;
+  margin: 20px auto;
+  display: block;
+  font-size: 3rem;
+  color: var(--colorPriceCardCost);
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0 5px 0;
+  border-top: 4px solid var(--borderPriceCardsSpan);
 }
 
-.tablePlans thead tr th h4 {
-  padding-bottom: 1rem;
+.cardPrices sup {
+  font-size: 1.5rem;
+}
+
+.cardPrices ul {
+  max-width: 300px;
+  margin: 20px auto;
   font-size: 1.25rem;
-  border-bottom: 1px solid var(--borderColorTitleTablePlans);
+  font-style: italic;
 }
 
-.tablePlans thead tr th h3 {
-  padding: 1rem 0;
-  font-size: 1rem;
+.cardPrices li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  color: var(--colorPriceCardItens);
 }
 
-.tablePlans thead tr th a {
-  background-color: var(--bgHomeTablePlansLink);
-  color: var(--colorHomeTablePlansLink);
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  transition: 250ms;
+.cardPrices li::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--bgPriceCardItensAfter);
+  border-radius: 3px;
 }
 
-.tablePlans thead tr th a:hover {
-  filter: opacity(0.8);
+.cardPrices a {
+  background-color: var(--bgPriceCardButton);
+  color: var(--colorPriceCardButtonText);
+  max-width: 18.75rem;
+  display: block;
+  margin: 1.25rem auto;
+  border: 2px solid var(--bgPriceCardButton);
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.75rem;
+  padding: 0.625rem 0;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.cardPrices a:hover{
+	background-color: transparent;
+	border: 4px solid var(--bgPriceCardButton);
+	color: var(--bgPriceCardButton);
 }
 
 @media (min-width: 992px) {
@@ -280,13 +319,18 @@
   .containerTextPrice h5 {
     font-size: 1.5rem;
   }
+}
 
-  .containerTable {
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@media (max-width: 800px) {
+  .containerPrices {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .containerPrices .cardPrices:nth-child(3) {
+    order: -2;
+  }
+  .containerPrices .cardPrices:nth-child(2) {
+    order: -1;
   }
 }
 
