@@ -200,16 +200,6 @@ body.dark{
 	--colorLowBarSectionTitle: #c7cdd0;
 }
 
-
-h1 {
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-h3 {
-  font-size: 0.875rem;
-  font-weight: 300;
-}
-
 li {
   list-style: none;
 }

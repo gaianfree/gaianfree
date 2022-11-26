@@ -13,6 +13,7 @@
 
 .videoText h1{
   font-size: 1.65rem;
+  font-weight: 500;
   color: var(--colorVideoTitle);
 }
 
@@ -95,6 +96,7 @@
  
 .contentVideosIntro h1 {
   font-size: 2.5rem;
+  font-weight: 500;
   padding: 1rem 0;
   color: var(--colorVideosIntroTitle);
 }
@@ -102,6 +104,7 @@
 .contentVideosIntro h3 {
   padding: 0.75rem 0;
   font-size: 1.20rem;
+  font-weight: 300;
   color: var(--colorVideosIntroSubtitle);
 }
 
@@ -173,5 +176,6 @@
 
 .endText h3{
   font-size: 1.60rem;
+  font-weight: 300;
   color: var(--colorLowBarSectionTitle);
 }
