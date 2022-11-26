@@ -3,12 +3,19 @@ package com.softarum.svsa.service;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 
 import com.softarum.svsa.dao.AutoCadSecDAO;
+import com.softarum.svsa.dao.UsuarioDAO;
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
+import com.softarum.svsa.modelo.UserTemp;
 import com.softarum.svsa.modelo.Usuario;
+import com.softarum.svsa.modelo.enums.Status;
 import com.softarum.svsa.modelo.to.AutoCadSecTO;
 import com.softarum.svsa.util.NegocioException;
 
@@ -19,13 +26,22 @@ import lombok.extern.log4j.Log4j;
  *
  */
 @Log4j
+
+
 public class AutoCadSecService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private ExternalContext externalContext;
+	
 	@Inject
 	private AutoCadSecDAO autocadDAO;
+	private UsuarioDAO usuarioDAO;
 
+	@PostConstruct
+	public void init() {
+		log.info("AutocadService");
+	}
 	
 	
 	//salvar no banco
@@ -78,9 +94,9 @@ public class AutoCadSecService implements Serializable {
 	
 	
 	
-	public Tenant buscarPeloCodigo(long codigo) {
+	/*public Tenant buscarPeloCodigo(long codigo) {
 		return autocadDAO.buscarPeloCodigo(codigo);
-	}
+	}*/
 	
 	//acrescentei para mandar o id do tenant na coluna tenantid da tabela unidade
 	public List<AutoCadSecTO> buscarTodos(Long tenantId) {
@@ -89,6 +105,38 @@ public class AutoCadSecService implements Serializable {
 	
 	public AutoCadSecDAO getAutoCadDAO() {
 		return autocadDAO;
+	}
+	
+	/*public void excluir(UserTemp usuarioTemp) throws NegocioException {
+		usuarioTemp.setStatus(Status.INATIVO);
+		autocadDAO.excluir(usuarioTemp);
+		
+	}*/
+	
+	public UserTemp buscarPeloEmail(String email) throws NoResultException {
+		return autocadDAO.buscarEmailUserTemp(email);		
+	}
+	
+	/*public void buscarEmail(String email) throws PersistenceException, NegocioException {
+		try {
+			autocadDAO.buscarEmailUserTemp(email);
+		}
+		catch(NoResultException e) {
+			throw new NegocioException("Email inválido.");
+		}
+	}*/
+	
+
+		
+	
+	public UserTemp buscarPeloCodigoUserTemp(Long codigo) throws NoResultException {
+		return autocadDAO.buscarPeloCodigoUserTemp(codigo);
+	}
+	
+	
+	
+	public ExternalContext getExternalContext() {
+		return externalContext;
 	}
 	
 

@@ -2,6 +2,7 @@ package com.softarum.svsa.modelo.to;
 
 import com.softarum.svsa.modelo.Tenant;
 import com.softarum.svsa.modelo.Unidade;
+import com.softarum.svsa.modelo.UserTemp;
 import com.softarum.svsa.modelo.Usuario;
 
 public class AutoCadSecTO {
@@ -9,6 +10,7 @@ public class AutoCadSecTO {
 	private Tenant secretaria;
 	private Unidade unidade;
 	private Usuario usuario;
+	private UserTemp userTemp;
 	
 	public Tenant getSecretaria() {
 		return secretaria;
@@ -27,6 +29,14 @@ public class AutoCadSecTO {
 	}
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	public UserTemp getUserTemp() {
+		return userTemp;
+	}
+	
+	public void setUserTemp(UserTemp userTemp) {
+		this.userTemp = userTemp;
 	}
 	
 
