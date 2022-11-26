@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j
-public class UsuarioTempServiceTest {
+public class AutoCadUserServiceTest {
 
     final static UsuarioTemp usuarioTemp = new UsuarioTemp();
-    final static UsuarioTempService usuarioTempService = new UsuarioTempService();
+    final static AutoCadUserService AUTO_CAD_USER_SERVICE = new AutoCadUserService();
 
     static String tokenCorreto = null;
     static String tokenErrado = null;
@@ -51,7 +51,7 @@ public class UsuarioTempServiceTest {
         destinatario.add(usuarioTemp.getEmail());
 
         try {
-            usuarioTempService.envia(usuarioTemp.getNome(), destinatario, usuarioTemp.getToken(), assunto, msgCorpo);
+            AUTO_CAD_USER_SERVICE.envia(usuarioTemp);
             log.info("E-mail enviado:");
             log.info("Destinatario: " + destinatario);
             log.info("Assunto: " + assunto);

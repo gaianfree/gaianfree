@@ -44,7 +44,7 @@
                                 <h:panelGroup>
                                     <h:outputLabel value="Chave de acesso:" />
                                     <h:inputText
-                                            value="#{usuarioTempBean.usuarioTemp.token}"
+                                            value="#{autoCadUserBean.usuarioTemp.token}"
                                             h:placeholder="Digite aqui a chave de acesso"
                                             required="true"
                                             validatorMessage="primeiro nome deve conter entre 2 e 30 caracteres."
@@ -59,7 +59,7 @@
                                             value="Verificar"
                                             styleClass="p-mr-2"
                                             icon="pi pi-check"
-                                            action="#{usuarioTempBean.verificaToken}"
+                                            action="#{autoCadUserBean.verificaToken}"
                                     />
                                 </div>
                             </h:panelGrid>
